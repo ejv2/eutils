@@ -1,0 +1,1 @@
+EXES += rand/rand

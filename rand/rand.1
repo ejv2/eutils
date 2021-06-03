@@ -1,0 +1,55 @@
+.TH RAND 1 eutils-1.0.0
+.SH NAME
+rand - get random bytes
+.SH SYNOPSIS
+.B word
+.RB
+[ --help | --usage ] [count] [source]
+.SH DESCRIPTION
+Prints
+.I count
+random numbers to stdout, sourced from
+.I source
+with
+.I options
+applied.
+.SH OPTIONS
+.TP
+.B --usage
+Print usage
+.TP
+.B --help
+Print help
+.SH SOURCES
+.TP
+.B -s
+.I Standard library:
+Whatever your standard library decides is best
+.TP
+.B -l
+.I Linux syscall API (Linux only):
+Using the kernel space RNG API
+.TP
+.B -e
+.I BSD entropy API (BSDs only):
+Using the BSD(s) standard getentropy API
+.TP
+.B -r
+.I /dev/random
+The standard UNIX random file
+.TP
+.B -u
+.I /dev/urandom
+The standard UNIX urandom file
+.TP
+.B [filename]
+will be read as though an RNG source file
+.SH LIMITATIONS
+For best results, compile on the target platform and do not cross compile.
+The default entropy source will never generate negative integers.
+.SH SEE ALSO
+.BR shuf (1),
+.SH CREDITS
+Written by Ethan Marshall - 2021
+.SH BUGS
+Surely not
