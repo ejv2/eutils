@@ -24,6 +24,6 @@ install: ${EXE}
 	chmod 755 ${INS}/${EXE}
 
 uninstall:
-	rm -r ${INS}/${EXE}
+	rm -f ${INS}/${EXE}
 
 .PHONY = clean install uninstall
