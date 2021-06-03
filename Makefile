@@ -21,7 +21,7 @@ ${EXES}:
 	${MAKE} -C $(dir $@)
 
 clean: ${DIRS}
-	rm $(addsuffix *.o,${DIRS})
+	-rm $(addsuffix *.o,${DIRS})
 	rm ${EXES}
 
 FORCE:
