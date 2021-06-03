@@ -1,0 +1,21 @@
+Language: Cpp
+IndentWidth: 4
+TabWidth: 4
+UseTab: Always
+AllowShortFunctionsOnASingleLine: None
+PointerAlignment: Right
+SortIncludes: false
+Standard: Cpp03
+BreakBeforeBraces: Custom
+BraceWrapping:
+    AfterClass: false
+    AfterControlStatement: false
+    AfterEnum: false
+    AfterFunction: true
+    AfterNamespace: true
+    AfterObjCDeclaration: false
+    AfterStruct: false
+    AfterUnion: false
+    BeforeCatch: false
+    BeforeElse: false
+    IndentBraces: false
