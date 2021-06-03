@@ -1,0 +1,30 @@
+.TH WORD 1 eutils-1.0.0
+.SH NAME
+word - get machine word length
+.SH SYNOPSIS
+.B word
+.RB [ \-qvuh ]
+.SH DESCRIPTION
+Prints the machine word length, and (optionally) sizes of other fundamental data types, such as char and integer.
+.SH OPTIONS
+.TP
+.B -q
+Omit human-readable messages
+.TP
+.B -v
+Print the sizes of integer, extended long, char, pointer and word length
+.TP
+.B -u
+Print usage
+.TP
+.B -h
+Print help
+.SH LIMITATIONS
+Must be compiled from source on the target machine for an accurate reading, as the sizes of data types is only known at compile time.
+.SH SEE ALSO
+.BR dd (1),
+.BR as (1)
+.SH CREDITS
+Written by Ethan Marshall - 2021
+.SH BUGS
+Surely not

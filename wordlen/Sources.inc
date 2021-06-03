@@ -1,0 +1,1 @@
+EXES += wordlen/word
