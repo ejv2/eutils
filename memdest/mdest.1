@@ -1,0 +1,85 @@
+.TH MDEST 1 eutils-1.0.0
+.SH NAME
+mdest - allocate way too much memory
+.SH SYNOPSIS
+.SY mdest
+.OP \-Ss time
+.OP \-eb limit
+.OP \-dahuv
+.YS
+.SH DESCRIPTION
+.P
+Allocates exponentially (or linearly - see
+.B \-a
+) more memory until killed or crashed.
+Used to test out-of-memory scenarios and to be annoying to people you
+really don't like very much. Can be passed options to be more/less
+dangerous and to alter behavior.
+
+.P
+Runs in passes. Each pass, memory is allocated. If accumulative mode
+is enabled, the pointer is left dangling and never freed, to make memory
+usage build up exponentially. If disabled, the pointer is freed after
+allocation, but the next allocation will grow in size, increasing memory
+usage linearly. If a limit has been specified (see
+.B \-e
+or
+.B \-b
+), then the program will exit when that limit is reached.
+.SH OPTIONS
+.TP
+.B \-s
+Sleep
+.I seconds
+between passes.
+.TP
+.B \-S
+Halt for
+.I seconds
+before exiting. Does not occur when crashing, forceably killed or when
+interrupted using 
+.I Ctrl-C
+\.
+.TP
+.B \-e
+Limit the program to
+.I limit
+passes. The program will gracefully exit
+.B after
+the completion of the specified pass.
+.TP
+.B \-b
+Limits the program to approximately
+.I limit
+bytes allocated. The program is likely to, in reality, allocate more
+than this value, but will halt instead at the nearest multiple of eight.
+
+For instance, if give a limit 100, it is likely that the program will
+instead halt on 104 bytes allocated (8 * 13).
+.TP
+.B \-d
+Dry run; allocate and free no memory, but do perform calculations and
+display the amount that would have been allocated
+.TP
+.B \-a
+Disable accumulation; memory allocated each pass will be freed before
+the next pass. This causes memory usage to grow linearly, rather than
+exponentially.
+.TP
+.B \-u
+Print usage
+.TP
+.B \-h
+Print help
+.SH LIMITATIONS
+You are very unlikely to get anywhere near your system's total memory
+capacity using this program, as *NIX kernels tend to be very conservative
+about how much memory you can get. This means that, if you allow this
+program to run for a while, it will just get aborted by the kernel.
+.SH SEE ALSO
+.BR free (1)
+.BR malloc (3)
+.SH CREDITS
+Written by Ethan Marshall - 2021
+.SH BUGS
+Surely not
