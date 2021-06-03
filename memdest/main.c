@@ -101,7 +101,8 @@ int main(int argc, char **argv)
 			usage();
 			return 1;
 		case 'v':
-			printf("mdest version %s, built at %s %s\n", ver, __TIME__, __DATE__);
+			printf("mdest version %s, built at %s %s\n", ver, __TIME__,
+				   __DATE__);
 			return 1;
 		default:
 			return -1;
@@ -126,15 +127,14 @@ int main(int argc, char **argv)
 			allocd += alloc;
 		}
 
-		printf("Pass %li: Allocated %li bytes (total %li bytes) at address %p\n",
-				iterations,
-				alloc,
-				allocd,
-				ptr);
+		printf(
+			"Pass %li: Allocated %li bytes (total %li bytes) at address %p\n",
+			iterations, alloc, allocd, ptr);
 
 		iterations++;
 
-		if ((cap && iterations >= stop_at) || (byte_cap && allocd >= stop_bytes)) {
+		if ((cap && iterations >= stop_at) ||
+			(byte_cap && allocd >= stop_bytes)) {
 			return 0;
 		}
 
@@ -142,5 +142,4 @@ int main(int argc, char **argv)
 			sleep(sleep_time);
 		}
 	}
-
 }

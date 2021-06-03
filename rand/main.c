@@ -92,8 +92,7 @@ int main(int argc, char **argv)
 		exit(-1);
 	}
 
-	switch (method)
-	{
+	switch (method) {
 	case 's':
 		for (long i = 0; i < count; i++) {
 			randBuf[i] = (long)rand();
@@ -122,7 +121,6 @@ int main(int argc, char **argv)
 		read_randFile(argv[2], randBuf, count);
 		break;
 	}
-
 
 	for (long i = 0; i < count; i++) {
 		printf("%li\n", randBuf[i]);
