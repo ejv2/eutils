@@ -1,7 +1,7 @@
 # EUT - Ethan's UTils
 # A small collection of (semi-)useful utilities and programs
 
-DIRS = memdest/ rand/ wordlen/
+DIRS = memdest/ rand/ wordlen/ char2ascii/
 
 export EXES
 include $(addsuffix /Sources.inc, ${DIRS})
