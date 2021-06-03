@@ -78,13 +78,12 @@ int main(int argc, char **argv)
 		case 'e':
 			cap = true;
 			stop_at = strtoimax(optarg, NULL, 10);
-
-			printf("Cap placed at %i iterations", stop_at);
-
+			printf("Cap placed at %u iterations\n", stop_at);
 			break;
 		case 'b':
 			byte_cap = true;
 			stop_bytes = strtol(optarg, NULL, 10);
+			printf("Byte cap placed at %lu bytes\n", stop_bytes);
 			break;
 		case 'd':
 			puts("Enabled dry run");
