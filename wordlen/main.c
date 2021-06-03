@@ -1,3 +1,8 @@
+/*
+ * A utility to obtain the machine word length, along
+ * with a few other useful data types
+ */
+
 #include <stdio.h>
 #include <limits.h>
 
