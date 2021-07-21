@@ -66,6 +66,18 @@ Disable accumulation; memory allocated each pass will be freed before
 the next pass. This causes memory usage to grow linearly, rather than
 exponentially.
 .TP
+.B \-w
+Enable memory write testing. Mdest will write a test value to the end of the
+allocated buffer. Useful for kernels/machines with
+.I "memory overcommit"
+enabled, which allows programs to request as much memory as they like, as long
+as said memory is not written to. Once the memory is written to, the kernel
+will
+.I actually
+have to allocate the memory it promised. This option circumvents this safety
+feature and forces the kernel to continue actually allocating the huge chunks
+of memory we are requesting. Cannot be used with accumulation disabled.
+.TP
 .B \-u
 Print usage
 .TP

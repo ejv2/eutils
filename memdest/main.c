@@ -21,7 +21,7 @@
 
 const char *ver = "1.0.0";
 
-const char *opts = "s:S:e:b:dahuv";
+const char *opts = "s:S:e:b:dwahuv";
 
 uint32_t sleep_time = 0;
 uint32_t exit_time = 0;
@@ -33,6 +33,7 @@ uint64_t stop_bytes = 0;
 
 bool dry = false;
 bool nacc = false;
+bool wt = false;
 
 void usage()
 {
@@ -50,6 +51,7 @@ void help()
 	puts("\tb: Exit at this many bytes");
 	puts("\td: Dry run; allocate no memory");
 	puts("\ta: Disable acumulative mode; free memory after each pass");
+	puts("\tw: Write test memory; write a test value to the end of allocated buffer");
 	puts("\th: This message");
 	puts("\tu: Usage");
 	puts("\tv: Version");
@@ -89,6 +91,10 @@ int main(int argc, char **argv)
 			puts("Enabled dry run");
 			dry = true;
 			break;
+		case 'w':
+			puts("Memory write test enabled");
+			wt = true;
+			break;
 		case 'a':
 			puts("Disabled accumulation");
 			nacc = true;
@@ -110,7 +116,7 @@ int main(int argc, char **argv)
 
 	uint64_t allocd = 0;
 	uint64_t iterations = 1;
-	void *ptr = 0x0;
+	char *ptr = 0x0;
 
 	while (true) {
 		uint64_t alloc = sizeof(uint64_t) * iterations;
@@ -129,6 +135,9 @@ int main(int argc, char **argv)
 		printf(
 			"Pass %li: Allocated %li bytes (total %li bytes) at address %p\n",
 			iterations, alloc, allocd, ptr);
+
+		if (wt && !(dry || nacc))
+			ptr[alloc - 1] = 0xFF;
 
 		iterations++;
 
