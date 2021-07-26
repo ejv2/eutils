@@ -19,7 +19,7 @@
 #include <inttypes.h>
 #include <unistd.h>
 
-const char *ver = "1.0.0";
+const char *ver = "1.1.0";
 
 const char *opts = "s:S:e:b:dwahuv";
 
