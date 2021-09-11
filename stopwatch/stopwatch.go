@@ -24,7 +24,7 @@ func setupTerminal() {
 }
 
 func wait(c chan bool) {
-	time.Sleep(time.Second)
+	time.Sleep(time.Millisecond)
 
 	c <- true
 }
@@ -63,9 +63,9 @@ func handleInput(c chan int) {
 
 func main() {
 	// Quick fake counter for illusion of instantness
-	fmt.Print("00:00:00")
+	fmt.Print("00:00:00:0000")
 
-	var hour, min, sec int64
+	var hour, min, sec, msec int64
 	var paused bool = false
 	inter := make(chan int)
 	waiter := make(chan bool)
@@ -96,7 +96,7 @@ func main() {
 						fmt.Println("Unpaused...")
 					}
 				case reset:
-					hour, min, sec = 0, 0, 0
+					hour, min, sec, msec = 0, 0, 0, 0
 					paused = false
 					fmt.Println("\nTimer reset")
 				case clear:
@@ -126,21 +126,29 @@ Any keybinding can be pressed at any time and will take effect immediately`)
 		}
 
 		if !paused {
-			if sec+1 >= 60 {
+			if msec+1 >= 1000 {
+				sec++
+				msec = 0
+			} else {
+				msec++
+			}
+
+			if sec >= 60 {
 				min++
 				sec = 0
-			} else {
-				sec++
+				msec = 0
+
 			}
 
 			if min >= 60 {
 				hour++
 				min = 0
 				sec = 0
+				msec = 0
 			}
 
 
-			fmt.Printf("\r%02d:%02d:%02d", hour, min, sec)
+			fmt.Printf("\r%02d:%02d:%02d:%04d", hour, min, sec, msec)
 		}
 	}
 }
