@@ -1,0 +1,42 @@
+.TH STOPWATCH 1 eutils-1.0.0
+.SH NAME
+stopwatch - run a stopwatch
+.SH SYNOPSIS
+.B stopwatch
+.SH DESCRIPTION
+Run an interactive stopwatch in your terminal. Your terminal should support ANSI
+escape characters and non-line-buffered input (most Linux/BSD terminals should
+be fine).
+
+The smallest time interval measured is milliseconds. The largest is hours. See
+.B LIMITATIONS
+for information on accuracy.
+.SH KEYS
+.TP
+.B Q
+Exit cleanly
+.TP
+.B C
+Reset timer
+.TP
+.B
+L
+Clear screen
+.TP
+.B space
+Pause timer
+.TP
+.B H or ?
+Show onscreen help
+.SH LIMITATIONS
+The timer is only as accurate as the operating system permits us to be with our
+sleep system calls. Under heavy system load, the operating system reserves the
+right to make us sleep for longer than we requested, but never less. So, your
+timer will always be correct in ideal conditions, but may record a value less
+than the true one in some circumstances.
+.SH SEE ALSO
+.BR time (1), times (1P)
+.SH CREDITS
+Written by Ethan Marshall - 2021
+.SH BUGS
+Surely not
