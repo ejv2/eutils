@@ -97,7 +97,6 @@ func main() {
 					}
 				case reset:
 					hour, min, sec, msec = 0, 0, 0, 0
-					paused = false
 					fmt.Println("\nTimer reset")
 				case clear:
 					os.Stdout.Write([]byte("[H[2J")) // Should work for most ANSII terminals
