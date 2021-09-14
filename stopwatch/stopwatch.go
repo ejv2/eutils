@@ -62,9 +62,6 @@ func handleInput(c chan int) {
 }
 
 func main() {
-	// Quick fake counter for illusion of instantness
-	fmt.Print("00:00:00:0000")
-
 	var hour, min, sec, msec int64
 	var paused bool = false
 	inter := make(chan int)
