@@ -29,7 +29,7 @@ func wait(c chan bool) {
 	c <- true
 }
 
-func handleInput(c chan int) {
+func inputLoop(c chan int) {
 	for {
 		var i rune
 		var in [1]byte
@@ -69,7 +69,7 @@ func main() {
 
 	setupTerminal()
 
-	go handleInput(inter)
+	go inputLoop(inter)
 
 	for {
 		go wait(waiter)
