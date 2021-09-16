@@ -48,6 +48,8 @@ func inputLoop(c chan int) {
 			c <- reset
 		case 'l':
 			c <- clear
+		case '\f':
+			c <- clear
 		case ' ':
 			c <- pause
 		case 'h' :
@@ -104,7 +106,7 @@ Available actions:
 	?: help menu
 	q: quit
 	c: clear/reset timer
-	l: clear/reset screen
+	Control-l/l: clear/reset screen
 	<space>: pause timer
 
 Any keybinding can be pressed at any time and will take effect immediately`)
