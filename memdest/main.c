@@ -137,7 +137,7 @@ int main(int argc, char **argv)
 			iterations, alloc, allocd, ptr);
 
 		if (wt && !(dry || nacc))
-			ptr[alloc - 1] = 0xFF;
+			ptr[alloc - 1] = 127;
 
 		iterations++;
 
