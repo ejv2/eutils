@@ -5,6 +5,9 @@ import (
 	"os"
 	"os/exec"
 	"time"
+	"flag"
+	"strings"
+	"strconv"
 )
 
 const (
@@ -15,12 +18,41 @@ const (
 	help
 )
 
+var (
+	hour, min, sec, msec int64 = 0, 0, 0, 0
+	paused bool = false
+)
+
 
 func setupTerminal() {
 	// disable input buffering
 	exec.Command("stty", "-F", "/dev/tty", "cbreak", "min", "1").Run()
 	// do not display entered characters on the screen
 	exec.Command("stty", "-F", "/dev/tty", "-echo").Run()
+}
+
+func setupFlags() bool {
+	var starttime string = ""
+
+	flag.BoolVar(&paused, "p", false, "Start paused")
+	flag.StringVar(&starttime, "t", "", "Start time")
+
+	flag.Parse()
+
+	if starttime != "" {
+		s := strings.Split(starttime, ":")
+		if len(s) < 4 {
+			fmt.Fprintf(os.Stderr, "stopwatch: not enough flags to -t: %q\n", starttime)
+			return false
+		}
+
+		hour, _ = strconv.ParseInt(s[0], 10, 32)
+		min, _  = strconv.ParseInt(s[1], 10, 32)
+		sec, _  = strconv.ParseInt(s[2], 10, 32)
+		msec, _  = strconv.ParseInt(s[3], 10, 32)
+	}
+
+	return true
 }
 
 func wait(c chan bool) {
@@ -64,12 +96,14 @@ func inputLoop(c chan int) {
 }
 
 func main() {
-	var hour, min, sec, msec int64
-	var paused bool = false
 	inter := make(chan int)
 	waiter := make(chan bool)
 
 	setupTerminal()
+
+	if !setupFlags() {
+		return
+	}
 
 	go inputLoop(inter)
 
