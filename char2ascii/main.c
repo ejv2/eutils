@@ -4,23 +4,34 @@
  */
 
 #include <stdlib.h>
+#include <errno.h>
 #include <stdio.h>
 #include <string.h>
 
+char buf[BUFSIZ];
+
 int main(int argc, char **argv)
 {
-	if (argc < 2) {
-		puts("E: Expected at least 1 argument");
-		exit(-1);
-	}
+	int count = 0;
+	while ((argc >= 2 && count < argc) || argc < 2) {
+		char *stringParsed;
+		if (argc >= 2) {
+			stringParsed = argv[count++];
+		} else {
+			char *buf = fgets(buf, BUFSIZ, stdin);
+			if (!buf) {
+				return 0;
+			}
 
-	for (int i = 1; i < argc; i++) {
-		char *stringParsed = argv[1];
+			stringParsed = buf;
+		}
 
 		for (unsigned long i = 0; i < strlen(stringParsed); i++) {
 			printf("%d ", (int)stringParsed[i]);
 		}
+
+		putchar('\n');
 	}
 
-	puts("");
+	return 0;
 }
