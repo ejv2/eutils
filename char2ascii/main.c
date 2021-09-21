@@ -12,14 +12,14 @@ char buf[BUFSIZ];
 
 int main(int argc, char **argv)
 {
-	int count = 0;
+	int count = 1;
 	while ((argc >= 2 && count < argc) || argc < 2) {
 		char *stringParsed;
 		if (argc >= 2) {
 			stringParsed = argv[count++];
 		} else {
-			char *buf = fgets(buf, BUFSIZ, stdin);
-			if (!buf) {
+			char *ptr = fgets(buf, BUFSIZ, stdin);
+			if (!ptr) {
 				return 0;
 			}
 
