@@ -142,7 +142,7 @@ func timerLoop() {
 
 		cols := [2]string{"\x1b[31m", "\x1b[0m"}
 		for i := 0; i < 5; i++ {
-			fmt.Printf("\r%sTimer up!", cols[i % 2])
+			fmt.Printf("\r%sTimer up!", cols[i%2])
 			time.Sleep(500 * time.Millisecond)
 		}
 
@@ -213,15 +213,15 @@ func main() {
 					os.Stdout.Write([]byte("[H[2J")) // Should work for most ANSII terminals
 				case help:
 					fmt.Println(`
-					Available actions:
-					h: help menu
-					?: help menu
-					q: quit
-					c: clear/reset timer
-					Control-l/l: clear/reset screen
-					<space>: pause timer
+Available actions:
+	h: help menu
+	?: help menu
+	q: quit
+	c: clear/reset timer
+	Control-l/l: clear/reset screen
+	<space>: pause timer
 
-					Any keybinding can be pressed at any time and will take effect immediately`)
+Any keybinding can be pressed at any time and will take effect immediately`)
 				default:
 					fmt.Println("\nWARNING: Unknown command")
 				}
