@@ -8,6 +8,7 @@ import (
 	"strconv"
 	"strings"
 	"time"
+	"math"
 )
 
 const (
@@ -42,6 +43,10 @@ func setupDuration(i string, f string) bool {
 	min, _ = strconv.ParseInt(s[1], 10, 32)
 	sec, _ = strconv.ParseInt(s[2], 10, 32)
 	msec, _ = strconv.ParseInt(s[3], 10, 32)
+
+	min = int64(math.Min(float64(min), 59))
+	sec = int64(math.Min(float64(sec), 59))
+	msec = int64(math.Min(float64(msec), 999))
 
 	return true
 }
