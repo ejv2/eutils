@@ -2,7 +2,11 @@
 .SH NAME
 stopwatch - run a stopwatch
 .SH SYNOPSIS
-.B stopwatch
+.SY stopwatch
+.OP \-p
+.OP \-c time
+.OP \-t time
+.YS
 .SH DESCRIPTION
 Run an interactive stopwatch in your terminal. Your terminal should support ANSI
 escape characters and non-line-buffered input (most Linux/BSD terminals should
@@ -28,6 +32,18 @@ Pause timer
 .TP
 .B H or ?
 Show onscreen help
+.SH FLAGS
+.TP
+.B \-c
+Run in timer mode, starting from
+.I time
+.TP
+.B \-t
+Start at
+.I time
+.TP
+.B \-p
+Start paused
 .SH LIMITATIONS
 The timer is only as accurate as the operating system permits us to be with our
 sleep system calls. Under heavy system load, the operating system reserves the
