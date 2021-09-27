@@ -16,6 +16,7 @@ const (
 	reset
 	pause
 	clear
+	nop
 	help
 )
 
@@ -105,6 +106,8 @@ func inputLoop(c chan int) {
 			c <- clear
 		case '\f':
 			c <- clear
+		case '\n':
+			c <- nop
 		case ' ':
 			c <- pause
 		case 'h':
@@ -216,6 +219,8 @@ func main() {
 					fmt.Println("\nTimer reset")
 				case clear:
 					os.Stdout.Write([]byte("[H[2J")) // Should work for most ANSII terminals
+				case nop:
+					fmt.Print("\n")
 				case help:
 					fmt.Println(`
 Available actions:
