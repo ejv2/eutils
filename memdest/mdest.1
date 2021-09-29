@@ -17,11 +17,10 @@ really don't like very much. Can be passed options to be more/less
 dangerous and to alter behavior.
 
 .P
-Runs in passes. Each pass, memory is allocated. If accumulative mode
-is enabled, the pointer is left dangling and never freed, to make memory
-usage build up exponentially. If disabled, the pointer is freed after
-allocation, but the next allocation will grow in size, increasing memory
-usage linearly. If a limit has been specified (see
+Runs in passes. Each pass, memory is allocated. If accumulative mode is enabled,
+the pointer is left dangling and never freed, to make memory usage build up
+exponentially. If disabled, a flat eight bytes of memory will be allocated each
+pass.  If a limit has been specified (see
 .B \-e
 or
 .B \-b
@@ -44,9 +43,8 @@ interrupted using
 .B \-e
 Limit the program to
 .I limit
-passes. The program will gracefully exit
-.B after
-the completion of the specified pass.
+passes. The program will gracefully exit after the completion of the specified
+pass.
 .TP
 .B \-b
 Limits the program to approximately
@@ -67,16 +65,11 @@ the next pass. This causes memory usage to grow linearly, rather than
 exponentially.
 .TP
 .B \-w
-Enable memory write testing. Mdest will write a test value to the end of the
-allocated buffer. Useful for kernels/machines with
-.I "memory overcommit"
-enabled, which allows programs to request as much memory as they like, as long
-as said memory is not written to. Once the memory is written to, the kernel
-will
-.I actually
-have to allocate the memory it promised. This option circumvents this safety
-feature and forces the kernel to continue actually allocating the huge chunks
-of memory we are requesting. Cannot be used with accumulation disabled.
+Enable memory write testing. Will write a test value to the end of the
+allocated buffer. Useful to test that the memory we are getting is actually real
+memory and not just a trick played on us by the kernel - see
+.I LIMITATIONS.
+Cannot be used in a dry run.
 .TP
 .B \-u
 Print usage
@@ -88,6 +81,10 @@ You are very unlikely to get anywhere near your system's total memory
 capacity using this program, as *NIX kernels tend to be very conservative
 about how much memory you can get. This means that, if you allow this
 program to run for a while, it will just get aborted by the kernel.
+
+Memory overcommit may mean that the memory we are requesting is actually faked
+by paging magic by the kernel. This can be circumvented by enabling memory write
+testing, at a performance penalty.
 .SH SEE ALSO
 .BR free (1)
 .BR malloc (3)
