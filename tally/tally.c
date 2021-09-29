@@ -74,7 +74,8 @@ int main(int argc, char **argv)
 
 	init_tty();
 
-	for (int t = 1; getchar() != EOF; t++) { 
+	int t;
+	for (t = 1; getchar() != 'q'; t++) {
 		if (t != 0 && t % 5 == 0) {
 			printf("\r\e[9m||||\e[0m\n");
 			continue;
@@ -82,4 +83,7 @@ int main(int argc, char **argv)
 
 		putchar('|');
 	}
+
+	t--;
+	printf("\nTotal: %d Gates: %d Extra: %d\n", t, t / 5, t % 5);
 }
