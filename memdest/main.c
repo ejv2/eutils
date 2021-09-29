@@ -119,24 +119,23 @@ int main(int argc, char **argv)
 	char *ptr = 0x0;
 
 	while (true) {
-		uint64_t alloc = sizeof(uint64_t) * iterations;
+		uint64_t alloc;
+		if (nacc)
+			alloc = sizeof(uint64_t);
+		else
+			alloc = sizeof(uint64_t) * iterations;
 
 		if (!dry) {
 			ptr = malloc(alloc);
 		}
 
-		if (nacc) {
-			free(ptr);
-			allocd = alloc;
-		} else {
-			allocd += alloc;
-		}
+		allocd += alloc;
 
 		printf(
 			"Pass %li: Allocated %li bytes (total %li bytes) at address %p\n",
 			iterations, alloc, allocd, ptr);
 
-		if (wt && !(dry || nacc))
+		if (wt && !dry)
 			ptr[alloc - 1] = 127;
 
 		iterations++;
