@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"io"
 	"math/rand"
 	"os"
@@ -20,9 +21,12 @@ var dictPossibilities = []string{
 }
 
 var (
-	words [][]string
+	dictInit bool
+	dictBuf  []byte = nil
+	words    [][]string
 )
 
+// Load and process built-in fallback sentences
 func loadFallback() {
 	cpy := fallbackSentences[:]
 	rand.Shuffle(len(cpy), func(i, j int) { cpy[i], cpy[j] = cpy[j], cpy[i] })
@@ -30,17 +34,16 @@ func loadFallback() {
 	for x := range cpy {
 		rand.Shuffle(len(cpy[x]), func(i, j int) { cpy[x][i], cpy[x][j] = cpy[x][j], cpy[x][i] })
 
-		upper := strings.ToUpper(cpy[x][0][:1]) // Make the first word uppercase
-		cpy[x][0] = upper + cpy[x][0][1:]
+		// TODO: Figure out how to make the first word upper case
+		//upper := strings.ToUpper(cpy[x][0][:1]) + cpy[x][0][1:]
 	}
 
 	words = cpy
 }
 
-// Loads words from the system dictionary
-func LoadWords() {
-	if runtime.GOOS == "windows" {
-		loadFallback()
+// Load system dictionary into buffer, if present
+func InitWords() {
+	if runtime.GOOS != "windows" {
 		return
 	}
 
@@ -55,21 +58,31 @@ func LoadWords() {
 	}
 
 	if file == nil {
-		loadFallback()
 		return
 	}
 
 	// This might be kind of bad - maybe change this
 	buf, err := io.ReadAll(file)
 	if err != nil {
+		return
+	}
+
+	dictInit = true
+	dictBuf = buf
+}
+
+// Loads words from the system dictionary
+func LoadWords() {
+	if !dictInit {
 		loadFallback()
 		return
 	}
 
 	count := rand.Intn(maxWords) + 1
 	words = make([][]string, count)
+
 	for i := 0; i < count; i++ {
-		w := strings.Split(string(buf), "\n")
+		w := strings.Split(string(dictBuf), "\n")
 		ws := make([]string, rand.Intn(maxWords)+5)
 
 		for j := 0; j < len(ws); j++ {
@@ -81,4 +94,5 @@ func LoadWords() {
 }
 
 func RunWords() {
+	LoadWords()
 }

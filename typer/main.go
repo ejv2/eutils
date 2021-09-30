@@ -4,8 +4,8 @@ package main
 
 import (
 	"fmt"
-	"os/exec"
 	"math/rand"
+	"os/exec"
 	"time"
 )
 
@@ -29,9 +29,9 @@ func ttyInit() {
 func main() {
 	rand.Seed(time.Now().Unix())
 	banner()
-	LoadWords()
 
 	mode := selectMode()
+	InitWords()
 	ttyInit()
 
 	for {
