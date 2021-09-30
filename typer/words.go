@@ -94,4 +94,8 @@ func LoadWords() {
 
 func RunWords() {
 	LoadWords()
+
+	for _, elem := range words {
+		TimeInput(strings.Join(elem, " "))
+	}
 }
