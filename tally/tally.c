@@ -77,7 +77,7 @@ int main(int argc, char **argv)
 	int t;
 	for (t = 1; getchar() != 'q'; t++) {
 		if (t != 0 && t % 5 == 0) {
-			printf("\r\e[9m||||\e[0m\n");
+			printf("\r\x1b[9m||||\x1b[0m\n");
 			continue;
 		}
 

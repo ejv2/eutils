@@ -21,7 +21,7 @@
 
 const char *ver = "1.1.0";
 
-const char *opts = "s:S:e:b:dwahuv";
+const char *opts = "s:S:e:b:dwaVhuv";
 
 uint32_t sleep_time = 0;
 uint32_t exit_time = 0;
@@ -34,6 +34,8 @@ uint64_t stop_bytes = 0;
 bool dry = false;
 bool nacc = false;
 bool wt = false;
+
+char header = '\r';
 
 void usage()
 {
@@ -99,6 +101,10 @@ int main(int argc, char **argv)
 			puts("Disabled accumulation");
 			nacc = true;
 			break;
+		case 'V':
+			puts("Verbosity enabled");
+			header = '\n';
+			break;
 		case 'h':
 			help();
 			return 1;
@@ -119,30 +125,30 @@ int main(int argc, char **argv)
 	char *ptr = 0x0;
 
 	while (true) {
-		uint64_t alloc = sizeof(uint64_t) * iterations;
+		uint64_t alloc;
+		if (nacc)
+			alloc = sizeof(uint64_t);
+		else
+			alloc = sizeof(uint64_t) * iterations;
 
 		if (!dry) {
 			ptr = malloc(alloc);
 		}
 
-		if (nacc) {
-			free(ptr);
-			allocd = alloc;
-		} else {
-			allocd += alloc;
-		}
+		allocd += alloc;
 
 		printf(
-			"Pass %li: Allocated %li bytes (total %li bytes) at address %p\n",
-			iterations, alloc, allocd, ptr);
+			"%cPass %li: Allocated %li bytes (total %li bytes) at address %p",
+			header, iterations, alloc, allocd, ptr);
 
-		if (wt && !(dry || nacc))
+		if (wt && !dry)
 			ptr[alloc - 1] = 127;
 
 		iterations++;
 
 		if ((cap && iterations >= stop_at) ||
 			(byte_cap && allocd >= stop_bytes)) {
+			putchar('\n');
 			return 0;
 		}
 
