@@ -4,10 +4,14 @@ package main
 
 import (
 	"fmt"
+	"os/exec"
+	"math/rand"
+	"time"
 )
 
-var (
-	mode int
+const (
+	alphabet = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
+	numbers  = "1234567890"
 )
 
 func banner() {
@@ -15,21 +19,34 @@ func banner() {
 	fmt.Print("Copyright (C) 2021 - Ethan Marshall\n\n")
 }
 
-func main() {
-	banner()
+func ttyInit() {
+	// disable input buffering
+	exec.Command("stty", "-F", "/dev/tty", "cbreak", "min", "1").Run()
+	// do not display entered characters on the screen
+	exec.Command("stty", "-F", "/dev/tty", "-echo").Run()
+}
 
-	mode = selectMode()
-	switch mode {
-	case modeWords:
-		RunWords()
-	case modeLetters:
-		break
-	case modeNumbers:
-		break
-	case modeMixed:
-		break
-	default:
-		fmt.Println("Invalid round type detected!")
-		return
+func main() {
+	rand.Seed(time.Now().Unix())
+	banner()
+	LoadWords()
+
+	mode := selectMode()
+	ttyInit()
+
+	for {
+		switch mode {
+		case modeWords:
+			RunWords()
+		case modeLetters:
+			RunChars([]rune(alphabet))
+		case modeNumbers:
+			RunChars([]rune(numbers))
+		case modeMixed:
+			break
+		default:
+			fmt.Println("Invalid round type detected!")
+			return
+		}
 	}
 }
