@@ -4,19 +4,24 @@ import (
 	"bufio"
 	"fmt"
 	"os"
+	"strings"
 	"time"
 )
 
 const (
-	colorRed   = "\x1b[31m"
-	colorGray  = "\x1b[34m"
-	colorReset = "\x1b[0m"
+	colorRed    = "\x1b[31m"
+	colorBlue   = "\x1b[34m"
+	colorYellow = "\x1b[33m"
+	colorReset  = "\x1b[0m"
 )
 
 var (
 	entered   string = ""
 	processed string = ""
 	spinner   rune
+
+	mistakes int = 0
+	total    int = 0
 )
 
 func inputLoop(done chan bool, expected string) {
@@ -39,9 +44,12 @@ func inputLoop(done chan bool, expected string) {
 
 		if entered[len(entered)-1] != expected[len(entered)-1] {
 			processed += colorRed + string(expected[len(entered)-1]) + colorReset
+			mistakes++
 		} else {
-			processed += colorGray + text + colorReset
+			processed += colorBlue + text + colorReset
 		}
+
+		total++
 
 		if len(entered) == len(expected) {
 			break
@@ -99,8 +107,16 @@ loop:
 		fmt.Printf("%s%s\n\n", processed, expected[len(entered):])
 
 		msec := int(taken.Milliseconds()) - (int(taken.Seconds()) * 1000)
+		wc := len(strings.Split(expected[:len(entered)], " ")) - 1
 
-		fmt.Printf("%c\t%.2d:%.2d:%.3d", spinner, int(taken.Minutes()), int(taken.Seconds()), msec)
+		cpm := float64(len(entered)) / float64(taken.Minutes())
+		wpm := float64(wc)/float64(taken.Minutes())
+
+		fmt.Printf(`%s%c%s %s%.2d:%.2d:%.3d%s
+	Words typed: %d
+	Characters per minute: %.2f
+	Estimated words per minute: %.2f
+	Total mistakes: %d`, colorRed, spinner, colorReset, colorBlue, int(taken.Minutes()), int(taken.Seconds()), msec, colorReset, wc, cpm, wpm, mistakes)
 
 		select {
 		case <-done:
