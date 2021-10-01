@@ -14,6 +14,16 @@ const (
 	modeMixed
 )
 
+func modeHelp() {
+	fmt.Println(`Available modes:
+	Words:		A random selection of words is generated from your language
+	Letters:	A random selection of letters jumbled into blocks
+	Numbers:	A random selection of numbers jumbled into blocks
+	Mixed:		A random mix of all the above
+
+Select each mode with the corresponding mode on the menu.`)
+}
+
 func selectMode() int {
 	fmt.Println("Welcome to Typer!")
 	fmt.Print("Please select your mode below, or press '?' for help\n")
@@ -30,6 +40,11 @@ func selectMode() int {
 		s.Scan()
 
 		t := s.Text()
+		if t == "?" {
+			modeHelp()
+			continue
+		}
+
 		num, err := strconv.ParseInt(t, 10, 32)
 
 		if err == nil && num <= modeMixed && num >= modeWords {
