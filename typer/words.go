@@ -42,7 +42,7 @@ func loadFallback() {
 
 // Load system dictionary into buffer, if present
 func InitWords() {
-	if runtime.GOOS != "windows" {
+	if runtime.GOOS == "windows" {
 		return
 	}
 
