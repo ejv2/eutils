@@ -19,10 +19,23 @@ var (
 	entered   string = ""
 	processed string = ""
 	spinner   rune
+	msg       string = ""
 
 	mistakes int = 0
 	total    int = 0
 )
+
+func detectOffset(expected string) (detected bool, offset int) {
+	if len(entered) > 1 && entered[len(entered)-1] == expected[len(entered)-2] {
+		return true, -1
+	}
+
+	if len(expected) > len(entered) && entered[len(entered)-1] == expected[len(entered)] {
+		return true, 1
+	}
+
+	return false, 0
+}
 
 func inputLoop(done chan bool, expected string) {
 	in := bufio.NewScanner(os.Stdin)
@@ -43,9 +56,27 @@ func inputLoop(done chan bool, expected string) {
 		entered += text
 
 		if entered[len(entered)-1] != expected[len(entered)-1] {
-			processed += colorRed + string(expected[len(entered)-1]) + colorReset
+			y, offset := detectOffset(expected)
+
+			if y {
+				msg = fmt.Sprintf("Offset detected: Correcting by %d", offset)
+				if (offset < 0) {
+					entered = entered[:len(entered) - 1]
+					processed = processed[:len(processed) - 4]
+
+					processed += colorReset
+				} else {
+					entered += expected[len(entered) - 1:(len(entered) - 1) + len(text)]
+					processed += colorRed + string(expected[len(entered)-2:len(entered)]) + colorReset
+				}
+			} else {
+				msg = "Mistake recorded!"
+				processed += colorRed + string(expected[len(entered)-1]) + colorReset
+			}
+
 			mistakes++
 		} else {
+			msg = ""
 			processed += colorBlue + text + colorReset
 		}
 
@@ -110,13 +141,15 @@ loop:
 		wc := len(strings.Split(expected[:len(entered)], " ")) - 1
 
 		cpm := float64(len(entered)) / float64(taken.Minutes())
-		wpm := float64(wc)/float64(taken.Minutes())
+		wpm := float64(wc) / float64(taken.Minutes())
 
 		fmt.Printf(`%s%c%s %s%.2d:%.2d:%.3d%s
 	Words typed: %d
 	Characters per minute: %.2f
 	Estimated words per minute: %.2f
-	Total mistakes: %d`, colorRed, spinner, colorReset, colorBlue, int(taken.Minutes()), int(taken.Seconds()), msec, colorReset, wc, cpm, wpm, mistakes)
+	Total mistakes: %d
+
+	%s%s%s`, colorRed, spinner, colorReset, colorBlue, int(taken.Minutes()), int(taken.Seconds()), msec, colorReset, wc, cpm, wpm, mistakes, colorYellow, msg, colorReset)
 
 		select {
 		case <-done:
