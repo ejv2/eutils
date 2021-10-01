@@ -2,6 +2,8 @@ package main
 
 import (
 	"io"
+	"fmt"
+	"time"
 	"math/rand"
 	"os"
 	"runtime"
@@ -92,10 +94,21 @@ func LoadWords() {
 	}
 }
 
+func countdown(count int) {
+	for i := count; i >= 0; i-- {
+		fmt.Printf("\b%d", i)
+		time.Sleep(time.Second)
+	}
+}
+
 func RunWords() {
 	LoadWords()
 
-	for _, elem := range words {
+	for i, elem := range words {
+		ClearScreen()
+		fmt.Printf("Round %d commencing in  ", i+1)
+		countdown(5)
+
 		TimeInput(strings.Join(elem, " "))
 		ResetState()
 	}
