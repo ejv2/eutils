@@ -97,5 +97,6 @@ func RunWords() {
 
 	for _, elem := range words {
 		TimeInput(strings.Join(elem, " "))
+		ResetState()
 	}
 }
