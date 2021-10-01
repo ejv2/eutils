@@ -38,7 +38,7 @@ func inputLoop(done chan bool, expected string) {
 		entered += text
 
 		if entered[len(entered)-1] != expected[len(entered)-1] {
-			processed += colorRed + text + colorReset
+			processed += colorRed + string(expected[len(entered)-1]) + colorReset
 		} else {
 			processed += colorGray + text + colorReset
 		}
