@@ -7,6 +7,9 @@ import (
 	"math/rand"
 	"os/exec"
 	"time"
+
+	"github.com/ethanv2/eutils/typer/words"
+	"github.com/ethanv2/eutils/typer/chars"
 )
 
 const (
@@ -31,17 +34,17 @@ func main() {
 	banner()
 
 	mode := selectMode()
-	InitWords()
+	words.InitWords()
 	ttyInit()
 
 	for {
 		switch mode {
 		case modeWords:
-			RunWords()
+			words.RunWords()
 		case modeLetters:
-			RunChars([]rune(alphabet))
+			chars.RunChars([]rune(alphabet))
 		case modeNumbers:
-			RunChars([]rune(numbers))
+			chars.RunChars([]rune(numbers))
 		case modeMixed:
 			break
 		default:

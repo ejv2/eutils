@@ -1,4 +1,4 @@
-package main
+package core
 
 import (
 	"bufio"
@@ -6,6 +6,8 @@ import (
 	"os"
 	"strings"
 	"time"
+
+	"github.com/ethanv2/eutils/typer/util"
 )
 
 const (
@@ -123,7 +125,7 @@ func ResetState() {
 }
 
 func TimeInput(expected string) (wpm float64, totalMistakes int)  {
-	ClearScreen()
+	util.ClearScreen()
 	start := time.Now()
 
 	spinners := []rune{'⣾', '⣽', '⣻', '⢿', '⡿', '⣟', '⣯', '⣷'}
@@ -137,7 +139,7 @@ func TimeInput(expected string) (wpm float64, totalMistakes int)  {
 
 loop:
 	for {
-		ClearScreen()
+		util.ClearScreen()
 
 		fmt.Printf("%s%s\n\n", processed, expected[len(entered):])
 

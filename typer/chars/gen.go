@@ -1,9 +1,7 @@
-package main
+package chars
 
 import (
-	"fmt"
 	"math/rand"
-	"strings"
 )
 
 const (
@@ -12,10 +10,6 @@ const (
 
 	minPhrases int = 1
 	minChars   int = 5
-)
-
-var (
-	chars [][]string
 )
 
 func generate(dataset []rune) {
@@ -38,18 +32,5 @@ func generate(dataset []rune) {
 
 			chars[x][i] = string(buf)
 		}
-	}
-}
-
-func RunChars(dataset []rune) {
-	generate(dataset)
-
-	for i, elem := range chars {
-		ClearScreen()
-		fmt.Printf("Round %d commencing in  ", i+1)
-		Countdown(5)
-
-		TimeInput(strings.Join(elem, " "))
-		ResetState()
 	}
 }

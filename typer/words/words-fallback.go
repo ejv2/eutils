@@ -2,7 +2,7 @@
 // Only used when either:
 //	- On Windows (dictionary API sucks really badly)
 //	- A system dictionary could not be found
-package main
+package words
 
 var fallbackSentences = [5][]string{
 	{"the", "quick", "brown", "fox", "jumped", "over", "the", "lazy", "dog"},

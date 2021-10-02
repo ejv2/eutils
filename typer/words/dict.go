@@ -1,17 +1,11 @@
-package main
+package words
 
 import (
 	"io"
-	"fmt"
 	"math/rand"
 	"os"
 	"runtime"
 	"strings"
-)
-
-const (
-	maxSets  int = 4
-	maxWords int = 15
 )
 
 var dictPossibilities = []string{
@@ -23,7 +17,6 @@ var dictPossibilities = []string{
 var (
 	dictInit bool
 	dictBuf  []byte = nil
-	words    [][]string
 )
 
 // Load and process built-in fallback sentences
@@ -90,19 +83,5 @@ func LoadWords() {
 		}
 
 		words[i] = ws
-	}
-}
-
-
-func RunWords() {
-	LoadWords()
-
-	for i, elem := range words {
-		ClearScreen()
-		fmt.Printf("Round %d commencing in  ", i+1)
-		Countdown(5)
-
-		TimeInput(strings.Join(elem, " "))
-		ResetState()
 	}
 }
