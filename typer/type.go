@@ -13,6 +13,8 @@ const (
 	colorBlue   = "\x1b[34m"
 	colorYellow = "\x1b[33m"
 	colorReset  = "\x1b[0m"
+
+	averageWordLength = 5.1
 )
 
 var (
@@ -141,7 +143,7 @@ loop:
 		wc := len(strings.Split(expected[:len(entered)], " ")) - 1
 
 		cpm := float64(len(entered)) / float64(taken.Minutes())
-		wpm := cpm / 4
+		wpm := cpm / averageWordLength
 
 		fmt.Printf(`%s%c%s %s%.2d:%.2d:%.3d%s
 	Words typed: %d
