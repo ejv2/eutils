@@ -118,6 +118,8 @@ loop:
 func ResetState() {
 	entered = ""
 	processed = ""
+	mistakes = 0
+	total = 0
 }
 
 func TimeInput(expected string) (wpm float64, totalMistakes int)  {
