@@ -141,7 +141,7 @@ loop:
 		wc := len(strings.Split(expected[:len(entered)], " ")) - 1
 
 		cpm := float64(len(entered)) / float64(taken.Minutes())
-		wpm := float64(wc) / float64(taken.Minutes())
+		wpm := cpm / 4
 
 		fmt.Printf(`%s%c%s %s%.2d:%.2d:%.3d%s
 	Words typed: %d
