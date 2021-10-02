@@ -120,7 +120,7 @@ func ResetState() {
 	processed = ""
 }
 
-func TimeInput(expected string) int64 {
+func TimeInput(expected string) (wpm float64, totalMistakes int)  {
 	ClearScreen()
 	start := time.Now()
 
@@ -143,7 +143,7 @@ loop:
 		wc := len(strings.Split(expected[:len(entered)], " ")) - 1
 
 		cpm := float64(len(entered)) / float64(taken.Minutes())
-		wpm := cpm / averageWordLength
+		wpm = cpm / averageWordLength
 
 		fmt.Printf(`%s%c%s %s%.2d:%.2d:%.3d%s
 	Words typed: %d
@@ -156,6 +156,8 @@ loop:
 		select {
 		case <-done:
 			stop <- true
+
+			totalMistakes = mistakes
 			break loop
 		default:
 			time.Sleep(time.Millisecond * 10)
@@ -164,5 +166,5 @@ loop:
 
 	}
 
-	return 0
+	return
 }
