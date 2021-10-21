@@ -6,6 +6,8 @@ import (
 	"os"
 	"runtime"
 	"strings"
+
+	"github.com/ethanv2/eutils/typer/core"
 )
 
 var dictPossibilities = []string{
@@ -65,7 +67,7 @@ func InitWords() {
 }
 
 // Loads words from the system dictionary
-func LoadWords() {
+func LoadWords(f core.Flags) {
 	if !dictInit {
 		loadFallback()
 		return
@@ -79,7 +81,15 @@ func LoadWords() {
 		ws := make([]string, rand.Intn(maxWords)+5)
 
 		for j := 0; j < len(ws); j++ {
-			ws[j] = w[rand.Int31n(int32(len(w)))]
+			word := w[rand.Int31n(int32(len(w)))]
+			if f.Lower {
+				word = strings.ToLower(word)
+			}
+			if f.Alpha {
+				word = strings.ReplaceAll(word, "'", "")
+			}
+
+			ws[j] = word
 		}
 
 		words[i] = ws

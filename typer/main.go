@@ -3,19 +3,24 @@
 package main
 
 import (
+	"flag"
 	"fmt"
 	"math/rand"
 	"os/exec"
 	"time"
 
-	"github.com/ethanv2/eutils/typer/words"
 	"github.com/ethanv2/eutils/typer/chars"
+	"github.com/ethanv2/eutils/typer/core"
+	"github.com/ethanv2/eutils/typer/words"
 )
 
 const (
 	alphabet = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
 	numbers  = "1234567890"
 )
+
+// Flag values
+var flags core.Flags
 
 func banner() {
 	fmt.Println("Typer - A simple typing trainer for your terminal")
@@ -29,27 +34,33 @@ func ttyInit() {
 	exec.Command("stty", "-F", "/dev/tty", "-echo").Run()
 }
 
+func flagsInit() {
+	flag.IntVar(&flags.Count, "c", 0, "Exit after this many rounds")
+	flag.BoolVar(&flags.Lower, "l", false, "Make all words lowercase")
+	flag.BoolVar(&flags.Alpha, "a", false, "Make all words just letters")
+
+	flag.Parse()
+}
+
 func main() {
 	rand.Seed(time.Now().Unix())
 	banner()
+	flagsInit()
 
 	mode := selectMode()
 	words.InitWords()
 	ttyInit()
 
-	for {
-		switch mode {
-		case modeWords:
-			words.RunWords()
-		case modeLetters:
-			chars.RunChars([]rune(alphabet))
-		case modeNumbers:
-			chars.RunChars([]rune(numbers))
-		case modeMixed:
-			break
-		default:
-			fmt.Println("Invalid round type detected!")
-			return
-		}
+	switch mode {
+	case modeWords:
+		words.RunWords(flags)
+	case modeLetters:
+		chars.RunChars([]rune(alphabet))
+	case modeNumbers:
+		chars.RunChars([]rune(numbers))
+	case modeMixed:
+		break
+	default:
+		panic("invalid round type generated")
 	}
 }

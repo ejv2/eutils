@@ -10,6 +10,15 @@ import (
 	"github.com/ethanv2/eutils/typer/util"
 )
 
+type Flags struct {
+	// Max number of rounds
+	Count int
+	// All words will be lowercase
+	Lower bool
+	// All words will be just alphanumeric (no apostraphes)
+	Alpha bool
+}
+
 const (
 	colorRed    = "\x1b[31m"
 	colorBlue   = "\x1b[34m"
