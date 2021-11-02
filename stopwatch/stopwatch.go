@@ -3,12 +3,12 @@ package main
 import (
 	"flag"
 	"fmt"
+	"math"
 	"os"
 	"os/exec"
 	"strconv"
 	"strings"
 	"time"
-	"math"
 )
 
 const (

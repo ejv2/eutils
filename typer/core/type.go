@@ -73,13 +73,13 @@ func inputLoop(done chan bool, expected string) {
 
 			if y {
 				msg = fmt.Sprintf("Offset detected: Correcting by %d", offset)
-				if (offset < 0) {
-					entered = entered[:len(entered) - 1]
-					processed = processed[:len(processed) - 4]
+				if offset < 0 {
+					entered = entered[:len(entered)-1]
+					processed = processed[:len(processed)-4]
 
 					processed += colorReset
 				} else {
-					entered += expected[len(entered) - 1:(len(entered) - 1) + len(text)]
+					entered += expected[len(entered)-1 : (len(entered)-1)+len(text)]
 					processed += colorRed + string(expected[len(entered)-2:len(entered)]) + colorReset
 				}
 			} else {
@@ -133,7 +133,7 @@ func ResetState() {
 	total = 0
 }
 
-func TimeInput(expected string) (wpm float64, totalMistakes int)  {
+func TimeInput(expected string) (wpm float64, totalMistakes int) {
 	util.ClearScreen()
 	start := time.Now()
 

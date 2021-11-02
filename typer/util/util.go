@@ -1,9 +1,9 @@
 package util
 
 import (
+	"fmt"
 	"os"
 	"time"
-	"fmt"
 )
 
 func ClearScreen() {

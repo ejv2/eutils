@@ -4,8 +4,8 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/ethanv2/eutils/typer/util"
 	"github.com/ethanv2/eutils/typer/core"
+	"github.com/ethanv2/eutils/typer/util"
 )
 
 var (

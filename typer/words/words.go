@@ -4,8 +4,8 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/ethanv2/eutils/typer/util"
 	"github.com/ethanv2/eutils/typer/core"
+	"github.com/ethanv2/eutils/typer/util"
 )
 
 const (
@@ -14,7 +14,7 @@ const (
 )
 
 var (
-	words    [][]string
+	words [][]string
 )
 
 func RunWords(f core.Flags) {
