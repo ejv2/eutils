@@ -2,7 +2,7 @@
 # A program that allocates way too much memory
 # Copyright (C) 2021 - Ethan Marshall
 
-SRC = main.c
+SRC = mdest.c
 OBJ = ${SRC:.c=.o}
 
 EXE = mdest

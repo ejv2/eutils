@@ -2,7 +2,7 @@
 # Tool to dump ascii values for given strings
 # Copyright (C) 2021 - Ethan Marshall
 
-SRC = main.c
+SRC = c2a.c
 OBJ = ${SRC:.c=.o}
 
 EXE = ascii

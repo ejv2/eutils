@@ -1,7 +1,7 @@
 # wordlen - show processor word size
 # Ethan Marshall - 2021
 
-SRC = main.c
+SRC = wordlen.c
 OBJ = ${SRC:.c=.o}
 
 EXE = word

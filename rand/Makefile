@@ -1,7 +1,7 @@
 # rand - get (pseudo)random bytes
 # Ethan Marshall - 2021
 
-SRC = main.c
+SRC = rand.c
 OBJ = ${SRC:.c=.o}
 HDR = 
 
