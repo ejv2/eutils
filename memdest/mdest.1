@@ -5,6 +5,7 @@ mdest - allocate way too much memory
 .SY mdest
 .OP \-Ss time
 .OP \-eb limit
+.OP \-B size
 .OP \-dahuv
 .YS
 .SH DESCRIPTION
@@ -54,6 +55,12 @@ than this value, but will halt instead at the nearest multiple of eight.
 
 For instance, if give a limit 100, it is likely that the program will
 instead halt on 104 bytes allocated (8 * 13).
+.TP
+.B \-B
+Set the memblock size to
+.I size.
+This dictates how much memory each allocation block will contain. The larger
+this is, the more memory in the smaller the time.
 .TP
 .B \-d
 Dry run; allocate and free no memory, but do perform calculations and
