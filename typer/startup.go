@@ -46,11 +46,15 @@ func selectMode() int {
 		}
 
 		num, err := strconv.ParseInt(t, 10, 32)
+		if err != nil {
+			fmt.Println("EOF")
+			os.Exit(1)
+		}
 
-		if err == nil && num <= modeMixed && num >= modeWords {
+		if num <= modeMixed && num >= modeWords {
 			return int(num)
 		} else {
-			fmt.Println("Invalid difficulty")
+			fmt.Println("Invalid mode")
 		}
 	}
 }
