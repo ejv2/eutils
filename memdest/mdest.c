@@ -21,19 +21,20 @@
 
 const char *ver = "1.1.0";
 
-const char *opts = "s:S:e:b:dwaVhuv";
+const char *opts = "s:S:e:b:B:dwaVhuv";
 
-uint32_t sleep_time = 0;
-uint32_t exit_time = 0;
+uint32_t sleep_time = 0; /* enable sleeping between iterations */
+uint32_t exit_time = 0;	 /* enable sleeping before exit */
 
-bool cap = false;
+bool cap = false; /* enable iteration cap */
 uint32_t stop_at = 0;
-bool byte_cap = false;
+bool byte_cap = false; /* enable byte terminator */
 uint64_t stop_bytes = 0;
 
-bool dry = false;
-bool nacc = false;
-bool wt = false;
+bool dry = false;			   /* enable dry run */
+bool nacc = false;			   /* disable accumulation */
+bool wt = false;			   /* enable write testing */
+size_t blk = sizeof(uint64_t); /* byte size of each allocation block */
 
 char header = '\r';
 
@@ -51,9 +52,11 @@ void help()
 	puts("\tS: Sleep time between completion and exit");
 	puts("\te: Exit at this many passes");
 	puts("\tb: Exit at this many bytes");
+	puts("\tB: Memblock size");
 	puts("\td: Dry run; allocate no memory");
 	puts("\ta: Disable acumulative mode; free memory after each pass");
-	puts("\tw: Write test memory; write a test value to the end of allocated buffer");
+	puts("\tw: Write test memory; write a test value to the end of allocated "
+		 "buffer");
 	puts("\th: This message");
 	puts("\tu: Usage");
 	puts("\tv: Version");
@@ -88,6 +91,10 @@ int main(int argc, char **argv)
 			byte_cap = true;
 			stop_bytes = strtol(optarg, NULL, 10);
 			printf("Byte cap placed at %lu bytes\n", stop_bytes);
+			break;
+		case 'B':
+			blk = strtol(optarg, NULL, 10);
+			printf("Set memblock size to %li bytes\n", blk);
 			break;
 		case 'd':
 			puts("Enabled dry run");
@@ -127,9 +134,9 @@ int main(int argc, char **argv)
 	while (true) {
 		uint64_t alloc;
 		if (nacc)
-			alloc = sizeof(uint64_t);
+			alloc = blk;
 		else
-			alloc = sizeof(uint64_t) * iterations;
+			alloc = blk * iterations;
 
 		if (!dry) {
 			ptr = malloc(alloc);
