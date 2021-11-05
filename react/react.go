@@ -49,7 +49,6 @@ func main() {
 
 	for _, elem := range res {
 		total += float64(elem.Milliseconds())
-		total += float64(elem.Microseconds()) / 1000
 	}
 	avg = float64(total) / float64(count)
 
