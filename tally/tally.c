@@ -8,9 +8,7 @@
 #include <ctype.h>
 #include <getopt.h>
 
-static const char *flags = "vhuq";
-
-static int quiet = 0;
+static const char *flags = "vhu";
 
 void usage()
 {
@@ -28,6 +26,8 @@ void version()
 void help()
 {
 	usage();
+	puts("Press any key to advance the tally");
+	puts("Press 'q' to get a summary");
 	exit(0);
 }
 
@@ -45,9 +45,6 @@ void handle_flags(int argc, char **argv)
 		case 'u':
 			usage();
 			exit(0);
-		case 'q':
-			quiet = 1;
-			break;
 		default:
 			fprintf(stderr, "%s: unknown option '%c'\n", argv[0], opt);
 			break;
@@ -66,11 +63,6 @@ void init_tty()
 int main(int argc, char **argv)
 {
 	handle_flags(argc, argv);
-
-	if (!quiet) {
-		usage();
-		puts("\nPress any key to advance the tally");
-	}
 
 	init_tty();
 
