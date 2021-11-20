@@ -23,18 +23,18 @@ const char *ver = "1.1.0";
 
 const char *opts = "s:S:e:b:B:dwaVhuv";
 
-uint32_t sleep_time = 0; /* enable sleeping between iterations */
-uint32_t exit_time = 0;	 /* enable sleeping before exit */
+uint32_t sleep_time = 0;		/* enable sleeping between iterations */
+uint32_t exit_time = 0;			/* enable sleeping before exit */
 
-bool cap = false; /* enable iteration cap */
+bool cap = false;			/* enable iteration cap */
 uint32_t stop_at = 0;
-bool byte_cap = false; /* enable byte terminator */
+bool byte_cap = false;			/* enable byte terminator */
 uint64_t stop_bytes = 0;
 
-bool dry = false;			   /* enable dry run */
-bool nacc = false;			   /* disable accumulation */
-bool wt = false;			   /* enable write testing */
-size_t blk = sizeof(uint64_t); /* byte size of each allocation block */
+bool dry = false;			/* enable dry run */
+bool nacc = false;			/* disable accumulation */
+bool wt = false;			/* enable write testing */
+size_t blk = sizeof(uint64_t);		/* byte size of each allocation block */
 
 char header = '\r';
 
