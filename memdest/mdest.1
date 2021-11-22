@@ -67,9 +67,8 @@ Dry run; allocate and free no memory, but do perform calculations and
 display the amount that would have been allocated
 .TP
 .B \-a
-Disable accumulation; memory allocated each pass will be freed before
-the next pass. This causes memory usage to grow linearly, rather than
-exponentially.
+Disable accumulation. Still cause memory usage to grow, but at a fixed rate.
+Memory usage will grow linearly, rather than exponentially.
 .TP
 .B \-w
 Enable memory write testing. Will write a test value to the end of the
