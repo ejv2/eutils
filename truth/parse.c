@@ -17,7 +17,7 @@ void parseparam(char **program, Statement *stat, int pos)
 	char oper = -1;
 
 	LOG("\tSTART NAMED PARAMETER");
-	while (isalnum(*(*program+1))) {
+	while (isalnum(**program)) {
 		operands[opers++] = **program;
 
 		if (oper == -1) {
@@ -28,6 +28,7 @@ void parseparam(char **program, Statement *stat, int pos)
 		(*program)++;
 	}
 
+	(*program)--;
 	LOG("\tEND NAMED PARAMETER");
 }
 
