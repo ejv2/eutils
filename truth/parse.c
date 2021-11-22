@@ -6,6 +6,8 @@
 
 #include "truth.h"
 
+extern bool verbose;
+
 static const int opermax = 3;
 static int opers = 0;
 static char operands[128] = {0};
@@ -14,10 +16,8 @@ void parseparam(char **program, Statement *stat, int pos)
 {
 	char oper = -1;
 
-	puts("START NAMED PARAMETER");
+	LOG("\tSTART NAMED PARAMETER");
 	while (isalnum(*(*program+1))) {
-		printf("\tPARAMPARSE: %c\n", **program);
-
 		operands[opers++] = **program;
 
 		if (oper == -1) {
@@ -28,13 +28,12 @@ void parseparam(char **program, Statement *stat, int pos)
 		(*program)++;
 	}
 
-	printf("Operand ends on '%c'\n", **program);
-	puts("END NAMED PARAMETER");
+	LOG("\tEND NAMED PARAMETER");
 }
 
 Statement *parse(char **program)
 {
-	puts("------START RECURSION------");
+	LOG("------START RECURSION------");
 	Statement *stat = malloc(sizeof(Statement));
 
 	char *c;
@@ -57,7 +56,7 @@ Statement *parse(char **program)
 				ERR("Expected only a single operation");
 			}
 
-			puts("====[AND]====");
+			LOG("====[AND]====");
 			stat->op = AND;
 
 			c += 3;
@@ -72,7 +71,7 @@ Statement *parse(char **program)
 				ERR("Expected only a single operation");
 			}
 
-			puts("====[NOT]====");
+			LOG("====[NOT]====");
 			stat->op = NOT;
 
 			c += 3;
@@ -87,7 +86,7 @@ Statement *parse(char **program)
 				ERR("Expected only a single operation");
 			}
 
-			puts("====[OR]====");
+			LOG("====[OR]====");
 			stat->op = OR;
 
 			c += 2;
@@ -102,12 +101,12 @@ Statement *parse(char **program)
 				ERR("Too many parameters provided");
 			}
 
-			puts("START STATEMENT PARAMETER");
+			LOG("\tSTART STATEMENT PARAMETER");
 			stat->operands[params].t = StatementOperand;
 			c++;
 			stat->operands[params].data.s = (struct Statement *)parse(&c);
 			params++;
-			puts("END STATEMENT PARAMETER");
+			LOG("\tEND STATEMENT PARAMETER");
 		} else {
 			if (expects != -1 && params > expects) {
 				ERR("Too many parameters provided");
@@ -125,8 +124,7 @@ Statement *parse(char **program)
 		ERR("Statement must contain an operand");
 	}
 
-	puts("------END RECURSION------");
-	printf("Statement ends on '%c'\n", *c);
+	LOG("------END RECURSION------");
 
 	*program = c;
 	return stat;

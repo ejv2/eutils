@@ -6,6 +6,8 @@
 
 #include "truth.h"
 
+bool verbose;
+
 static char inbuf[BUFSIZ];
 
 int main(int argc, char **argv)
@@ -17,6 +19,11 @@ int main(int argc, char **argv)
 		fgets(inbuf, BUFSIZ, stdin);
 		text = inbuf;
 	} else {
+		if (strcmp(argv[1], "-v") == 0) {
+			verbose = true;
+			argv++;
+		}
+
 		text = argv[1];
 	}
 

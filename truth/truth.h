@@ -5,6 +5,9 @@
 	fprintf(stderr, "Error: %s\n", msg);  \
 	exit(1)
 
+#define LOG(msg) \
+	if (verbose) { fprintf(stderr, "%d:\t%s\n", __LINE__, msg); }
+
 typedef enum { AND = 1, OR, NOT } Operation;
 typedef enum {
 	NullOperand = 0,
