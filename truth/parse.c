@@ -10,7 +10,7 @@ extern bool verbose;
 
 static const int opermax = 3;
 static int opers = 0;
-static char operands[128] = {0};
+char operands[128] = {0};
 
 void parseparam(char **program, Statement *stat, int pos)
 {
