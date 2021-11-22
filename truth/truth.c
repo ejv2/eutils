@@ -31,7 +31,7 @@ void parseparam(char **program, Statement *stat, int pos)
 	char oper = -1;
 
 	puts("START NAMED PARAMETER");
-	while (isalnum(**program)) {
+	while (isalnum(*(*program+1))) {
 		printf("\tPARAMPARSE: %c\n", **program);
 
 		operands[opers++] = **program;
@@ -44,7 +44,6 @@ void parseparam(char **program, Statement *stat, int pos)
 		(*program)++;
 	}
 
-	(*program)--;
 	printf("Operand ends on '%c'\n", **program);
 	puts("END NAMED PARAMETER");
 }
@@ -138,6 +137,8 @@ Statement *parse(char **program)
 
 	if (expects != -1 && params != expects) {
 		ERR("Wrong number of operands provided");
+	} else if (!operfound) {
+		ERR("Statement must contain an operand");
 	}
 
 	puts("------END RECURSION------");
