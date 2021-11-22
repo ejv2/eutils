@@ -1,0 +1,68 @@
+.TH truth 1 eutils-1.0.0
+.SH NAME
+truth - calculate a logic gate truth table
+.SH SYNOPSIS
+.SY mdest
+.OP -v
+.YS
+.SH DESCRIPTION
+.P
+Truth takes in a simple description of a logical circuit and outputs a truth
+table for any possible binary input. The language used input the circuit is a
+simple binary operand-based language, documented in
+.B LANGUAGE
+below.
+.P
+When invoked with no arguments, reads a single line from standard input
+containing the logic expression. When arguments are provided (which are not
+simply flags), the first argument will be treated as the program text.
+Subsequent arguments are ignored.
+.P
+Truth outputs the truth table in columns with headings corresponding to each
+parameter detected in the program text. The evaluated output of the circuit will
+be labelled "Q/P". Diagnostic messages and errors will be directed to stderr
+only. Upon encountering an error, truth returns a non-zero status code.
+.SH OPTIONS
+.TP
+.B \-v
+Enable verbosity. Information on parsing and interpreting will be dumped to
+stderr.
+.SH LANGUAGE
+Truth's logic language (truthlang for short) is a simple language defined by
+statements which may contain one or more operands and at least one operation.
+Each operand may either be named (A, B, C etc.) or another statement. Statement
+parameters must always be enclosed in parenthesis. For instance:
+
+.EX
+	$ truth "(NOT A) OR B"
+.EE
+
+is perfectly legal. The following, however, is not:
+
+.EX
+	$ truth "A OR NOT B"
+.EE
+
+.P
+The language defines three different operations:
+.I "AND"
+,
+.I "OR"
+and
+.I "NOT"
+\.
+.I "NOT"
+takes a single operand after the operator. The remaining two take one before and
+one after. As only a single operator is permitted per statement, operator
+precedence is not defined. Operations will be evaluated from left to right,
+although this makes no difference to the final outcome (different operations
+will always be evaluated as separate statements, remember).
+.SH EXAMPLES
+.SS Simple AND Gate
+.EX
+	A AND B
+.EE
+.SS Inverse of the above
+.EX
+	NOT (A AND B)
+.EE
