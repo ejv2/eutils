@@ -26,7 +26,7 @@ typedef struct {
 	Operation op;
 } Statement;
 
-/* Parsing */
 Statement *parse(char **program);
+void run(Statement *program);
 
 #endif

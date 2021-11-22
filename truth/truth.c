@@ -35,4 +35,5 @@ int main(int argc, char **argv)
 	}
 
 	prg = parse(&text);
+	run(prg);
 }

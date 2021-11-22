@@ -10,7 +10,7 @@ extern bool verbose;
 
 static const int opermax = 3;
 static int opers = 0;
-char operands[128] = {0};
+char operands[sizeof(long long) * 8] = {0};
 
 void parseparam(char **program, Statement *stat, int pos)
 {
@@ -18,6 +18,10 @@ void parseparam(char **program, Statement *stat, int pos)
 
 	LOG("\tSTART NAMED PARAMETER");
 	while (isalnum(**program)) {
+		if (opers > sizeof(long long) * 8) {
+			ERR("Maximum recursion depth reached: 64 parameters max allowed");
+		}
+
 		operands[opers++] = **program;
 
 		if (oper == -1) {
