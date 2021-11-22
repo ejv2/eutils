@@ -1,3 +1,8 @@
+/*
+ * Recursive descent parser for truthlang
+ * Copyright (C) 2021 - Ethan Marshall
+ */
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <ctype.h>
@@ -16,7 +21,7 @@ void parseparam(char **program, Statement *stat, int pos)
 {
 	char oper = -1;
 
-	LOG("\tSTART NAMED PARAMETER");
+	LOG("\tNAMED PARAMETER");
 	while (isalnum(**program)) {
 		if (opers > sizeof(long long) * 8) {
 			ERR("Maximum recursion depth reached: 64 parameters max allowed");
@@ -33,12 +38,11 @@ void parseparam(char **program, Statement *stat, int pos)
 	}
 
 	(*program)--;
-	LOG("\tEND NAMED PARAMETER");
 }
 
 Statement *parse(char **program)
 {
-	LOG("------START RECURSION------");
+	LOG("------START STATEMENT------");
 	Statement *stat = malloc(sizeof(Statement));
 
 	char *c;
@@ -61,7 +65,7 @@ Statement *parse(char **program)
 				ERR("Expected only a single operation");
 			}
 
-			LOG("====[AND]====");
+			LOG("\tAND");
 			stat->op = AND;
 
 			c += 3;
@@ -76,7 +80,7 @@ Statement *parse(char **program)
 				ERR("Expected only a single operation");
 			}
 
-			LOG("====[NOT]====");
+			LOG("\tNOT");
 			stat->op = NOT;
 
 			c += 3;
@@ -91,7 +95,7 @@ Statement *parse(char **program)
 				ERR("Expected only a single operation");
 			}
 
-			LOG("====[OR]====");
+			LOG("\tOR");
 			stat->op = OR;
 
 			c += 2;
@@ -106,12 +110,11 @@ Statement *parse(char **program)
 				ERR("Too many parameters provided");
 			}
 
-			LOG("\tSTART STATEMENT PARAMETER");
+			LOG("\tSTATEMENT");
 			stat->operands[params].t = StatementOperand;
 			c++;
 			stat->operands[params].data.s = (struct Statement *)parse(&c);
 			params++;
-			LOG("\tEND STATEMENT PARAMETER");
 		} else {
 			if (expects != -1 && params > expects) {
 				ERR("Too many parameters provided");
@@ -129,7 +132,7 @@ Statement *parse(char **program)
 		ERR("Statement must contain an operand");
 	}
 
-	LOG("------END RECURSION------");
+	LOG("------END STATEMENT------");
 
 	*program = c;
 	return stat;

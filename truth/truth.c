@@ -1,3 +1,8 @@
+/*
+ * truth - evaluate a simple truth table
+ * Copyright (C) 2021 - Ethan Marshall
+ */
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -34,6 +39,11 @@ int main(int argc, char **argv)
 		}
 	}
 
+	LOG("==========[---PARSE TRACE BEGINS---]==========");
 	prg = parse(&text);
+	LOG("==========[---PARSE TRACE ENDS---]==========\n");
+
+	LOG("==========[---PROGRAM TRACE BEGINS---]==========");
 	run(prg);
+	LOG("==========[---PROGRAM TRACE ENDS---]==========");
 }

@@ -1,3 +1,8 @@
+/*
+ * Interpreter for truthlang
+ * Copyright (C) 2021 - Ethan Marshall
+ */
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -49,6 +54,7 @@ static bool *calc_perms(int opers, int *len)
  */
 int solve(Statement *prg, bool *params, int count)
 {
+	LOG("------START STATEMENT------");
 	switch (prg->op) {
 		case AND: {
 			int o0, o1;
@@ -100,11 +106,13 @@ int solve(Statement *prg, bool *params, int count)
 			ERR("Illegal instruction encountered");
 	}
 
+	LOG("------END STATEMENT------");
 	return 0;
 }
 
 void run(Statement *program)
 {
+	LOG("Run begins. Calculating permutations");
 	int len;
 	int opers = strlen(operands);
 	bool *space = calc_perms(opers, &len);
@@ -115,6 +123,7 @@ void run(Statement *program)
 	}
 	printf("%-8s\n", "Q/P");
 
+	LOG("Ready. Computing Q recursively.");
 	for (int i = 0; i < len; i++) {
 		int q = solve(program, space + ((sizeof(char) * opers) * i), opers);
 

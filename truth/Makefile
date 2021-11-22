@@ -8,6 +8,13 @@ HDR = truth.h
 EXE = truth
 INST = /usr/local/bin
 
+# Completely disable (uncompile) logging
+# Apparently it could cause a slowdown, so I use
+# this for completely fair benchmarking
+ifdef NOLOG
+	CFLAGS += "-DNOLOG"
+endif
+
 ${EXE}: ${OBJ}
 	${CC} -lm ${LDFLAGS} -o $@ ${OBJ}
 
