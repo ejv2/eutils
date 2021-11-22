@@ -1,7 +1,7 @@
 # truth - evaluate a truth table
 # Copyright (C) 2021 - Ethan Marshall
 
-SRC = truth.c
+SRC = truth.c parse.c
 OBJ = ${SRC:.c=.o}
 HDR = 
 
