@@ -27,10 +27,11 @@ void parseparam(char **program, Statement *stat, int pos)
 			ERR("Maximum recursion depth reached: 64 parameters max allowed");
 		}
 
-		operands[opers++] = **program;
 
 		if (oper == -1) {
 			oper = **program;
+			operands[opers++] = oper;
+
 			stat->operands[pos].data.oper = oper;
 		}
 
