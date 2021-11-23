@@ -24,7 +24,7 @@ extern char operands[sizeof(long long) * 8];
 static bool *calc_perms(int opers, int *len)
 {
 	long perms = pow(2, opers);
-	bool *alloc = malloc(sizeof(bool) * (perms + 1));
+	bool *alloc = malloc(sizeof(bool) * (perms * opers));
 
 	/* To calculate perms, we are just going to
 	 * find the max permutations and count up, querying
