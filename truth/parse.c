@@ -87,6 +87,21 @@ Statement *parse(char **program)
 			c += 3;
 			operfound = true;
 			continue;
+		} else if (strcmp("XOR", slice) == 0) {
+			expects = 2;
+
+			if (params != 1) {
+				ERR("Expected one operand preceeding XOR");
+			} else if (operfound) {
+				ERR("Expected only a single operation");
+			}
+
+			LOG("\tXOR");
+			stat->op = XOR;
+
+			c += 3;
+			operfound = true;
+			continue;
 		} else if (strncmp("OR", slice, 2) == 0) {
 			expects = 2;
 

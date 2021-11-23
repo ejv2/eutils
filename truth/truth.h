@@ -12,7 +12,7 @@
 #define LOG(msg) ;
 #endif
 
-typedef enum { AND = 1, OR, NOT } Operation;
+typedef enum { AND = 1, OR, NOT, XOR } Operation;
 typedef enum {
 	NullOperand = 0,
 	StatementOperand = 1,
