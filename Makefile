@@ -4,6 +4,7 @@
 DIRS = memdest/ rand/ wordlen/ char2ascii/ tally/ truth/
 
 export EXES
+export SRC
 include $(addsuffix /Sources.inc, ${DIRS})
 
 export CFLAGS ?= -std=c99 -Wall -Wpedantic
@@ -15,15 +16,13 @@ else
 	CFLAGS += -O2
 endif
 
-all: ${EXES} FORCE
+all: ${EXES}
 
-${EXES}:
+${EXES}: ${SRC}
 	${MAKE} -C $(dir $@)
 
 clean: ${DIRS}
 	-rm $(addsuffix *.o,${DIRS})
 	rm ${EXES}
 
-FORCE:
-
-.PHONY = all clean FORCE
+.PHONY = all clean
