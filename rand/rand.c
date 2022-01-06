@@ -63,9 +63,17 @@ void read_randFile(char *src, long *buf, long count)
 	}
 }
 
+void seed_rand()
+{
+	struct timespec time;
+	clock_gettime(CLOCK_REALTIME, &time);
+	srand(time.tv_nsec);
+}
+
 int main(int argc, char **argv)
 {
-	srand(time(NULL));
+	/* init std-rand */
+	seed_rand();
 
 	if (argc < 2) {
 		fputs("E: Not enough arguments\n", stderr);
@@ -100,12 +108,12 @@ int main(int argc, char **argv)
 		break;
 
 #ifdef __linux__
-	case 'l':
+	case 'l': /* linux syscall */
 		getrandom(randBuf, sizeof(long) * count, 0x0);
 		break;
 #endif
 #ifdef BSD
-	case 'e':
+	case 'e': /* BSD syscall (sometimes GNU implemented) */
 		getentropy(randBuf, sizeof(long) * count);
 		break;
 #endif

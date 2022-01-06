@@ -7,7 +7,7 @@ export EXES
 export SRC
 include $(addsuffix /Sources.inc, ${DIRS})
 
-export CFLAGS ?= -std=c99 -Wall -Wpedantic
+export CFLAGS ?= -Wall -Wpedantic
 export LDFLAGS ?= -lm
 
 ifeq ($(DEBUG),1)
