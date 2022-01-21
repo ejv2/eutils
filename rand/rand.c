@@ -8,6 +8,7 @@
 #include <ctype.h>
 #include <string.h>
 #include <time.h>
+#include <errno.h>
 
 #ifdef __linux__
 #include <sys/random.h>
@@ -51,7 +52,7 @@ void read_randFile(char *src, long *buf, long count)
 {
 	FILE *fsrc = fopen(src, "r");
 	if (!fsrc) {
-		fprintf(stderr, "E: Invalid entropy file source: '%s'\n", src);
+		fprintf(stderr, "E: Invalid entropy file source: '%s': %s\n", src, strerror(errno));
 		exit(-1);
 		return;
 	}
