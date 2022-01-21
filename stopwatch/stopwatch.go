@@ -36,7 +36,7 @@ func setupTerminal() {
 func setupDuration(i string, f string) bool {
 	s := strings.Split(i, ":")
 	if len(s) < 4 {
-		fmt.Fprintf(os.Stderr, "stopwatch: not enough flags to -%s: %q\n", f, i)
+		fmt.Fprintf(os.Stderr, "stopwatch: not enough flags to -%s: %q\nExpected format: hh:mm:ss:ms\n", f, i)
 		return false
 	}
 
