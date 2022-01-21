@@ -9,15 +9,11 @@ import (
 	"os/exec"
 	"time"
 
-	"github.com/ethanv2/eutils/typer/chars"
 	"github.com/ethanv2/eutils/typer/core"
+	"github.com/ethanv2/eutils/typer/chars"
 	"github.com/ethanv2/eutils/typer/words"
 )
 
-const (
-	alphabet = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
-	numbers  = "1234567890"
-)
 
 // Flag values
 var flags core.Flags
@@ -55,9 +51,9 @@ func main() {
 	case modeWords:
 		words.RunWords(flags)
 	case modeLetters:
-		chars.RunChars([]rune(alphabet))
+		chars.RunChars([]rune(core.Alphabet))
 	case modeNumbers:
-		chars.RunChars([]rune(numbers))
+		chars.RunChars([]rune(core.Numbers))
 	case modeMixed:
 		break
 	default:
