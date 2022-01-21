@@ -48,7 +48,7 @@ void help()
 	exit(-1);
 }
 
-void read_randFile(char *src, long *buf, long count)
+void rand_read(char *src, long *buf, long count)
 {
 	FILE *fsrc = fopen(src, "r");
 	if (!fsrc) {
@@ -120,14 +120,14 @@ int main(int argc, char **argv)
 #endif
 
 	case 'r':
-		read_randFile("/dev/random", randBuf, count);
+		rand_read("/dev/random", randBuf, count);
 		break;
 	case 'u':
-		read_randFile("/dev/urandom", randBuf, count);
+		rand_read("/dev/urandom", randBuf, count);
 		break;
 
 	default:
-		read_randFile(argv[2], randBuf, count);
+		rand_read(argv[2], randBuf, count);
 		break;
 	}
 
