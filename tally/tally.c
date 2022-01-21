@@ -8,7 +8,8 @@
 #include <ctype.h>
 #include <getopt.h>
 
-static const char *flags = "vhu";
+static const char *flags = "vhuq";
+static int quiet = 0;
 
 void usage()
 {
@@ -39,6 +40,9 @@ void handle_flags(int argc, char **argv)
 		case 'v':
 			version();
 			break;
+		case 'q':
+			quiet = 1;
+			break;
 		case 'h':
 			help();
 			break;
@@ -68,12 +72,14 @@ int main(int argc, char **argv)
 
 	int t;
 	for (t = 1; getchar() != 'q'; t++) {
-		if (t != 0 && t % 5 == 0) {
-			printf("\r\x1b[9m||||\x1b[0m\n");
-			continue;
-		}
+		if (!quiet) {
+			if (t != 0 && t % 5 == 0) {
+				printf("\r\x1b[9m||||\x1b[0m\n");
+				continue;
+			}
 
-		putchar('|');
+			putchar('|');
+		}
 	}
 
 	t--;
