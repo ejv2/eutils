@@ -54,7 +54,7 @@ void help()
 	puts("\tb: Exit at this many bytes");
 	puts("\tB: Memblock size");
 	puts("\td: Dry run; allocate no memory");
-	puts("\ta: Disable acumulative mode; free memory after each pass");
+	puts("\ta: Disable acumulative mode; allocate the same block size each pass");
 	puts("\tw: Write test memory; write a test value to the end of allocated "
 		 "buffer");
 	puts("\th: This message");
