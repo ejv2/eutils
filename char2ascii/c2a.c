@@ -27,6 +27,9 @@ int main(int argc, char **argv)
 		}
 
 		for (unsigned long i = 0; i < strlen(stringParsed); i++) {
+			if (stringParsed[i] == '\n')
+				continue;
+
 			printf("%d ", (int)stringParsed[i]);
 		}
 
