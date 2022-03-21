@@ -75,7 +75,7 @@ func formatDuration(d time.Duration) (h int64, m int64, s int64, ms int64) {
 
 func setupFlags() bool {
 	var start time.Duration
-	var upto  time.Duration
+	var upto time.Duration
 
 	flag.BoolVar(&paused, "p", false, "Start paused")
 	flag.DurationVar(&start, "t", 0, "Start time")
@@ -146,6 +146,19 @@ func countLoop() {
 func timerLoop() {
 	now := time.Now()
 	dur := until.Sub(now.Add(-pausedFor))
+
+	if dur.Milliseconds() == 0 {
+		fmt.Print("\a\n")
+
+		cols := [2]string{"\x1b[31m", "\x1b[0m"}
+		for i := 0; i < 5; i++ {
+			fmt.Printf("\r%sTimer up!", cols[i%2])
+			time.Sleep(500 * time.Millisecond)
+		}
+
+		fmt.Println()
+		os.Exit(0)
+	}
 
 	hour, min, sec, msec = formatDuration(dur)
 }
