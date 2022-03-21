@@ -22,6 +22,7 @@ const (
 
 var (
 	base                 time.Time
+	until                time.Time
 	pauseStart           time.Time
 	pausedFor            time.Duration
 	hour, min, sec, msec int64 = 0, 0, 0, 0
@@ -73,31 +74,22 @@ func formatDuration(d time.Duration) (h int64, m int64, s int64, ms int64) {
 }
 
 func setupFlags() bool {
-	var starttime string = ""
-	var starttimer string = ""
+	var start time.Duration
+	var upto  time.Duration
 
 	flag.BoolVar(&paused, "p", false, "Start paused")
-	flag.StringVar(&starttime, "t", "", "Start time")
-	flag.StringVar(&starttimer, "c", "", "Run in timer mode, counting from...")
+	flag.DurationVar(&start, "t", 0, "Start time")
+	flag.DurationVar(&upto, "c", 0, "Run in timer mode, counting from...")
 
 	flag.Parse()
 
+	base = base.Add(-start)
 	if paused {
 		pauseStart = time.Now()
 	}
-
-	if starttime != "" {
-		if !setupDuration(starttime, "t") {
-			return false
-		}
-	}
-
-	if starttimer != "" {
+	if upto > 0 {
 		timer = true
-
-		if !setupDuration(starttimer, "c") {
-			return false
-		}
+		until = base.Add(upto)
 	}
 
 	return true
@@ -152,6 +144,10 @@ func countLoop() {
 }
 
 func timerLoop() {
+	now := time.Now()
+	dur := until.Sub(now.Add(-pausedFor))
+
+	hour, min, sec, msec = formatDuration(dur)
 }
 
 func main() {
