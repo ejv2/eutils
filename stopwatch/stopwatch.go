@@ -21,6 +21,9 @@ const (
 )
 
 var (
+	base                 time.Time
+	pauseStart           time.Time
+	pausedFor            time.Duration
 	hour, min, sec, msec int64 = 0, 0, 0, 0
 	paused               bool  = false
 	timer                bool  = false
@@ -52,6 +55,23 @@ func setupDuration(i string, f string) bool {
 	return true
 }
 
+func formatDuration(d time.Duration) (h int64, m int64, s int64, ms int64) {
+	total := d.Nanoseconds()
+
+	h = total / int64(time.Hour)
+	hmod := total % int64(time.Hour)
+
+	m = hmod / int64(time.Minute)
+	mmod := hmod % int64(time.Minute)
+
+	s = mmod / int64(time.Second)
+	smod := mmod % int64(time.Second)
+
+	ms = smod / int64(time.Millisecond)
+
+	return
+}
+
 func setupFlags() bool {
 	var starttime string = ""
 	var starttimer string = ""
@@ -61,6 +81,10 @@ func setupFlags() bool {
 	flag.StringVar(&starttimer, "c", "", "Run in timer mode, counting from...")
 
 	flag.Parse()
+
+	if paused {
+		pauseStart = time.Now()
+	}
 
 	if starttime != "" {
 		if !setupDuration(starttime, "t") {
@@ -122,68 +146,18 @@ func inputLoop(c chan int) {
 }
 
 func countLoop() {
-	if msec+1 >= 1000 {
-		sec++
-		msec = 0
-	} else {
-		msec++
-	}
-
-	if sec >= 60 {
-		min++
-		sec = 0
-		msec = 0
-
-	}
-
-	if min >= 60 {
-		hour++
-		min = 0
-		sec = 0
-		msec = 0
-	}
+	now := time.Now()
+	dur := now.Sub(base.Add(pausedFor))
+	hour, min, sec, msec = formatDuration(dur)
 }
 
 func timerLoop() {
-	if msec == 0 && sec == 0 && min == 0 && hour == 0 {
-		fmt.Print("\a\n")
-
-		cols := [2]string{"\x1b[31m", "\x1b[0m"}
-		for i := 0; i < 5; i++ {
-			fmt.Printf("\r%sTimer up!", cols[i%2])
-			time.Sleep(500 * time.Millisecond)
-		}
-
-		fmt.Println()
-		os.Exit(0)
-	}
-
-	if msec-1 < 0 {
-		sec--
-		msec = 999
-
-	} else {
-		msec--
-	}
-
-	if sec < 0 {
-		min--
-		msec = 999
-		sec = 59
-	}
-
-	if min < 0 {
-		hour--
-		msec = 999
-		sec = 59
-		min = 59
-
-	}
 }
 
 func main() {
 	inter := make(chan int)
 	waiter := make(chan bool)
+	base = time.Now()
 
 	setupTerminal()
 
@@ -210,8 +184,10 @@ func main() {
 					paused = !paused
 
 					if paused {
+						pauseStart = time.Now()
 						fmt.Println("\nPaused...")
 					} else {
+						pausedFor += time.Now().Sub(pauseStart)
 						fmt.Println("Unpaused...")
 					}
 				case reset:
