@@ -24,8 +24,8 @@ ${OBJ}: ${HDR}
 	${CC} ${CFLAGS} -c $<
 
 clean:
-	rm *.o
-	rm ${EXE}
+	rm -f *.o
+	rm -f ${EXE}
 
 install: ${EXE}
 	mkdir -p ${INST}
