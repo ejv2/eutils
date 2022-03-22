@@ -237,7 +237,7 @@ Any keybinding can be pressed at any time and will take effect immediately`)
 				countLoop()
 			}
 
-			fmt.Printf("\r%02d:%02d:%02d:%04d", hour, min, sec, msec)
+			fmt.Printf("\r%02d:%02d:%02d:%03d", hour, min, sec, msec)
 		}
 	}
 }
