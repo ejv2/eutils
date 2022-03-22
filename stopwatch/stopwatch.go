@@ -181,10 +181,9 @@ func main() {
 
 	waiting:
 		for {
-			var action int
 			select {
 
-			case action = <-inter:
+			case action := <-inter:
 				switch action {
 				case quit:
 					fmt.Print("\n")
@@ -221,7 +220,7 @@ Available actions:
 
 Any keybinding can be pressed at any time and will take effect immediately`)
 				default:
-					fmt.Println("\nWARNING: Unknown command")
+					panic("invalid event loop message")
 				}
 				continue
 			case <-waiter:
