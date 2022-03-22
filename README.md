@@ -9,6 +9,8 @@ A quick description of each program is provided in its corresponding **README.md
 
 Because I have got a whole load of little testing programs stored up around the system which I occasionally use, but which I never shared before. I thought i might aswell do a public service and share some of the more useful ones with the world.
 
+Also, occasionally it is good to do "programming workouts" - small little pieces of problem solving or engineering which keep your mind sharp and in the right frame of mind to write software. If you don't use it, you loose it. The successful results of these occasional experiments are also dumped here. These will also be periodically updated for the same reason.
+
 ## How?
 
 Run ``make`` in the root of the project and all subdirectories will be built. The executables will remain in their directories. Automatic compilation of Go tools is not yet supported. To build a Go tool, see the below instructions.
