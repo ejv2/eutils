@@ -94,6 +94,9 @@ func setupFlags() bool {
 
 func wait(c chan bool) {
 	time.Sleep(time.Millisecond)
+	for paused {
+		time.Sleep(time.Millisecond)
+	}
 
 	c <- true
 }
@@ -227,14 +230,11 @@ Any keybinding can be pressed at any time and will take effect immediately`)
 			}
 		}
 
-		if !paused {
-			if timer {
-				timerLoop()
-			} else {
-				countLoop()
-			}
-
-			fmt.Printf("\r%02d:%02d:%02d:%03d", hour, min, sec, msec)
+		if timer {
+			timerLoop()
+		} else {
+			countLoop()
 		}
+		fmt.Printf("\r%02d:%02d:%02d:%03d", hour, min, sec, msec)
 	}
 }
