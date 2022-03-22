@@ -92,11 +92,9 @@ func setupFlags() bool {
 	return true
 }
 
-func wait(c chan bool) {
+func wait(c chan bool, unpaused chan int) {
 	time.Sleep(time.Millisecond)
-	for paused {
-		time.Sleep(time.Millisecond)
-	}
+	<-unpaused
 
 	c <- true
 }
@@ -166,6 +164,7 @@ func timerLoop() {
 func main() {
 	inter := make(chan int)
 	waiter := make(chan bool)
+	unpaused := make(chan int, 1)
 	base = time.Now()
 	pauseStart = time.Now()
 
@@ -178,7 +177,10 @@ func main() {
 	go inputLoop(inter)
 
 	for {
-		go wait(waiter)
+		go wait(waiter, unpaused)
+		if !paused {
+			unpaused <- 1
+		}
 
 	waiting:
 		for {
@@ -197,7 +199,8 @@ func main() {
 						fmt.Println("\nPaused...")
 					} else {
 						pausedFor += time.Now().Sub(pauseStart)
-						fmt.Println("Unpaused...")
+						unpaused <- 1
+						fmt.Println("\nUnpaused...")
 					}
 				case reset:
 					base = time.Now()
