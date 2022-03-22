@@ -84,9 +84,6 @@ func setupFlags() bool {
 	flag.Parse()
 
 	base = base.Add(-start)
-	if paused {
-		pauseStart = time.Now()
-	}
 	if upto > 0 {
 		timer = true
 		until = base.Add(upto)
@@ -167,6 +164,7 @@ func main() {
 	inter := make(chan int)
 	waiter := make(chan bool)
 	base = time.Now()
+	pauseStart = time.Now()
 
 	setupTerminal()
 
