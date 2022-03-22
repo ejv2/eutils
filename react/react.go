@@ -9,22 +9,23 @@ import (
 )
 
 var (
-	count int
+	count    *int           = flag.Int("c", 0, "Take this many samples")
+	interval *time.Duration = flag.Duration("d", 0, "Wait this long between samples; do not randomize")
 )
 
-func flags() {
-	flag.IntVar(&count, "c", 0, "Take this many samples")
-
-	flag.Parse()
-}
-
 func main() {
-	flags()
+	flag.Parse()
 
-	res := make([]time.Duration, count)
-	for i := 0; count == 0 || (count > 0 && i < count); i++ {
+	res := make([]time.Duration, *count)
+	for i := 0; *count == 0 || (*count > 0 && i < *count); i++ {
+		var wait time.Duration
 		var c [1]byte
-		wait := time.Duration(rand.Int63n(4)+1) * time.Second
+
+		if interval.Nanoseconds() == 0 {
+			wait = time.Duration(rand.Int63n(4)+1) * time.Second
+		} else {
+			wait = *interval
+		}
 
 		fmt.Println("Wait for the prompt and press enter...")
 		time.Sleep(wait)
@@ -36,7 +37,7 @@ func main() {
 		diff := time.Now().Sub(now)
 		fmt.Printf("%v\n", diff)
 
-		if count != 0 {
+		if *count != 0 {
 			res[i] = diff
 		}
 
@@ -50,12 +51,12 @@ func main() {
 	for _, elem := range res {
 		total += elem
 	}
-	avg = total / time.Duration(count)
+	avg = total / time.Duration(*count)
 
 	fmt.Printf(`Result summary
 ==============
 
 Total trials run: %d
 Average reaction time: %v
-`, count, avg)
+`, *count, avg)
 }
