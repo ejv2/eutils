@@ -3,7 +3,7 @@
 EUT is a small collection of (somewhat) useful toolchain and utility programs for automating some repetetive tasks in programming/UNIX computer usage.
 Some programs are useful for quick things (getting a random number from the best entropy source), whereas others are good for experiments (mem-destroyer).
 
-A quick description of each program is provided in its corresponding **README.md** file in the respective directory.
+A quick description of each program is provided in its corresponding **README.md** file in the respective directory. Unless otherwise specified in each subdirectory, software is licensed under the ISC software licence.
 
 ## Why?
 
