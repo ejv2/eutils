@@ -227,9 +227,6 @@ Any keybinding can be pressed at any time and will take effect immediately`)
 			case <-waiter:
 				break waiting
 
-			default:
-				continue
-
 			}
 		}
 
