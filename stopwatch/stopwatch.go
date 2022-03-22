@@ -200,6 +200,9 @@ func main() {
 						fmt.Println("Unpaused...")
 					}
 				case reset:
+					base = time.Now()
+					pauseStart = time.Now()
+					pausedFor = 0
 					hour, min, sec, msec = 0, 0, 0, 0
 					fmt.Println("\nTimer reset")
 				case clear:
