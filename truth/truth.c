@@ -18,6 +18,7 @@ static char inbuf[BUFSIZ];
 int main(int argc, char **argv)
 {
 	char *text;
+	int opcount;
 	Statement *prg;
 
 	if (argc <= 1) {
@@ -40,10 +41,10 @@ int main(int argc, char **argv)
 	}
 
 	LOG("==========[---PARSE TRACE BEGINS---]==========");
-	prg = parse(&text);
+	prg = parse(&text, &opcount);
 	LOG("==========[---PARSE TRACE ENDS---]==========\n");
 
 	LOG("==========[---PROGRAM TRACE BEGINS---]==========");
-	run(prg);
+	run(prg, opcount);
 	LOG("==========[---PROGRAM TRACE ENDS---]==========");
 }
