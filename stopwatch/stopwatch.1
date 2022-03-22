@@ -44,12 +44,38 @@ Start at
 .TP
 .B \-p
 Start paused
+.SH TIME SYNTAX
+When specifying the time for
+.B \-c
+or
+.B \-t
+, the syntax of standard Go durations is accepted. This is a human readable time
+with each segment followed by the unit measured. For example:
+.I "1h10m30s"
+translates to one hour, ten minutes and thirty seconds. The time units are as
+follows:
+.TP
+.B h
+Hour
+.TP
+.B m
+Minute
+.TP
+.B s
+Second
+.TP
+.B ms
+Millisecond
+.TP
+.B ns
+Nanosecond
 .SH LIMITATIONS
-The timer is only as accurate as the operating system permits us to be with our
-sleep system calls. Under heavy system load, the operating system reserves the
-right to make us sleep for longer than we requested, but never less. So, your
-timer will always be correct in ideal conditions, but may record a value less
-than the true one in some circumstances.
+Although the counter is guaranteed to always be accurate, screen redraws only
+occur on an approximate basis. This should be almost unnoticeable, but the timer
+may lag under heavy system load. Program startup is deliberately excluded from
+the timing, so do not use to measure program execution time - use
+.BR time (1)
+instead.
 .SH SEE ALSO
 .BR time (1), times (1P)
 .SH CREDITS
