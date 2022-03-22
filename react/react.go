@@ -44,18 +44,18 @@ func main() {
 		os.Stdin.Read(c[:])
 	}
 
-	var total float64
-	var avg float64
+	var total time.Duration
+	var avg time.Duration
 
 	for _, elem := range res {
-		total += float64(elem.Milliseconds())
+		total += elem
 	}
-	avg = float64(total) / float64(count)
+	avg = total / time.Duration(count)
 
 	fmt.Printf(`Result summary
 ==============
 
 Total trials run: %d
-Average reaction time (ms): %f
+Average reaction time: %v
 `, count, avg)
 }
