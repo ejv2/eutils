@@ -200,7 +200,7 @@ func main() {
 					} else {
 						pausedFor += time.Now().Sub(pauseStart)
 						unpaused <- 1
-						fmt.Println("\nUnpaused...")
+						fmt.Println("Unpaused...")
 					}
 				case reset:
 					base = time.Now()
@@ -233,11 +233,13 @@ Any keybinding can be pressed at any time and will take effect immediately`)
 			}
 		}
 
-		if timer {
-			timerLoop()
-		} else {
-			countLoop()
+		if !paused {
+			if timer {
+				timerLoop()
+			} else {
+				countLoop()
+			}
+			fmt.Printf("\r%02d:%02d:%02d:%03d", hour, min, sec, msec)
 		}
-		fmt.Printf("\r%02d:%02d:%02d:%03d", hour, min, sec, msec)
 	}
 }
