@@ -145,7 +145,7 @@ Statement *parse(char **program)
 	if (expects != -1 && params != expects) {
 		ERR("Wrong number of operands provided");
 	} else if (!operfound) {
-		ERR("Statement must contain an operand");
+		ERR("Statement must contain an operation");
 	}
 
 	LOG("------END STATEMENT------");
