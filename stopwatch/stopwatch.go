@@ -27,7 +27,6 @@ var (
 	pausedFor            time.Duration
 	hour, min, sec, msec int64 = 0, 0, 0, 0
 	paused               bool  = false
-	coarse               bool  = false
 	timer                bool  = false
 )
 
@@ -79,7 +78,6 @@ func setupFlags() bool {
 	var upto time.Duration
 
 	flag.BoolVar(&paused, "p", false, "Start paused")
-	flag.BoolVar(&coarse, "b", false, "Disable sub-second timing")
 	flag.DurationVar(&start, "t", 0, "Start time")
 	flag.DurationVar(&upto, "c", 0, "Run in timer mode, counting from...")
 
@@ -95,13 +93,9 @@ func setupFlags() bool {
 }
 
 func wait(c chan bool, unpaused chan int) {
-	if coarse {
-		time.Sleep(time.Second)
-	} else {
-		time.Sleep(time.Millisecond)
-	}
-
+	time.Sleep(time.Millisecond)
 	<-unpaused
+
 	c <- true
 }
 
@@ -245,12 +239,7 @@ Any keybinding can be pressed at any time and will take effect immediately`)
 			} else {
 				countLoop()
 			}
-
-			if coarse {
-				fmt.Printf("\r%02d:%02d:%02d", hour, min, sec)
-			} else {
-				fmt.Printf("\r%02d:%02d:%02d:%03d", hour, min, sec, msec)
-			}
+			fmt.Printf("\r%02d:%02d:%02d:%03d", hour, min, sec, msec)
 		}
 	}
 }
