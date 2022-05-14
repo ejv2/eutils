@@ -5,18 +5,27 @@
 SRC = c2a.c
 OBJ = ${SRC:.c=.o}
 
-EXE = ascii
+SRCU = unicode.c
+OBJU = ${SRCU:.c=.o}
+
+ASCII   = ascii
+UNICODE = unicode
 INS = /usr/local/bin
 
-${EXE}: ${OBJ}
-	${CC} ${LDFLAGS} -o ${EXE} ${OBJ}
+all: ${ASCII} ${UNICODE}
+
+${ASCII}: ${OBJ}
+	${CC} ${LDFLAGS} -o ${ASCII} ${OBJ}
+
+${UNICODE}: ${OBJU}
+	${CC} ${LDFLAGS} -o ${UNICODE} ${OBJU}
 
 .c.o:
 	${CC} ${CFLAGS} -c $<
 
 clean:
-	rm *.o
-	rm ${EXE}
+	rm -f *.o
+	rm -f ${ASCII} ${UNICODE}
 
 install: ${EXE}
 	mkdir -p ${INS}
