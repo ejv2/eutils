@@ -154,7 +154,7 @@ func timerLoop() {
 			time.Sleep(500 * time.Millisecond)
 		}
 
-		fmt.Println()
+		fmt.Println(cols[1])
 		os.Exit(0)
 	}
 
