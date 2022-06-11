@@ -3,11 +3,8 @@ package main
 import (
 	"flag"
 	"fmt"
-	"math"
 	"os"
 	"os/exec"
-	"strconv"
-	"strings"
 	"time"
 )
 
@@ -35,25 +32,6 @@ func setupTerminal() {
 	exec.Command("stty", "-F", "/dev/tty", "cbreak", "min", "1").Run()
 	// do not display entered characters on the screen
 	exec.Command("stty", "-F", "/dev/tty", "-echo").Run()
-}
-
-func setupDuration(i string, f string) bool {
-	s := strings.Split(i, ":")
-	if len(s) < 4 {
-		fmt.Fprintf(os.Stderr, "stopwatch: not enough flags to -%s: %q\nExpected format: hh:mm:ss:ms\n", f, i)
-		return false
-	}
-
-	hour, _ = strconv.ParseInt(s[0], 10, 32)
-	min, _ = strconv.ParseInt(s[1], 10, 32)
-	sec, _ = strconv.ParseInt(s[2], 10, 32)
-	msec, _ = strconv.ParseInt(s[3], 10, 32)
-
-	min = int64(math.Min(float64(min), 59))
-	sec = int64(math.Min(float64(sec), 59))
-	msec = int64(math.Min(float64(msec), 999))
-
-	return true
 }
 
 func formatDuration(d time.Duration) (h int64, m int64, s int64, ms int64) {
