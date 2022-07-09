@@ -9,8 +9,8 @@ import (
 )
 
 var (
-	count    *int           = flag.Int("c", 0, "Take this many samples")
-	interval *time.Duration = flag.Duration("d", 0, "Wait this long between samples; do not randomize")
+	count    = flag.Int("c", 0, "Take this many samples")
+	interval = flag.Duration("d", 0, "Wait this long between samples; do not randomize")
 )
 
 func main() {
@@ -34,7 +34,7 @@ func main() {
 		now := time.Now()
 		os.Stdin.Read(c[:])
 
-		diff := time.Now().Sub(now)
+		diff := time.Since(now)
 		fmt.Printf("%v\n", diff)
 
 		if *count != 0 {
