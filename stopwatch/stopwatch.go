@@ -78,37 +78,38 @@ func wait(c chan bool, unpaused chan int) {
 }
 
 func inputLoop(c chan int) {
+	buf := make([]byte, 4)
 	for {
-		var i rune
-		var in [1]byte
-		_, err := os.Stdin.Read(in[:])
-
-		i = rune(in[0])
+		i, err := os.Stdin.Read(buf[:])
+		str := string(buf[:i])
+		rs := []rune(str)
 
 		if err != nil {
 			os.Exit(1)
 		}
 
-		switch i {
-		case 'q':
-			c <- quit
-		case 'c':
-			c <- reset
-		case 'l':
-			c <- clear
-		case '\f':
-			c <- clear
-		case '\n':
-			c <- nop
-		case ' ':
-			c <- pause
-		case 'h':
-			c <- help
-		case '?':
-			c <- help
-		default:
-			fmt.Printf("\nUnknown command: %q\n", i)
+		for _, r := range rs {
+			switch r {
+			case 'q':
+				c <- quit
+			case 'c':
+				c <- reset
+			case 'l':
+				c <- clear
+			case '\f':
+				c <- clear
+			case '\n':
+				c <- nop
+			case ' ':
+				c <- pause
+			case 'h':
+				c <- help
+			case '?':
+				c <- help
+			default:
+				fmt.Printf("\nUnknown command: %q\n", r)
 
+			}
 		}
 	}
 }
