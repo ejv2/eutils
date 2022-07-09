@@ -18,13 +18,12 @@ const (
 )
 
 var (
-	base                 time.Time
-	until                time.Time
+	base, until          time.Time
 	pauseStart           time.Time
 	pausedFor            time.Duration
 	hour, min, sec, msec int64 = 0, 0, 0, 0
-	paused               bool  = false
-	timer                bool  = false
+	paused                     = false
+	timer                      = false
 )
 
 func setupTerminal() {
@@ -177,7 +176,7 @@ func main() {
 						pauseStart = time.Now()
 						fmt.Println("\nPaused...")
 					} else {
-						pausedFor += time.Now().Sub(pauseStart)
+						pausedFor += time.Since(pauseStart)
 						unpaused <- 1
 						fmt.Println("Unpaused...")
 					}
