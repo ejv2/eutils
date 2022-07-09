@@ -2,7 +2,7 @@
 # Tool to dump ascii values for given strings
 # Copyright (C) 2021 - Ethan Marshall
 
-SRC = c2a.c
+SRC = ascii.c
 OBJ = ${SRC:.c=.o}
 
 SRCU = unicode.c

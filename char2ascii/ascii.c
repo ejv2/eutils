@@ -14,23 +14,23 @@ int main(int argc, char **argv)
 {
 	int count = 1;
 	while ((argc >= 2 && count < argc) || argc < 2) {
-		char *stringParsed;
+		char *str;
 		if (argc >= 2) {
-			stringParsed = argv[count++];
+			str = argv[count++];
 		} else {
-			char *ptr = fgets(buf, BUFSIZ, stdin);
-			if (!ptr) {
+			char *in = fgets(buf, BUFSIZ, stdin);
+			if (!in) {
 				return 0;
 			}
 
-			stringParsed = buf;
+			str = buf;
 		}
 
-		for (unsigned long i = 0; i < strlen(stringParsed); i++) {
-			if (stringParsed[i] == '\n')
+		for (unsigned long i = 0; i < strlen(str); i++) {
+			if (str[i] == '\n')
 				continue;
 
-			printf("%d ", (int)stringParsed[i]);
+			printf("%d ", (int)str[i]);
 		}
 
 		putchar('\n');
