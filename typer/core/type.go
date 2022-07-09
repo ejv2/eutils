@@ -29,13 +29,13 @@ const (
 )
 
 var (
-	entered   string = ""
-	processed string = ""
+	entered   string
+	processed string
 	spinner   rune
-	msg       string = ""
+	msg       string
 
-	mistakes int = 0
-	total    int = 0
+	mistakes int
+	total    int
 )
 
 func detectOffset(expected string) (detected bool, offset int) {

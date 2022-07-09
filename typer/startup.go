@@ -53,8 +53,8 @@ func selectMode() int {
 
 		if num <= modeMixed && num >= modeWords {
 			return int(num)
-		} else {
-			fmt.Println("Invalid mode")
 		}
+
+		fmt.Println("Invalid mode")
 	}
 }

@@ -8,10 +8,7 @@ import (
 	"github.com/ethanv2/eutils/typer/util"
 )
 
-const (
-	maxSets  int = 4
-	maxWords int = 15
-)
+const maxWords int = 15
 
 var (
 	words [][]string

@@ -9,13 +9,12 @@ import (
 	"os/exec"
 	"time"
 
-	"github.com/ethanv2/eutils/typer/core"
 	"github.com/ethanv2/eutils/typer/chars"
+	"github.com/ethanv2/eutils/typer/core"
 	"github.com/ethanv2/eutils/typer/words"
 )
 
-
-// Flag values
+// Game behavior flags.
 var flags core.Flags
 
 func banner() {

@@ -18,10 +18,10 @@ var dictPossibilities = []string{
 
 var (
 	dictInit bool
-	dictBuf  []byte = nil
+	dictBuf  []byte
 )
 
-// Load and process built-in fallback sentences
+// Load and process built-in fallback sentences.
 func loadFallback() {
 	cpy := fallbackSentences[:]
 	rand.Shuffle(len(cpy), func(i, j int) { cpy[i], cpy[j] = cpy[j], cpy[i] })
@@ -36,7 +36,7 @@ func loadFallback() {
 	words = cpy
 }
 
-// Load system dictionary into buffer, if present
+// Load system dictionary into buffer, if present.
 func InitWords() {
 	if runtime.GOOS == "windows" {
 		return
@@ -66,7 +66,7 @@ func InitWords() {
 	dictBuf = buf
 }
 
-// Loads words from the system dictionary
+// Loads words from the system dictionary.
 func LoadWords(f core.Flags) {
 	if !dictInit {
 		loadFallback()
