@@ -1,2 +1,2 @@
-SRC += char2ascii/c2a.c char2ascii/unicode.c
+SRC += char2ascii/ascii.c char2ascii/unicode.c
 EXES += char2ascii/ascii char2ascii/unicode
