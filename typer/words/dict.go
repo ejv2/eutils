@@ -6,6 +6,8 @@ import (
 	"os"
 	"runtime"
 	"strings"
+	"unicode"
+	"unicode/utf8"
 
 	"github.com/ethanv2/eutils/typer/core"
 )
@@ -29,8 +31,17 @@ func loadFallback() {
 	for x := range cpy {
 		rand.Shuffle(len(cpy[x]), func(i, j int) { cpy[x][i], cpy[x][j] = cpy[x][j], cpy[x][i] })
 
-		// TODO: Figure out how to make the first word upper case
-		//upper := strings.ToUpper(cpy[x][0][:1]) + cpy[x][0][1:]
+		r, count := utf8.DecodeRuneInString(cpy[x][0])
+		if count == 0 || r == utf8.RuneError {
+			panic("fallback: invalid UTF-8 in fallback sentence")
+		}
+		r = unicode.ToUpper(r)
+
+		if len(cpy[x][0]) == count {
+			cpy[x][0] = string(r)
+		} else {
+			cpy[x][0] = string(r) + cpy[x][0][count:]
+		}
 	}
 
 	words = cpy
