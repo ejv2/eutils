@@ -1,7 +1,7 @@
 # EUT - Ethan's UTils
 # A small collection of (semi-)useful utilities and programs
 
-DIRS = memdest/ rand/ wordlen/ char2ascii/ tally/ truth/ rads/
+DIRS = memdest/ rand/ wordlen/ char2ascii/ tally/ truth/ rads/ bexp/
 
 export EXES
 export SRC
