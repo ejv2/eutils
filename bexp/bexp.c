@@ -55,7 +55,6 @@ int detect_endian()
 char **parse_cmd(char *buf, int *cmd, int *argc)
 {
 	const int amax = 5;
-	int i, compact = 0;
 	int state = 0, acount = 0;
 	char **abuf = malloc(sizeof(char *) * amax);
 
@@ -111,7 +110,6 @@ int main(int argc, char **argv)
 	int opt, choice;
 	int sign;
 	int cargc;
-	int curend = endian;
 	char **cargv;
 	char in[1024];
 
