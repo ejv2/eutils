@@ -17,39 +17,29 @@ static char inbuf[BUFSIZ];
 
 void handle_flags(const int argc, char *const *argv, char **text)
 {
-	const char *valid_flags = "v:";
+	const char *valid_flags = "v";
 	char opt;
 
-	/* 
-	* no option passed
-	*/
-	if (argc == 1) {
+	while ((opt = getopt(argc, argv, valid_flags)) != -1) {
+		switch (opt) {
+		case 'v':
+			verbose = true;
+			break;
+		case '?':
+		default:
+			USAGE(argv[0], "[-v] <table>");
+			break;
+		}
+	}
+
+	if (argc == optind) {
 		fgets(inbuf, BUFSIZ, stdin);
 		*text = inbuf;
 		return;
 	}
 
-	*text = argv[1];
-	while ((opt = getopt(argc, argv, valid_flags)) != -1) {
-		switch (opt) {
-		case 'v':
-			verbose = true;
-
-			/* 
-			 * if -v was first passed 
-			 * instead of table
-			 */
-			if (optarg) {
-			    *text = optarg;
-			}
-
-			break;
-		case '?':
-		default:
-			USAGE(argv[0], "<table> [-v]");
-			break;
-		}
-	}
+	/* program text is in remaining argv */
+	*text = argv[optind];
 }
 
 int main(int argc, char **argv)
