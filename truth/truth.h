@@ -5,6 +5,10 @@
 	fprintf(stderr, "Error: %s\n", msg);  \
 	exit(1)
 
+#define USAGE(progn, usg)                              \
+	fprintf(stderr, "Usage: %s %s\n", progn, usg);  \
+	exit(1)
+
 #ifndef NOLOG
 #define LOG(msg) \
 	if (verbose) { fprintf(stderr, "%d:\t%s\n", __LINE__, msg); }
