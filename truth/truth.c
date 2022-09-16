@@ -17,40 +17,40 @@ static char inbuf[BUFSIZ];
 
 void handle_flags(const int argc, char *const *argv, char **text)
 {
-    /* see: https://www.gnu.org/software/libc/manual/html_node/Using-Getopt.html */
-    const char *valid_flags = "v::";
-    char opt;
+	/* see: https://www.gnu.org/software/libc/manual/html_node/Using-Getopt.html */
+	const char *valid_flags = "v::";
+	char opt;
 
-    /* 
-     * no option passed
-     */
-    if (argc == 1) {
+	/* 
+	* no option passed
+	*/
+	if (argc == 1) {
 		fgets(inbuf, BUFSIZ, stdin);
 		*text = inbuf;
-        return;
-    }
+		return;
+	}
 
-    *text = argv[1];
-    while ((opt = getopt(argc, argv, valid_flags)) != -1) {
-        switch (opt) {
-            case 'v':
-                verbose = true;
+	*text = argv[1];
+	while ((opt = getopt(argc, argv, valid_flags)) != -1) {
+		switch (opt) {
+		case 'v':
+			verbose = true;
 
-                /* 
-                 * if -v was first passed 
-                 * instead of table
-                 */
-                if (optarg) {
-                    *text = optarg;
-                }
+			/* 
+			 * if -v was first passed 
+			 * instead of table
+			 */
+			if (optarg) {
+			    *text = optarg;
+			}
 
-                break;
-            case '?':
-            default:
-                USAGE(argv[0], "<table> [-v]");
-                break;
-        }
-    }
+			break;
+		case '?':
+		default:
+			USAGE(argv[0], "<table> [-v]");
+			break;
+		}
+	}
 }
 
 int main(int argc, char **argv)
@@ -58,7 +58,7 @@ int main(int argc, char **argv)
 	char *text;
 	Statement *prg;
 
-    handle_flags(argc, argv, &text);
+	handle_flags(argc, argv, &text);
 
 	LOG("==========[---PARSE TRACE BEGINS---]==========");
 	prg = parse(&text);
