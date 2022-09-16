@@ -17,8 +17,7 @@ static char inbuf[BUFSIZ];
 
 void handle_flags(const int argc, char *const *argv, char **text)
 {
-	/* see: https://www.gnu.org/software/libc/manual/html_node/Using-Getopt.html */
-	const char *valid_flags = "v::";
+	const char *valid_flags = "v:";
 	char opt;
 
 	/* 
