@@ -7,37 +7,47 @@
 #include <stdlib.h>
 #include <string.h>
 #include <stdbool.h>
+#include <unistd.h>
 #include <ctype.h>
 
 #include "truth.h"
 
 bool verbose;
-
 static char inbuf[BUFSIZ];
+
+void handle_flags(const int argc, char *const *argv, char **text)
+{
+	const char *valid_flags = "v";
+	char opt;
+
+	while ((opt = getopt(argc, argv, valid_flags)) != -1) {
+		switch (opt) {
+		case 'v':
+			verbose = true;
+			break;
+		case '?':
+		default:
+			USAGE(argv[0], "[-v] <table>");
+			break;
+		}
+	}
+
+	if (argc == optind) {
+		fgets(inbuf, BUFSIZ, stdin);
+		*text = inbuf;
+		return;
+	}
+
+	/* program text is in remaining argv */
+	*text = argv[optind];
+}
 
 int main(int argc, char **argv)
 {
 	char *text;
 	Statement *prg;
 
-	if (argc <= 1) {
-		fgets(inbuf, BUFSIZ, stdin);
-		text = inbuf;
-	} else {
-		if (strcmp(argv[1], "-v") == 0) {
-			verbose = true;
-
-			argv++;
-			argc--;
-		}
-
-		if (argc >= 2) {
-			text = argv[1];
-		} else {
-			fgets(inbuf, BUFSIZ, stdin);
-			text = inbuf;
-		}
-	}
+	handle_flags(argc, argv, &text);
 
 	LOG("==========[---PARSE TRACE BEGINS---]==========");
 	prg = parse(&text);
