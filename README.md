@@ -13,8 +13,6 @@ Also, occasionally it is good to do "programming workouts" - small little pieces
 
 ## How?
 
-Run ``make`` in the root of the project and all subdirectories will be built. The executables will remain in their directories. Automatic compilation of Go tools is not yet supported. To build a Go tool, see the below instructions.
+Tools must be built individually. To build a single tool, run ``make`` or ``go build .`` in a single subdirectory.
 
-To build a single tool, run ``make`` or ``go build .`` in a single subdirectory.
-
-Most tools are written in mostly-POSIX C99. Some are written in pure Go. It is likely that you require GNU Make to use the included Makefiles (GNU Make syntax/functions used in many places). To download golang, go to <golang.org>
+Most tools are written in mostly-POSIX C99. Some are written in pure Go. Makefiles should be POSIX compliant. To download golang, go to <golang.org>
