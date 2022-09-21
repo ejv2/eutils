@@ -6,11 +6,18 @@
 package main
 
 import (
+	"flag"
 	"log"
 	"net/http"
 )
 
+var (
+	ListenAddr = flag.String("addr", ":8080", "Listen address for the server")
+)
+
 func main() {
+	flag.Parse()
+
 	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
 		log.Printf("%s [%s] %s", r.Method, r.RemoteAddr, r.RequestURI)
 		for key, val := range r.Header {
@@ -18,6 +25,6 @@ func main() {
 		}
 	})
 
-	log.Println("Server listening on :8080")
-	log.Panic(http.ListenAndServe(":8080", nil))
+	log.Println("Server listening on", *ListenAddr)
+	log.Panic(http.ListenAndServe(*ListenAddr, nil))
 }
