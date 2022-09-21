@@ -9,6 +9,7 @@ import (
 	"flag"
 	"log"
 	"net/http"
+	"sync"
 )
 
 var (
@@ -18,7 +19,10 @@ var (
 func main() {
 	flag.Parse()
 
+	mut := new(sync.Mutex)
 	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
+		mut.Lock()
+		defer mut.Unlock()
 		log.Printf("%s [%s] %s", r.Method, r.RemoteAddr, r.RequestURI)
 		for key, val := range r.Header {
 			log.Println("\t", key, "=>", val)
