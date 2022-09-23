@@ -23,11 +23,11 @@ ${DEXE}: ${DOBJ}
 
 clean:
 	rm *.o
-	rm ${EXE}
+	rm ${REXE} ${DEXE}
 
-install: ${EXE}
+install: ${DEXE} ${REXE}
 	mkdir -p ${INST}
-	cp -f ${EXE} ${INST}
+	cp -f ${DEXE} ${REXE} ${INST}
 	chmod 755 ${INST}/${EXE}
 
 uninstall:
