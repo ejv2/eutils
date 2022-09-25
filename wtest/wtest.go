@@ -9,6 +9,7 @@ import (
 	"flag"
 	"log"
 	"net/http"
+	"os"
 	"sync"
 )
 
@@ -18,6 +19,7 @@ var (
 
 func main() {
 	flag.Parse()
+	log.SetOutput(os.Stdout)
 
 	mut := new(sync.Mutex)
 	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
