@@ -2,7 +2,7 @@
 // For license details, see eutils licence in root of repository
 
 // wtest is a minimal test tool for web clients and servers. It accepts every
-// request and prints request information to standard error.
+// request and prints request information to stdout.
 package main
 
 import (
