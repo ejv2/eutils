@@ -19,9 +19,9 @@ int main(int argc, char **argv)
 			work = tolower(*walk);
 			if (work <= 'z' && work >= 'a') {
 				if (work + shift < 'a') {
-					work = ('z' + shift) - (work - 'a');
+					work = work + shift + 26;
 				} else if (work + shift > 'z') {
-					work = 'a' + shift - ('z' - work) - 1;
+					work = (work + shift) - 26;
 				} else {
 					work += shift;
 				}
