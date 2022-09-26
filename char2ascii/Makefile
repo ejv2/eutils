@@ -29,7 +29,7 @@ clean:
 
 install: ${EXE}
 	mkdir -p ${INS}
-	cp -f ${EXE} ${INS}
+	cp -f ${ASCII} ${UNICODE} ${INS}
 	chmod 755 ${INS}/${EXE}
 
 uninstall:
