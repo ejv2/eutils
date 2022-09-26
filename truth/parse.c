@@ -131,7 +131,7 @@ Statement *parse(char **program)
 			c++;
 			stat->operands[params].data.s = (struct Statement *)parse(&c);
 			params++;
-		} else {
+		} else if (isalnum(*c)) {
 			if (expects != -1 && params > expects) {
 				ERR("Too many parameters provided");
 			}
@@ -139,6 +139,8 @@ Statement *parse(char **program)
 			stat->operands[params].t = NumericOperand;
 			parseparam(&c, stat, params);
 			params++;
+		} else {
+			ERR("Syntax error. Invalid identifier");
 		}
 	}
 
