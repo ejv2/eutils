@@ -115,13 +115,14 @@ int parse_forces(struct force_t *fbuf, unsigned int maxlen)
 
 int main(int argc, char **argv)
 {
-	char *voff = "             ", *hoff =  "           ";
-	int i, buflen;
+	char *voff = "       ", *hoff =  "           ";
+	int i, j, buflen, off;
 	long double nx, ny, px, py;
 	struct force_t fbuf[MAX_FORCES];
 	struct force_t result[4];
-	char obuf[1024];
+	char obuf[1024], padding[50];
 
+	memset(padding, ' ', sizeof(padding));
 	if (!(buflen = parse_forces(fbuf, MAX_FORCES))) {
 		return 1;
 	}
@@ -141,16 +142,23 @@ int main(int argc, char **argv)
 		}
 	}
 
+	off = snprintf(obuf, 1024, "%.2LfN", nx);
+	if (off >= LENGTH(padding)) {
+		fprintf(stderr, "fbod: fp result too large");
+		abort();
+	}
+
+	padding[off] = 0;
 	if (!nx)
-		voff = "           ";
+		voff = "      ";
 	else
 		hoff = "";
 
 	/* upward arrow */
 	if (py) {
-		printf("%s%.2LfN\n%s^\n", voff, py, voff);
+		printf("%s%s%.2LfN\n%s%s^\n", voff, padding, py, voff, padding);
 		for (i = 0; i < 3; i++) {
-			printf("%s|\n", voff);
+			printf("%s%s|\n", padding, voff);
 		}
 	}
 
@@ -165,9 +173,9 @@ int main(int argc, char **argv)
 	/* upward arrows */
 	if (ny) {
 		for (i = 0; i < 3; i++) {
-			printf("%s|\n", voff);
+			printf("%s%s|\n", padding, voff);
 		}
-		printf("%sV\n%s%.2LfN\n", voff, voff, ny);
+		printf("%s%sV\n%s%s%.2LfN\n", voff, padding, voff, padding, ny);
 	}
 
 	printf("\nresultant: x: %Lf, y: %Lf\n", px - nx, py - ny);
