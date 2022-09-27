@@ -115,7 +115,7 @@ int parse_forces(struct force_t *fbuf, unsigned int maxlen)
 
 int main(int argc, char **argv)
 {
-	char *voff =   "            ", *hoff =  "           ";
+	char *voff = "             ", *hoff =  "           ";
 	int i, buflen;
 	long double nx, ny, px, py;
 	struct force_t fbuf[MAX_FORCES];
@@ -156,10 +156,11 @@ int main(int argc, char **argv)
 
 	/* horizontal arrows */
 	if (nx)
-		printf("%.2LfN <-----", nx);
+		printf("%.2LfN <------", nx);
 	printf("%sO", hoff);
 	if (px)
-		printf("-----> %.2LfN\n", px);
+		printf("-----> %.2LfN", px);
+	putchar('\n');
 
 	/* upward arrows */
 	if (ny) {
