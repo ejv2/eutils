@@ -33,4 +33,4 @@ install: ${DEXE} ${REXE}
 uninstall:
 	rm -f ${INST}/${EXE}
 
-.PHONY = clean
+.PHONY: clean

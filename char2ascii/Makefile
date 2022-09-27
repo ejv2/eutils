@@ -35,4 +35,4 @@ install: ${EXE}
 uninstall:
 	rm -f ${INS}/${EXE}
 
-.PHONY = clean install uninstall
+.PHONY: clean install uninstall

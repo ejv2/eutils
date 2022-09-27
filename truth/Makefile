@@ -35,4 +35,4 @@ install: ${EXE}
 uninstall:
 	rm -f ${INST}/${EXE}
 
-.PHONY = clean
+.PHONY: clean
