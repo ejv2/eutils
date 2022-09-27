@@ -29,7 +29,6 @@ int main(int argc, char **argv)
 
 	sigfillset(&set);
 	sigdelset(&set, sig);
-	sigprocmask(SIG_SETMASK, &set, NULL);
 
 	errno = 0;
 	signal(sig, out);
@@ -38,13 +37,6 @@ int main(int argc, char **argv)
 		return 2;
 	}
 
-	/*
-	 * use minimal resources by continually waiting for non-existent
-	 * buffering IO
-	 */
-	for (;;) {
-		getchar();
-	}
-
+	sigsuspend(&set);
 	return 0;
 }
