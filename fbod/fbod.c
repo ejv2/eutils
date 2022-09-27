@@ -159,7 +159,7 @@ int main(int argc, char **argv)
 		printf("%.2LfN <------", nx);
 	printf("%sO", hoff);
 	if (px)
-		printf("-----> %.2LfN", px);
+		printf("------> %.2LfN", px);
 	putchar('\n');
 
 	/* upward arrows */
