@@ -4,6 +4,7 @@
 #include <stdio.h>
 #include <ctype.h>
 
+#define LENGTH(x) sizeof(x) / sizeof(x[0])
 #define MAX_FORCES 255
 
 struct force_t {
@@ -45,7 +46,6 @@ int parse_conventional(char *in, struct force_t *out)
 {
 	char *work0, *work1;
 	long double iwork0, iwork1;
-	int found = 0;
 
 	if (!in) {
 		fputs("panic: incorrect parser method: parse_conventional\n", stderr);
@@ -72,14 +72,14 @@ int parse_conventional(char *in, struct force_t *out)
 	return 1;
 }
 
-int parse_forces(struct force_t *fbuf, size_t maxlen)
+int parse_forces(struct force_t *fbuf, unsigned int maxlen)
 {
-	size_t curind = 0;
+	unsigned int curind = 0;
 	char *walk, *nl;
 	char buf[BUFSIZ];
 	while (fgets(buf, BUFSIZ - 1, stdin)) {
 		if (curind >= maxlen) {
-			fprintf(stderr, "fbod: warning: too many input vectors; stopping at %lu", maxlen);
+			fprintf(stderr, "fbod: warning: too many input vectors; stopping at %u", maxlen);
 			return 1;
 		}
 		memset(&fbuf[curind], 0, sizeof(fbuf[curind]));
@@ -108,17 +108,66 @@ int parse_forces(struct force_t *fbuf, size_t maxlen)
 				return 0;
 			break;
 		}
-
-		printf("[%Lf %Lf]\n", fbuf[curind - 1].i, fbuf[curind - 1].j);
 	}
 
-	return 1;
+	return curind;
 }
 
 int main(int argc, char **argv)
 {
+	char *voff =   "            ", *hoff =  "           ";
+	int i, buflen;
+	long double nx, ny, px, py;
 	struct force_t fbuf[MAX_FORCES];
-	if (!parse_forces(fbuf, MAX_FORCES)) {
+	struct force_t result[4];
+	char obuf[1024];
+
+	if (!(buflen = parse_forces(fbuf, MAX_FORCES))) {
 		return 1;
 	}
+
+	px = py = nx = ny = 0;
+	for (i = 0; i < buflen; i++) {
+		if (fbuf[i].i < 0) {
+			nx += fabsl(fbuf[i].i);
+		} else {
+			px += fbuf[i].i;
+		}
+
+		if (fbuf[i].j < 0) {
+			ny += fabsl(fbuf[i].j);
+		} else {
+			py += fbuf[i].j;
+		}
+	}
+
+	if (!nx)
+		voff = "           ";
+	else
+		hoff = "";
+
+	/* upward arrow */
+	if (py) {
+		printf("%s%.2LfN\n%s^\n", voff, py, voff);
+		for (i = 0; i < 3; i++) {
+			printf("%s|\n", voff);
+		}
+	}
+
+	/* horizontal arrows */
+	if (nx)
+		printf("%.2LfN <-----", nx);
+	printf("%sO", hoff);
+	if (px)
+		printf("-----> %.2LfN\n", px);
+
+	/* upward arrows */
+	if (ny) {
+		for (i = 0; i < 3; i++) {
+			printf("%s|\n", voff);
+		}
+		printf("%sV\n%s%.2LfN\n", voff, voff, ny);
+	}
+
+	printf("\nresultant: x: %Lf, y: %Lf\n", px - nx, py - ny);
 }
