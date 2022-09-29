@@ -95,7 +95,7 @@ int parse_conventional(char *in, struct force_t *out)
 	work0 = strtok(in, " ");
 	work1 = strtok(NULL, " ");
 	if (!work0 || !work1) {
-		fputs("fbod: invalid vector syntax: expect <magnitude> <direction in radians>\n", stderr);
+		fputs("fbod: invalid vector syntax: expect <magnitude> <direction in degrees>\n", stderr);
 		return 0;
 	}
 	iwork0 = strtold(work0, NULL);
