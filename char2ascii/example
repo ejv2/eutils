@@ -1,3 +1,3 @@
 #!/bin/sh
-egrep -o '.' <ascii.c | sort | uniq -c | sort
-./ascii < ascii.c | egrep -o '[0-9]+' | sort -n | uniq -c | sort -n
+grep -Eo '.' <ascii.c | sort | uniq -c | sort
+./ascii < ascii.c | grep -Eo '[0-9]+' | sort -n | uniq -c | sort -n
