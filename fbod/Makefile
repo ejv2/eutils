@@ -1,4 +1,4 @@
-# fbox - draw labelled free body force diagrams
+# fbod - draw labelled free body force diagrams
 # Copyright (C) 2022 - Ethan Marshall
 SRC = fbod.c
 OBJ = ${SRC:.c=.o}
