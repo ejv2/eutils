@@ -36,9 +36,49 @@ int parse_column(const char *in, struct force_t *out)
 	return 1;
 }
 
-int parse_basis(const char *in, struct force_t *out)
+int parse_basis(char *in, struct force_t *out)
 {
-	/* for now */
+	char *endptr = &in[1];
+	int is = 0, js = 0;
+	long double work;
+
+	if (!in || in[0] != '(') {
+		fputs("panic: incorrect parser method: parse_basis\n", stderr);
+		abort();
+	}
+
+	for (;;) {
+		work = strtold(endptr, &endptr);
+		switch (*endptr) {
+		case 'i':
+			out->i += work;
+			is = 1;
+			break;
+		case 'j':
+			out->j += work;
+			js = 1;
+			break;
+		case ' ':
+		case '+':
+			break;
+		case ')':
+		case '\0':
+			goto out;
+			break;
+		default:
+			fputs("fbod: invalid vector syntax: expect (ai + bj) or (bj + ai)\n", stderr);
+			return 0;
+		}
+
+		endptr++;
+	}
+
+out:
+	if (!is && !js) {
+		fputs("fbod: invalid vector syntax: expect (ai + bj) or (bj + ai)\n", stderr);
+		return 0;
+	}
+
 	return 1;
 }
 
