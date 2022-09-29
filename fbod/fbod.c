@@ -39,7 +39,7 @@ int parse_column(const char *in, struct force_t *out)
 int parse_basis(char *in, struct force_t *out)
 {
 	char *endptr = &in[1];
-	int is = 0, js = 0;
+	int neg = 0, is = 0, js = 0;
 	long double work;
 
 	if (!in || in[0] != '(') {
@@ -49,14 +49,20 @@ int parse_basis(char *in, struct force_t *out)
 
 	for (;;) {
 		work = strtold(endptr, &endptr);
+		if (neg)
+			work = -work;
+
 		switch (*endptr) {
 		case 'i':
 			out->i += work;
-			is = 1;
+			is = 1, neg = 0;
 			break;
 		case 'j':
 			out->j += work;
-			js = 1;
+			js = 1, neg = 0;
+			break;
+		case '-':
+			neg = 1;
 			break;
 		case ' ':
 		case '+':
