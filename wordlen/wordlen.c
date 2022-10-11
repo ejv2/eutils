@@ -8,7 +8,7 @@
 
 int main(int argc, char **argv)
 {
-	int wordlen = (int)sizeof(long) * CHAR_BIT;
+	int wordlen = (int)sizeof(void *) * 8;
 
 	for (int i = 1; i < argc; i++) {
 		if (argv[i][1] == 'q') {
@@ -17,8 +17,8 @@ int main(int argc, char **argv)
 		} else if (argv[i][1] == 'v') {
 			printf("Word length: %i\nExtended long size: %li\nPointer size: "
 				   "%li\nInteger size: %li\nChar size: %i\n",
-				   wordlen, sizeof(long long) * CHAR_BIT,
-				   sizeof(void *) * CHAR_BIT, sizeof(int) * CHAR_BIT, CHAR_BIT);
+				   wordlen, sizeof(long long) * 8,
+				   sizeof(void *) * 8, sizeof(int) * 8, CHAR_BIT);
 			return 0;
 		} else if (argv[i][1] == 'u') {
 			puts("word [-qvuh]: get machine word length");
