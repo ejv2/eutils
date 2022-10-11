@@ -164,6 +164,7 @@ int main(int argc, char **argv)
 	char *voff = "       ", *hoff =  "           ";
 	int i, j, buflen, off;
 	long double nx, ny, px, py;
+	long double mag, theta;
 	struct force_t fbuf[MAX_FORCES];
 	struct force_t result[4];
 	char obuf[1024], padding[50];
@@ -224,5 +225,19 @@ int main(int argc, char **argv)
 		printf("%s%sV\n%s%s%.2LfN\n", voff, padding, voff, padding, ny);
 	}
 
-	printf("\nresultant: x: %Lf, y: %Lf\n", px - nx, py - ny);
+	/* magnitude and direction of resultant */
+	mag = sqrtl((px - nx) * (px - nx) + (py - ny) * ((py - ny)));
+	theta = (atanl((px - nx) / (py - ny)) / M_PI) * 180;
+
+	/* TODO: This is inelegant */
+	if (py - ny < 0) {
+		if (px - nx < 0)
+			theta += 180;
+		else
+			theta = 180 - theta;
+	} else if (px - nx < 0) {
+		theta = 360 - theta;
+	}
+
+	printf("\nresultant: x: %Lf, y: %Lf, mag: %Lf, theta: %Lf\n", px - nx, py - ny, mag, theta);
 }
