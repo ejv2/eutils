@@ -10,3 +10,8 @@ ${OBJ}: ${HDR}
 
 .c.o:
 	${CC} -c ${CFLAGS} $<
+
+clean:
+	rm -f ${EXE} *.o
+
+.PHONY: clean
