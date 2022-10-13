@@ -6,13 +6,9 @@
 #define LENGTH(x) (sizeof(x) / sizeof(x[0]))
 
 typedef struct {
-	long double val;
-	char unknown;
-} var_t;
-
-typedef struct {
 	unsigned char ncoff;
-	var_t coff[26];
+	int mask;
+	long double coff[26];
 	long double c;
 } expr_t;
 

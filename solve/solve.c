@@ -24,4 +24,13 @@ int main(int argc, char **argv)
 			return 1;
 		}
 	}
+
+	for (int i = 0; i < nexp; i++) {
+		for (int j = 0; j < 26; j++) {
+			/* printf("%d %d\n", exp[i].mask, j); */
+			if (exp[i].mask & (1 << j)) {
+				printf("%c: %Lf\n", 'a' + j, exp[i].coff[j]);
+			}
+		}
+	}
 }

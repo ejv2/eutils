@@ -21,7 +21,7 @@ int parse(expr_t *exp, const char *p)
 		return 0;
 
 	/* init struct */
-	exp->ncoff = exp->c = 0;
+	exp->ncoff = exp->c = exp->mask = 0;
 	memset(exp->coff, 0, sizeof(exp->coff));
 
 	for (const char *walk = p; *walk && *walk != '\n'; walk++) {
@@ -70,8 +70,9 @@ int parse(expr_t *exp, const char *p)
 		case 4:	/* parse unknown */
 			if (!isalpha(*walk) || *walk < 'a' || *walk > 'z')
 				return 0;
-			exp->coff[exp->ncoff].val = coff;
-			exp->coff[exp->ncoff++].unknown = *walk;
+			exp->coff[*walk - 'a'] += coff;
+			exp->ncoff++;
+			exp->mask |= (1 << (*walk - 'a'));
 			state = 2;
 			break;
 		case 5:	/* parse equality */
