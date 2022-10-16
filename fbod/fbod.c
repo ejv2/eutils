@@ -6,6 +6,7 @@
 
 #define LENGTH(x) sizeof(x) / sizeof(x[0])
 #define MAX_FORCES 255
+#define EPSILON 0.001
 
 struct force_t {
 	long double i, j;
@@ -196,13 +197,13 @@ int main(int argc, char **argv)
 	}
 
 	padding[off] = 0;
-	if (!nx)
+	if (nx < EPSILON && nx >= 0)
 		voff = "      ";
 	else
 		hoff = "";
 
 	/* upward arrow */
-	if (py) {
+	if (py > EPSILON) {
 		printf("%s%s%.2LfN\n%s%s^\n", voff, padding, py, voff, padding);
 		for (i = 0; i < 3; i++) {
 			printf("%s%s|\n", padding, voff);
@@ -210,15 +211,15 @@ int main(int argc, char **argv)
 	}
 
 	/* horizontal arrows */
-	if (nx)
+	if (nx > EPSILON)
 		printf("%.2LfN<------", nx);
 	printf("%sO", hoff);
-	if (px)
+	if (px > EPSILON)
 		printf("------>%.2LfN", px);
 	putchar('\n');
 
 	/* upward arrows */
-	if (ny) {
+	if (ny > EPSILON) {
 		for (i = 0; i < 3; i++) {
 			printf("%s%s|\n", padding, voff);
 		}
@@ -230,12 +231,12 @@ int main(int argc, char **argv)
 	theta = (atanl((px - nx) / (py - ny)) / M_PI) * 180;
 
 	/* TODO: This is inelegant */
-	if (py - ny < 0) {
-		if (px - nx < 0)
+	if (py - ny < -EPSILON) {
+		if (px - nx < -EPSILON)
 			theta += 180;
 		else
 			theta = 180 - theta;
-	} else if (px - nx < 0) {
+	} else if (px - nx < -EPSILON) {
 		theta = 360 - theta;
 	}
 
