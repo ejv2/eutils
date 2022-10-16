@@ -230,15 +230,11 @@ int main(int argc, char **argv)
 	mag = sqrtl((px - nx) * (px - nx) + (py - ny) * ((py - ny)));
 	theta = (atanl((px - nx) / (py - ny)) / M_PI) * 180;
 
-	/* TODO: This is inelegant */
-	if (py - ny < -EPSILON) {
-		if (px - nx < -EPSILON)
-			theta += 180;
-		else
-			theta = 180 - theta;
-	} else if (px - nx < -EPSILON) {
-		theta = 360 - theta;
-	}
+	/* add axis rotations to theta */
+	if (py - ny < -EPSILON)
+		theta += 180;
+	else if (px - nx < -EPSILON)
+		theta += 360;
 
 	printf("\nresultant: x: %Lf, y: %Lf, mag: %Lf, theta: %Lf\n", px - nx, py - ny, mag, theta);
 }
