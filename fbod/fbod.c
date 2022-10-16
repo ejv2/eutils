@@ -6,7 +6,7 @@
 
 #define LENGTH(x) sizeof(x) / sizeof(x[0])
 #define MAX_FORCES 255
-#define EPSILON 0.001
+#define EPSILON 1E-5F
 
 struct force_t {
 	long double i, j;
