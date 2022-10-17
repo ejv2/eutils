@@ -11,6 +11,7 @@ int main(int argc, char **argv)
 {
 	int nexp = 0;
 	expr_t exp[255];
+	mat_t amat;
 	char buf[BUFSIZ];
 
 	while (fgets(buf, BUFSIZ - 1, stdin)) {
@@ -25,12 +26,14 @@ int main(int argc, char **argv)
 		}
 	}
 
-	for (int i = 0; i < nexp; i++) {
-		for (int j = 0; j < 26; j++) {
-			/* printf("%d %d\n", exp[i].mask, j); */
-			if (exp[i].mask & (1 << j)) {
-				printf("%c: %Lf\n", 'a' + j, exp[i].coff[j]);
-			}
+	amat = exp_mat(exp, nexp);
+	for (size_t i = 0; i < amat.dims[Equations]; i++) {
+		putchar('[');
+		for (size_t j = 0; j < amat.dims[Unknowns]; j++) {
+			printf("%Lf ", amat.rows[i][j]);
 		}
+		printf("| %Lf ]\n", amat.eval[i]);
 	}
+
+	mat_destroy(&amat);
 }

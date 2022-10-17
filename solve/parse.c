@@ -9,6 +9,65 @@
 
 #include "solve.h"
 
+/* converts an arbitrary math expression to an augmented matrix */
+mat_t exp_mat(expr_t *exp, size_t n)
+{
+	unsigned char cur = 0;
+	size_t i, j;
+	mat_t ret;
+
+	memset(&ret, 0, sizeof(ret));
+	if (!exp || !n)
+		return ret;
+
+	for (i = 0; i < n; i++) {
+		if (exp[i].ncoff > ret.dims[Unknowns])
+			ret.dims[Unknowns] = exp[i].ncoff;
+	}
+	ret.dims[Equations] = n;
+	ret.rows = malloc(sizeof(long double *) * ret.dims[Equations]);
+	ret.eval = malloc(sizeof(long double) * ret.dims[Equations]);
+
+	for (i = 0; i < ret.dims[Equations]; i++) {
+		ret.rows[i] = malloc(sizeof(long double) * ret.dims[Unknowns]);
+		ret.eval[i] = exp[i].c;
+		j = cur = 0;
+
+		while (j < ret.dims[Unknowns] && cur < exp[i].ncoff) {
+			if ((exp[i].mask & (1 << cur)) > 0) {
+				ret.rows[i][j] = exp[i].coff[cur];
+				j++;
+			}
+
+			cur++;
+		}
+	}
+
+	return ret;
+}
+
+/* checks if mat can safely be used */
+int mat_verify(mat_t *mat)
+{
+	return mat && mat->rows && mat->eval && mat->dims[0] != 0 && mat->dims[1] != 0;
+}
+
+/* frees buffers associated with a matrix */
+void mat_destroy(mat_t *mat)
+{
+	if (!mat)
+		return;
+
+	for (size_t i = 0; i < mat->dims[Equations]; i++) {
+		free(mat->rows[i]);
+	}
+
+	free(mat->rows);
+	free(mat->eval);
+	memset(mat, 0, sizeof(*mat));
+}
+
+/* parse a raw math expression from a NULL-terminated buffer */
 int parse(expr_t *exp, const char *p)
 {
 	const char *walk = p;
