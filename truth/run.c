@@ -107,6 +107,40 @@ int solve(Statement *prg, bool *params, int count)
 			return o0 ^ o1;
 		}
 
+		case NOR: {
+			int o0, o1;
+			if (prg->operands[0].t == StatementOperand) {
+				o0 = solve((Statement*)prg->operands[0].data.s, params, count - 1);
+			} else {
+				o0 = params[0];
+			}
+
+			if (prg->operands[1].t == StatementOperand) {
+				o1 = solve((Statement*)prg->operands[1].data.s, params+1, count - 1);
+			} else {
+				o1 = params[1];
+			}
+
+			return !(o0 || o1);
+		}
+
+		case NAND: {
+			int o0, o1;
+			if (prg->operands[0].t == StatementOperand) {
+				o0 = solve((Statement*)prg->operands[0].data.s, params, count - 1);
+			} else {
+				o0 = params[0];
+			}
+
+			if (prg->operands[1].t == StatementOperand) {
+				o1 = solve((Statement*)prg->operands[1].data.s, params+1, count - 1);
+			} else {
+				o1 = params[1];
+			}
+
+			return !(o0 && o1);
+		}
+
 		case NOT: {
 			int o0;
 

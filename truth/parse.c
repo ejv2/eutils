@@ -13,7 +13,7 @@
 
 extern bool verbose;
 
-static const int opermax = 3;
+static const int opermax = 4;
 static int opers = 0;
 char operands[sizeof(long long) * 8] = {0};
 
@@ -57,7 +57,7 @@ Statement *parse(char **program)
 
 		/* Full size operations */
 		/* TODO: Add support for shorthands (& / | / !) */
-		if (strcmp("AND", slice) == 0) {
+		if (strncmp("AND", slice, 3) == 0) {
 			expects = 2;
 
 			if (params != 1) {
@@ -72,7 +72,7 @@ Statement *parse(char **program)
 			c += 3;
 			operfound = true;
 			continue;
-		} else if (strcmp("NOT", slice) == 0) {
+		} else if (strncmp("NOT", slice, 3) == 0) {
 			expects = 1;
 
 			if (params > 0) {
@@ -87,7 +87,7 @@ Statement *parse(char **program)
 			c += 3;
 			operfound = true;
 			continue;
-		} else if (strcmp("XOR", slice) == 0) {
+		} else if (strncmp("XOR", slice, 3) == 0) {
 			expects = 2;
 
 			if (params != 1) {
@@ -115,6 +115,36 @@ Statement *parse(char **program)
 			stat->op = OR;
 
 			c += 2;
+			operfound = true;
+			continue;
+		} else if (strncmp("NOR", slice, 3) == 0) {
+			expects = 2;
+
+			if (params != 1) {
+				ERR("Expected one operand preceeding OR");
+			} else if (operfound) {
+				ERR("Expected only a single operation");
+			}
+
+			LOG("\tNOR");
+			stat->op = NOR;
+
+			c += 3;
+			operfound = true;
+			continue;
+		} else if (strncmp("NAND", slice, 4) == 0) {
+			expects = 2;
+
+			if (params != 1) {
+				ERR("Expected one operand preceeding OR");
+			} else if (operfound) {
+				ERR("Expected only a single operation");
+			}
+
+			LOG("\tNAND");
+			stat->op = NAND;
+
+			c += 4;
 			operfound = true;
 			continue;
 		}
