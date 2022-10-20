@@ -112,10 +112,10 @@ int parse(expr_t *exp, const char *p)
 			}
 			if (*walk == '-') {
 				neg = 1;
-				state = 3;
+				state = 0;
 			} else if (*walk == '+') {
 				neg = 0;
-				state = 3;
+				state = 0;
 			}
 			break;
 		case 3:	/* parse coefficient */
