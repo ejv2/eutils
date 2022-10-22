@@ -96,7 +96,10 @@ int parse(expr_t *exp, const char *p)
 			if (isdigit(*walk) || *walk == '-' || *walk == '.') {
 				state = 3;
 			} else if (isalpha(*walk)) {
-				coff = 1;
+				if (neg)
+					coff = -1;
+				else
+					coff = 1;
 				state = 4;
 			} else {
 				return 0;
