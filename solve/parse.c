@@ -145,7 +145,7 @@ int parse(expr_t *exp, const char *p)
 		case 6:	/* parse equality value */
 			if (isspace(*walk))
 				break;
-			if (!isdigit(*walk))
+			if (!isdigit(*walk) && *walk != '-' && *walk != '.')
 				return 0;
 			exp->c = strtold(walk, &end);
 			if (*end != '\n' && *end != '\0')
