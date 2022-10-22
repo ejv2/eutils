@@ -47,6 +47,29 @@ mat_t exp_mat(expr_t *exp, size_t n)
 	return ret;
 }
 
+mat_t mat_dup(mat_t *mat)
+{
+	size_t i;
+	mat_t r;
+
+	memset(&r, 0, sizeof(r));
+	if (!mat)
+		return r;
+
+	r.dims[Equations] = mat->dims[Equations];
+	r.dims[Unknowns] = mat->dims[Unknowns];
+	r.rows = malloc(sizeof(long double *) * r.dims[Equations]);
+	r.eval = malloc(sizeof(long double) * r.dims[Equations]);
+
+	for (i = 0; i < r.dims[Equations]; i++) {
+		r.rows[i] = malloc(sizeof(long double) * r.dims[Unknowns]);
+		memcpy(r.rows[i], mat->rows[i], sizeof(long double) * r.dims[Unknowns]);
+	}
+	memcpy(r.eval, mat->eval, sizeof(long double) * mat->dims[Equations]);
+
+	return r;
+}
+
 /* checks if mat can safely be used */
 int mat_verify(mat_t *mat)
 {
@@ -66,6 +89,57 @@ void mat_destroy(mat_t *mat)
 	free(mat->rows);
 	free(mat->eval);
 	memset(mat, 0, sizeof(*mat));
+}
+
+/* swaps two rows in a matrix */
+void mat_swap(mat_t *mat, int i, int j)
+{
+	long double tmp, *tmpr;
+
+	if (!mat)
+		return;
+
+	/* swap row itself */
+	tmpr = mat->rows[i];
+	mat->rows[i] = mat->rows[j];
+	mat->rows[j] = tmpr;
+
+	/* swap solution */
+	tmp = mat->eval[i];
+	mat->eval[i] = mat->eval[j];
+	mat->eval[j] = tmp;
+}
+
+/* multiplies mat[row] by product */
+void mat_mul(mat_t *mat, int row, long double product)
+{
+	size_t i;
+
+	if (!mat)
+		return;
+	if (row > mat->dims[Equations])
+		return;
+
+	for (i = 0; i < mat->dims[Unknowns]; i++) {
+		mat->rows[row][i] *= product;
+	}
+	mat->eval[row] *= product;
+}
+
+/* r1 - nr2 -> r1 */
+void mat_sub(mat_t *mat, int r1, int r2, long double n)
+{
+	size_t i;
+
+	if (!mat)
+		return;
+	if (r1 >= mat->dims[Equations] || r2 >= mat->dims[Equations])
+		return;
+
+	for (i = 0; i < mat->dims[Unknowns]; i++) {
+		mat->rows[r1][i] -= n * mat->rows[r2][i];
+	}
+	mat->eval[r1] -= n * mat->eval[r2];
 }
 
 /* parse a raw math expression from a NULL-terminated buffer */

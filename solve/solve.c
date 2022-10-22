@@ -9,9 +9,10 @@
 
 int main(int argc, char **argv)
 {
+	size_t i;
 	int nexp = 0;
 	expr_t exp[255];
-	mat_t amat;
+	mat_t amat, smat;
 	char buf[BUFSIZ];
 
 	while (fgets(buf, BUFSIZ - 1, stdin)) {
@@ -27,13 +28,44 @@ int main(int argc, char **argv)
 	}
 
 	amat = exp_mat(exp, nexp);
-	for (size_t i = 0; i < amat.dims[Equations]; i++) {
+	for (i = 0; i < amat.dims[Equations]; i++) {
 		putchar('[');
 		for (size_t j = 0; j < amat.dims[Unknowns]; j++) {
 			printf("%Lf ", amat.rows[i][j]);
 		}
 		printf("| %Lf ]\n", amat.eval[i]);
 	}
+	puts("------------");
+
+	smat = gauss_reduce(&amat);
+	for (i = 0; i < smat.dims[Equations]; i++) {
+		putchar('[');
+		for (size_t j = 0; j < smat.dims[Unknowns]; j++) {
+			printf("%Lf ", smat.rows[i][j]);
+		}
+		printf("| %Lf ]\n", smat.eval[i]);
+	}
+
+	if (smat.dims[Unknowns] > nexp) {
+		fprintf(stderr,
+				"%s: system in insufficiently constrained (got %d expressions "
+				"but %d unknowns\n",
+				argv[0], nexp, smat.dims[Unknowns]);
+		return 1;
+	}
+
+	/*
+	 * Check if reduction succeeded
+	 * Reduction led to a solution if at least one row exists which can
+	 * be used to back substitute for a solution per variable.
+	 * The final coefficient should be solved for by a matrix row, the
+	 * remainder by back substitution.
+	 */
+	/* long checkmask = 0; */
+	/* for (i = 0; i < smat.dims[Equations]; i++) { */
+	/* } */
+	/* TODO: Implement a checker here */
 
 	mat_destroy(&amat);
+	mat_destroy(&smat);
 }
