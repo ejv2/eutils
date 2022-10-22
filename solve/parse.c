@@ -35,8 +35,8 @@ mat_t exp_mat(expr_t *exp, size_t n)
 
 		memset(ret.rows[i], 0, sizeof(long double) * ret.dims[Unknowns]);
 		while (j < ret.dims[Unknowns] && j < exp[i].ncoff) {
-			if ((exp[i].mask & (1 << cur)) > 0) {
-				ret.rows[i][cur] = exp[i].coff[cur];
+			if ((exp[i].mask & (1 << (unsigned int)cur)) > 0) {
+				ret.rows[i][j] = exp[i].coff[cur];
 				j++;
 			}
 
