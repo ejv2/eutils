@@ -203,6 +203,15 @@ int parse(expr_t *exp, const char *p)
 				neg = 1;
 				break;
 			}
+			if (isalpha(*walk)) {
+				state = 4;
+				if (neg)
+					coff = -1;
+				else
+					coff = 1;
+				walk--;
+				break;
+			}
 			coff = strtold(walk, &end);
 			if (coff == 0)
 				return 0;
