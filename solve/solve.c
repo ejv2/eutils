@@ -4,12 +4,13 @@
  */
 
 #include <stdio.h>
+#include <math.h>
 
 #include "solve.h"
 
 int main(int argc, char **argv)
 {
-	size_t i;
+	size_t i, j;
 	int nexp = 0;
 	expr_t exp[255];
 	mat_t amat, smat;
@@ -61,10 +62,16 @@ int main(int argc, char **argv)
 	 * The final coefficient should be solved for by a matrix row, the
 	 * remainder by back substitution.
 	 */
-	/* long checkmask = 0; */
-	/* for (i = 0; i < smat.dims[Equations]; i++) { */
-	/* } */
-	/* TODO: Implement a checker here */
+	for (i = 0; i < smat.dims[Equations]; i++) {
+		for (j = 0; j < smat.dims[Unknowns]; j++) {
+			if (isinfl(smat.rows[i][j]) || isnanl(smat.rows[i][j]) ||
+				(smat.rows[i][j] == 0 && j >= i) ||
+				(smat.rows[i][j] != 0 && j < i)) {
+				fprintf(stderr, "%s: system is inconsistent or unsolvable\n", argv[0]);
+				return 2;
+			}
+		}
+	}
 
 	mat_destroy(&amat);
 	mat_destroy(&smat);

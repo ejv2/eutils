@@ -26,6 +26,7 @@ typedef struct {
 } mat_t;
 
 int parse(expr_t *exp, const char *p);
+unsigned int solve(mat_t *mat, long double *buf);
 
 mat_t gauss_reduce(mat_t *mat);
 
