@@ -73,13 +73,14 @@ void g_preprocess(mat_t *mat)
 		else
 			fixers[nfixers++] = i;
 	}
-	for (i = 0; i < nfixers; i++) {
-		mat_sub(mat, fixers[i], safe, -1);
-	}
 
 	/* no safe rows - give up */
 	if (safe < 0)
 		return;
+
+	for (i = 0; i < nfixers; i++) {
+		mat_sub(mat, fixers[i], safe, -1);
+	}
 }
 
 mat_t gauss_reduce(mat_t *mat)
