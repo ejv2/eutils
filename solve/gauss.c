@@ -193,7 +193,7 @@ unsigned int solve(mat_t *mat, long double *buf)
 			for (icol = 0; icol < mat->dims[Unknowns]; icol++) {
 				if (icol == unknown) {
 					/* Not a valid solution - unknown eliminated */
-					if (row[icol] == 0) {
+					if (row[icol] == 0 || !isnormal(row[icol])) {
 						valid = 0;
 						break;
 					}
@@ -202,6 +202,11 @@ unsigned int solve(mat_t *mat, long double *buf)
 				if (row[icol] != 0) {
 					/* Not a valid solution - not yet solved for an unknown */
 					if (!solmask[icol]) {
+						valid = 0;
+						break;
+					}
+					/* Not a valid solution - coefficient is nan or inf */
+					if (!isnormal(row[icol])) {
 						valid = 0;
 						break;
 					}
