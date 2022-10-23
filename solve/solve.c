@@ -55,29 +55,18 @@ int main(int argc, char **argv)
 				"%s: system in insufficiently constrained (got %d expressions "
 				"but %d unknowns\n",
 				argv[0], nexp, smat.dims[Unknowns]);
-		return 1;
-	}
-
-	/*
-	 * Check if reduction succeeded
-	 * Reduction led to a solution if at least one row exists which can
-	 * be used to back substitute for a solution per variable.
-	 * The final coefficient should be solved for by a matrix row, the
-	 * remainder by back substitution.
-	 */
-	for (i = 0; i < smat.dims[Equations]; i++) {
-		for (j = 0; j < smat.dims[Unknowns]; j++) {
-			if (isinfl(smat.rows[i][j]) || isnanl(smat.rows[i][j]) ||
-				(smat.rows[i][j] == 0 && j >= i) ||
-				(smat.rows[i][j] != 0 && j < i)) {
-				fprintf(stderr, "%s: system is inconsistent or unsolvable\n", argv[0]);
-				return 2;
-			}
-		}
+		return 2;
 	}
 
 	solutions = malloc(sizeof(long double) * smat.dims[Unknowns]);
 	nsolutions = solve(&smat, solutions);
+	if (nsolutions == 0) {
+		fprintf(stderr, "%s: system is inconsistent or unsolvable\n", argv[0]);
+		return 2;
+	} else if (nsolutions < smat.dims[Unknowns]) {
+		fprintf(stderr, "%s: warning: could not solve for all unknowns (%d of %d)\n", argv[0], nsolutions, smat.dims[Unknowns]);
+	}
+
 	for (i = 0; i < nsolutions; i++) {
 		printf("%Lf\n", solutions[i]);
 	}
