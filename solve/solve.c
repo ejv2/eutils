@@ -6,18 +6,31 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <math.h>
+#include <string.h>
 
 #include "solve.h"
 
 int main(int argc, char **argv)
 {
 	size_t i, j;
-	int nexp = 0;
+	int verbose = 0, nexp = 0;
 	expr_t exp[255];
 	mat_t amat, smat;
 	unsigned int nsolutions;
 	long double *solutions;
 	char buf[BUFSIZ];
+
+	if (argc > 1) {
+		if (strcmp(argv[1], "-v") == 0) {
+			verbose = 1;
+		} else if (strcmp(argv[1], "-h") == 0) {
+			puts("solve [-hv]: solve a linear system of equations using Gauss-Jordan elimination");
+			puts("Copyright (C) 2022 - Ethan Marshall");
+			puts("\n-h:\tThis message");
+			puts("-v:\tPrint intermediate matrices in elimination process to stdout");
+			return 1;
+		}
+	}
 
 	while (fgets(buf, BUFSIZ - 1, stdin)) {
 		if (nexp >= 255) {
@@ -32,22 +45,24 @@ int main(int argc, char **argv)
 	}
 
 	amat = exp_mat(exp, nexp);
-	for (i = 0; i < amat.dims[Equations]; i++) {
-		putchar('[');
-		for (size_t j = 0; j < amat.dims[Unknowns]; j++) {
-			printf("%Lf ", amat.rows[i][j]);
-		}
-		printf("| %Lf ]\n", amat.eval[i]);
-	}
-	puts("------------");
-
 	smat = gauss_reduce(&amat);
-	for (i = 0; i < smat.dims[Equations]; i++) {
-		putchar('[');
-		for (size_t j = 0; j < smat.dims[Unknowns]; j++) {
-			printf("%Lf ", smat.rows[i][j]);
+
+	if (verbose) {
+		for (i = 0; i < amat.dims[Equations]; i++) {
+			putchar('[');
+			for (size_t j = 0; j < amat.dims[Unknowns]; j++) {
+				printf("%Lf ", amat.rows[i][j]);
+			}
+			printf("| %Lf ]\n", amat.eval[i]);
 		}
-		printf("| %Lf ]\n", smat.eval[i]);
+		puts("------------");
+		for (i = 0; i < smat.dims[Equations]; i++) {
+			putchar('[');
+			for (size_t j = 0; j < smat.dims[Unknowns]; j++) {
+				printf("%Lf ", smat.rows[i][j]);
+			}
+			printf("| %Lf ]\n", smat.eval[i]);
+		}
 	}
 
 	if (smat.dims[Unknowns] > nexp) {
