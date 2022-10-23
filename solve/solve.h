@@ -9,6 +9,7 @@ typedef struct {
 	unsigned char ncoff;
 	int mask;
 	long double coff[26];
+	char coffsym[26];
 	long double c;
 } expr_t;
 

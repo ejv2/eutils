@@ -83,7 +83,7 @@ int main(int argc, char **argv)
 	}
 
 	for (i = 0; i < nsolutions; i++) {
-		printf("%Lf\n", solutions[i]);
+		printf("%c:\t%Lf\n", exp->coffsym[i], solutions[i]);
 	}
 
 	mat_destroy(&amat);
