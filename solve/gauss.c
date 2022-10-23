@@ -186,6 +186,7 @@ unsigned int solve(mat_t *mat, long double *buf)
 			long double c = mat->eval[irow];
 			long double *row = mat->rows[irow];
 			int valid = 1;
+			long double scale = 1;
 
 			if (eqmask[irow])
 				continue;
@@ -197,6 +198,7 @@ unsigned int solve(mat_t *mat, long double *buf)
 						valid = 0;
 						break;
 					}
+					scale = row[icol];
 					continue;
 				}
 				if (row[icol] != 0) {
@@ -216,7 +218,7 @@ unsigned int solve(mat_t *mat, long double *buf)
 			if (!valid)
 				continue;
 
-			buf[mat->dims[Unknowns] - 1 - off++] = c;
+			buf[mat->dims[Unknowns] - 1 - off++] = c / scale;
 			solmask[unknown] = 1;
 			break;
 		}
