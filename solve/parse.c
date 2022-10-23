@@ -196,6 +196,12 @@ int parse(expr_t *exp, const char *p)
 			}
 			break;
 		case 3:	/* parse coefficient */
+			if (*walk == '+')
+				break;
+			if (*walk == '-') {
+				neg = 1;
+				break;
+			}
 			coff = strtold(walk, &end);
 			if (coff == 0)
 				return 0;
