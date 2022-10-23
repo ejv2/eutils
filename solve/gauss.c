@@ -150,7 +150,7 @@ mat_t gauss_reduce(mat_t *mat)
 			mat_sub(&r, row, i, ratio);
 		}
 
-		mat_mul(&r, row, 1/r.rows[row][row]);
+		mat_mul(&r, row, 1/r.rows[row][row % r.dims[Unknowns]]);
 	}
 
 out:
