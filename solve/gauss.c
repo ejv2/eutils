@@ -68,15 +68,12 @@ void g_preprocess(mat_t *mat)
 				notzero = 0;
 		}
 
-		printf("[%d] %d\n", i, notzero);
 		if (notzero)
 			safe = i;
 		else
 			fixers[nfixers++] = i;
 	}
-	printf("determined [safe] as %d\n", safe);
 	for (i = 0; i < nfixers; i++) {
-		printf("added %d [safe] to %d [target]\n", safe, fixers[i]);
 		mat_sub(mat, fixers[i], safe, -1);
 	}
 
@@ -169,16 +166,56 @@ unsigned int solve(mat_t *mat, long double *buf)
 	if (!mat || !buf)
 		return 0;
 
-	size_t i;
+	long unknown, irow, icol;
 	int off = 0;
 	char solmask[mat->dims[Unknowns]];
 	char eqmask[mat->dims[Equations]];
 
 	/* init structures */
-	memset(buf, 0, mat->dims[Unknowns]);
+	memset(buf, 0, sizeof(long double) * mat->dims[Unknowns]);
 	memset(solmask, 0, sizeof(solmask));
 	memset(eqmask, 0, sizeof(eqmask));
 
-	for (i = 0; i < mat->dims[Equations]; i++) {
+	/*
+	 * We have found a solution if a row contains:
+	 * 	- The variable we wish to solve for (with a non-zero coefficient)
+	 * 	- Only variables we have already solved for
+	 */
+	for (unknown = mat->dims[Unknowns] - 1; unknown >= 0; unknown--) {
+		for (irow = mat->dims[Equations] - 1; irow >= 0; irow--) {
+			long double c = mat->eval[irow];
+			long double *row = mat->rows[irow];
+			int valid = 1;
+
+			if (eqmask[irow])
+				continue;
+
+			for (icol = 0; icol < mat->dims[Unknowns]; icol++) {
+				if (icol == unknown) {
+					/* Not a valid solution - unknown eliminated */
+					if (row[icol] == 0) {
+						valid = 0;
+						break;
+					}
+					continue;
+				}
+				if (row[icol] != 0) {
+					/* Not a valid solution - not yet solved for an unknown */
+					if (!solmask[icol]) {
+						valid = 0;
+						break;
+					}
+					c -= buf[icol] * row[icol];
+				}
+			}
+			if (!valid)
+				continue;
+
+			buf[mat->dims[Unknowns] - 1 - off++] = c;
+			solmask[unknown] = 1;
+			break;
+		}
 	}
+
+	return off;
 }

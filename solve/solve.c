@@ -3,6 +3,7 @@
  * Copyright (C) 2022 - Ethan Marshall
  */
 
+#include <stdlib.h>
 #include <stdio.h>
 #include <math.h>
 
@@ -14,6 +15,8 @@ int main(int argc, char **argv)
 	int nexp = 0;
 	expr_t exp[255];
 	mat_t amat, smat;
+	unsigned int nsolutions;
+	long double *solutions;
 	char buf[BUFSIZ];
 
 	while (fgets(buf, BUFSIZ - 1, stdin)) {
@@ -73,6 +76,13 @@ int main(int argc, char **argv)
 		}
 	}
 
+	solutions = malloc(sizeof(long double) * smat.dims[Unknowns]);
+	nsolutions = solve(&smat, solutions);
+	for (i = 0; i < nsolutions; i++) {
+		printf("%Lf\n", solutions[i]);
+	}
+
 	mat_destroy(&amat);
 	mat_destroy(&smat);
+	free(solutions);
 }
