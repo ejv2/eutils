@@ -14,7 +14,7 @@ int main(int argc, char **argv)
 {
 	size_t i, j;
 	int verbose = 0, nexp = 0;
-	expr_t exp[255];
+	expr_t exp[26];
 	mat_t amat, smat;
 	unsigned int nsolutions;
 	long double *solutions;
@@ -33,7 +33,7 @@ int main(int argc, char **argv)
 	}
 
 	while (fgets(buf, BUFSIZ - 1, stdin)) {
-		if (nexp >= 255) {
+		if (nexp >= 26) {
 			fprintf(stderr, "%s: math error -- too many equations, max 255\n", argv[0]);
 			return 1;
 		}
