@@ -128,7 +128,7 @@ mat_t gauss_reduce(mat_t *mat)
 			}
 		}
 	}
-	g_preprocess(&r);
+	g_preprocess(mat);
 
 	/* 
 	 * Gaussian Elimination
