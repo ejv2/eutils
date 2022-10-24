@@ -43,6 +43,10 @@ int main(int argc, char **argv)
 			return 1;
 		}
 	}
+	if (nexp == 0) {
+		fprintf(stderr, "%s: math error -- system must contain at least one equation\n", argv[0]);
+		return 1;
+	}
 
 	amat = exp_mat(exp, nexp);
 	smat = gauss_reduce(&amat);
