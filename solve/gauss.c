@@ -144,7 +144,7 @@ mat_t gauss_reduce(mat_t *mat)
 	 * that below it - thereby being solvable.
 	 */
 	for (row = 1; row < r.dims[Equations]; row++) {
-		for (i = 0; i < row; i++) {
+		for (i = 0; i < (row % r.dims[Unknowns]); i++) {
 			long double ratio = r.rows[row][i] / r.rows[i][i];
 			if (isinf(ratio) || r.rows[i][i] == 0)
 				goto out;
