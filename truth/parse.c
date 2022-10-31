@@ -15,33 +15,49 @@ extern bool verbose;
 
 static const int opermax = 4;
 static int opers = 0;
-char operands[sizeof(long long) * 8] = {0};
+static int oplookup[sizeof(char) * 255];
+static int opseen[sizeof(char) * 255];
+char operands[sizeof(char) * 255] = {0};
 
 void parseparam(char **program, Statement *stat, int pos)
 {
 	char oper = -1;
+	int found = 0;
 
 	LOG("\tNAMED PARAMETER");
 	while (isalnum(**program)) {
-		if (opers > sizeof(long long) * 8) {
-			ERR("Maximum recursion depth reached: 64 parameters max allowed");
-		}
-
-
 		if (oper == -1) {
-			oper = **program;
-			operands[opers++] = oper;
+			if (!opseen[**program]) {
+				LOG("\t\tParameter declaration");
 
-			stat->operands[pos].data.oper = oper;
+				oper = **program;
+				operands[opers] = oper;
+
+				opseen[oper]++;
+				oplookup[oper] = opers;
+
+				stat->operands[pos].data.oper = opers;
+
+				opers++;
+			} else {
+				stat->operands[pos].data.oper = oplookup[oper];
+				LOG("\t\tParameter reuse");
+			}
+
 		}
 
 		(*program)++;
+		found++;
 	}
 
 	(*program)--;
+
+	if (found != 1) {
+		ERR("Invalid operand");
+	}
 }
 
-Statement *parse(char **program)
+Statement *parse(char **program, int *opcount)
 {
 	LOG("------START STATEMENT------");
 	Statement *stat = malloc(sizeof(Statement));
@@ -159,7 +175,7 @@ Statement *parse(char **program)
 			LOG("\tSTATEMENT");
 			stat->operands[params].t = StatementOperand;
 			c++;
-			stat->operands[params].data.s = (struct Statement *)parse(&c);
+			stat->operands[params].data.s = (struct Statement *)parse(&c, &opers);
 			params++;
 		} else if (isalnum(*c)) {
 			if (expects != -1 && params > expects) {
@@ -183,5 +199,6 @@ Statement *parse(char **program)
 	LOG("------END STATEMENT------");
 
 	*program = c;
+	*opcount = opers;
 	return stat;
 }

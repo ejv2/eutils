@@ -45,15 +45,16 @@ void handle_flags(const int argc, char *const *argv, char **text)
 int main(int argc, char **argv)
 {
 	char *text;
+	int opcount;
 	Statement *prg;
 
 	handle_flags(argc, argv, &text);
 
 	LOG("==========[---PARSE TRACE BEGINS---]==========");
-	prg = parse(&text);
+	prg = parse(&text, &opcount);
 	LOG("==========[---PARSE TRACE ENDS---]==========\n");
 
 	LOG("==========[---PROGRAM TRACE BEGINS---]==========");
-	run(prg);
+	run(prg, opcount);
 	LOG("==========[---PROGRAM TRACE ENDS---]==========");
 }

@@ -26,7 +26,7 @@ typedef struct {
 	OperandType t;
 	union {
 		struct Statement *s;
-		char oper;
+		int oper;
 	} data;
 } Operand;
 typedef struct {
@@ -34,7 +34,7 @@ typedef struct {
 	Operation op;
 } Statement;
 
-Statement *parse(char **program);
-void run(Statement *program);
+Statement *parse(char **program, int *opcount);
+void run(Statement *program, int opcount);
 
 #endif
