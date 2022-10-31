@@ -40,7 +40,7 @@ void parseparam(char **program, Statement *stat, int pos)
 
 				opers++;
 			} else {
-				stat->operands[pos].data.oper = oplookup[oper];
+				stat->operands[pos].data.oper = oplookup[**program];
 				LOG("\t\tParameter reuse");
 			}
 
