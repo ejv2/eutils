@@ -57,96 +57,32 @@ int solve(Statement *prg, bool *params, int count)
 	int o0, o1;
 
 	LOG("------START STATEMENT------");
+	if (prg->operands[0].t == StatementOperand) {
+		o0 = solve((Statement*)prg->operands[0].data.s, params, count - 1);
+	} else {
+		o0 = params[prg->operands[0].data.oper];
+	}
+	if (prg->operands[1].t == StatementOperand) {
+		o1 = solve((Statement*)prg->operands[1].data.s, params, count - 1);
+	} else {
+		o1 = params[prg->operands[1].data.oper];
+	}
+
 	switch (prg->op) {
-		case AND: {
-			if (prg->operands[0].t == StatementOperand) {
-				o0 = solve((Statement*)prg->operands[0].data.s, params, count - 1);
-			} else {
-				o0 = params[prg->operands[0].data.oper];
-			}
-
-			if (prg->operands[1].t == StatementOperand) {
-				o1 = solve((Statement*)prg->operands[1].data.s, params, count - 1);
-			} else {
-				o1 = params[prg->operands[1].data.oper];
-			}
-
+		case AND:
 			return o0 && o1;
-		}
-
-		case OR: {
-			if (prg->operands[0].t == StatementOperand) {
-				o0 = solve((Statement*)prg->operands[0].data.s, params, count - 1);
-			} else {
-				o0 = params[prg->operands[0].data.oper];
-			}
-
-			if (prg->operands[1].t == StatementOperand) {
-				o1 = solve((Statement*)prg->operands[1].data.s, params, count - 1);
-			} else {
-				o1 = params[prg->operands[1].data.oper];
-			}
-
+		case OR:
 			return o0 || o1;
-		}
-
-		case XOR: {
-			if (prg->operands[0].t == StatementOperand) {
-				o0 = solve((Statement*)prg->operands[0].data.s, params, count - 1);
-			} else {
-				o0 = params[prg->operands[0].data.oper];
-			}
-
-			if (prg->operands[1].t == StatementOperand) {
-				o1 = solve((Statement*)prg->operands[1].data.s, params, count - 1);
-			} else {
-				o1 = params[prg->operands[1].data.oper];
-			}
-
+		case XOR:
 			return o0 ^ o1;
-		}
-
-		case NOR: {
-			if (prg->operands[0].t == StatementOperand) {
-				o0 = solve((Statement*)prg->operands[0].data.s, params, count - 1);
-			} else {
-				o0 = params[0];
-			}
-
-			if (prg->operands[1].t == StatementOperand) {
-				o1 = solve((Statement*)prg->operands[1].data.s, params+1, count - 1);
-			} else {
-				o1 = params[1];
-			}
-
+		case NOR:
 			return !(o0 || o1);
-		}
 
-		case NAND: {
-			if (prg->operands[0].t == StatementOperand) {
-				o0 = solve((Statement*)prg->operands[0].data.s, params, count - 1);
-			} else {
-				o0 = params[0];
-			}
-
-			if (prg->operands[1].t == StatementOperand) {
-				o1 = solve((Statement*)prg->operands[1].data.s, params+1, count - 1);
-			} else {
-				o1 = params[1];
-			}
-
+		case NAND:
 			return !(o0 && o1);
-		}
 
-		case NOT: {
-			if (prg->operands[0].t == StatementOperand) {
-				o0 = solve((Statement*)prg->operands[0].data.s, params, count - 1);
-			} else {
-				o0 = params[prg->operands[0].data.oper];
-			}
-
+		case NOT:
 			return !o0;
-		}
 
 		default:
 			ERR("Illegal instruction encountered");

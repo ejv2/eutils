@@ -61,6 +61,7 @@ Statement *parse(char **program, int *opcount)
 {
 	LOG("------START STATEMENT------");
 	Statement *stat = malloc(sizeof(Statement));
+	memset(stat, 0, sizeof(*stat));
 
 	char *c;
 	int params = 0;
