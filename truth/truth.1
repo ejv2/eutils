@@ -72,3 +72,15 @@ will always be evaluated as separate statements, remember).
 .EX
 	NOT (A AND B)
 .EE
+Alternatively
+.EX
+	A NAND B
+.EE
+.SS Half adder (sum)
+.EX
+	(A XOR B) XOR C
+.EE
+.SS Half adder (carry flag)
+.EX
+	(A AND B) OR ((A XOR B) AND C)
+.EE
