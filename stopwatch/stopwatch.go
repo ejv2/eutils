@@ -33,6 +33,13 @@ func setupTerminal() {
 	exec.Command("stty", "-F", "/dev/tty", "-echo").Run()
 }
 
+func resetTerminal() {
+	// enable input buffering
+	exec.Command("stty", "-F", "/dev/tty", "cbreak").Run()
+	// re-display entered characters on the screen
+	exec.Command("stty", "-F", "/dev/tty", "echo").Run()
+}
+
 func formatDuration(d time.Duration) (h int64, m int64, s int64, ms int64) {
 	total := d.Nanoseconds()
 
@@ -147,6 +154,7 @@ func main() {
 	pauseStart = time.Now()
 
 	setupTerminal()
+	defer resetTerminal()
 
 	if !setupFlags() {
 		return
