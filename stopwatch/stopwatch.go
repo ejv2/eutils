@@ -35,7 +35,7 @@ func setupTerminal() {
 
 func resetTerminal() {
 	// enable input buffering
-	exec.Command("stty", "-F", "/dev/tty", "cbreak").Run()
+	exec.Command("stty", "-F", "/dev/tty", "icanon").Run()
 	// re-display entered characters on the screen
 	exec.Command("stty", "-F", "/dev/tty", "echo", "isig").Run()
 }
