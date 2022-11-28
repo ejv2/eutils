@@ -6,7 +6,9 @@ import (
 	"flag"
 	"fmt"
 	"math/rand"
+	"os"
 	"os/exec"
+	"os/signal"
 	"time"
 
 	"github.com/ethanv2/eutils/typer/chars"
@@ -29,6 +31,18 @@ func ttyInit() {
 	exec.Command("stty", "-F", "/dev/tty", "-echo").Run()
 }
 
+func ttyReset() {
+	// disable input buffering
+	exec.Command("stty", "-F", "/dev/tty", "icanon").Run()
+	// do not display entered characters on the screen
+	exec.Command("stty", "-F", "/dev/tty", "echo").Run()
+}
+
+func intrWait(sig <-chan os.Signal) {
+	<-sig
+	ttyReset()
+}
+
 func flagsInit() {
 	flag.IntVar(&flags.Count, "c", 0, "Exit after this many rounds")
 	flag.BoolVar(&flags.Lower, "l", false, "Make all words lowercase")
@@ -44,7 +58,13 @@ func main() {
 
 	mode := selectMode()
 	words.InitWords()
+
 	ttyInit()
+
+	sig := make(chan os.Signal, 1)
+	signal.Notify(sig, os.Interrupt)
+	go intrWait(sig)
+	defer ttyReset()
 
 	switch mode {
 	case modeWords:
