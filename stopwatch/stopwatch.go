@@ -30,14 +30,14 @@ func setupTerminal() {
 	// disable input buffering
 	exec.Command("stty", "-F", "/dev/tty", "cbreak", "min", "1").Run()
 	// do not display entered characters on the screen
-	exec.Command("stty", "-F", "/dev/tty", "-echo").Run()
+	exec.Command("stty", "-F", "/dev/tty", "-echo", "-isig").Run()
 }
 
 func resetTerminal() {
 	// enable input buffering
 	exec.Command("stty", "-F", "/dev/tty", "cbreak").Run()
 	// re-display entered characters on the screen
-	exec.Command("stty", "-F", "/dev/tty", "echo").Run()
+	exec.Command("stty", "-F", "/dev/tty", "echo", "isig").Run()
 }
 
 func formatDuration(d time.Duration) (h int64, m int64, s int64, ms int64) {
@@ -97,6 +97,10 @@ func inputLoop(c chan int) {
 		for _, r := range rs {
 			switch r {
 			case 'q':
+				c <- quit
+			case '\x03': // Ctrl-C
+				c <- quit
+			case '\x04': // Ctrl-D
 				c <- quit
 			case 'c':
 				c <- reset
