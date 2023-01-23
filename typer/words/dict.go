@@ -9,7 +9,7 @@ import (
 	"unicode"
 	"unicode/utf8"
 
-	"github.com/ethanv2/eutils/typer/core"
+	"github.com/ejv2/eutils/typer/core"
 )
 
 var dictPossibilities = []string{

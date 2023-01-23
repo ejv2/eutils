@@ -1,3 +1,3 @@
-module github.com/ethanv2/eutils/react
+module github.com/ejv2/eutils/react
 
 go 1.17

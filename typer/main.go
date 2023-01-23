@@ -11,9 +11,9 @@ import (
 	"os/signal"
 	"time"
 
-	"github.com/ethanv2/eutils/typer/chars"
-	"github.com/ethanv2/eutils/typer/core"
-	"github.com/ethanv2/eutils/typer/words"
+	"github.com/ejv2/eutils/typer/chars"
+	"github.com/ejv2/eutils/typer/core"
+	"github.com/ejv2/eutils/typer/words"
 )
 
 // Game behavior flags.

@@ -1,3 +1,3 @@
-module github.com/ethanv2/eutils/wtest
+module github.com/ejv2/eutils/wtest
 
 go 1.19

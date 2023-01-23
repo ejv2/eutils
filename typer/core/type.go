@@ -7,7 +7,7 @@ import (
 	"strings"
 	"time"
 
-	"github.com/ethanv2/eutils/typer/util"
+	"github.com/ejv2/eutils/typer/util"
 )
 
 type Flags struct {
