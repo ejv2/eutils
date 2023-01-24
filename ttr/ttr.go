@@ -25,6 +25,7 @@ var (
 	trackerFile = flag.String("file", "$XDG_DATA_HOME/"+TrackerFilepath, "The location of the time tracker file")
 	newFlag     = flag.String("now", "", "You are now doing this. Create a new entry with this title")
 	doneFlag    = flag.String("done", "", "You have now done this. Mark the this entry as done")
+	clearFlag   = flag.Bool("clear", false, "Clear all previous time trackers")
 )
 
 func getDataHome() (string, error) {
@@ -221,6 +222,11 @@ func reserialize(tr *TrackerFile) error {
 	if err != nil {
 		return err
 	}
+	defer f.Close()
+
+	if *clearFlag {
+		return nil
+	}
 
 	if err := tr.Marshal(f); err != nil {
 		return err
@@ -258,6 +264,8 @@ func main() {
 			fmt.Println(err)
 			os.Exit(1)
 		}
+	} else if *clearFlag {
+		return
 	} else {
 		for _, e := range tf.Trackers {
 			fmt.Println(e)
