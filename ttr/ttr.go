@@ -24,7 +24,7 @@ const (
 var (
 	trackerFile = flag.String("file", "$XDG_DATA_HOME/"+TrackerFilepath, "The location of the time tracker file")
 	newFlag     = flag.String("now", "", "You are now doing this. Create a new entry with this title")
-	doneFlag    = flag.String("done", "", "Mark the specified entry as done")
+	doneFlag    = flag.String("done", "", "You have now done this. Mark the this entry as done")
 )
 
 func getDataHome() (string, error) {
