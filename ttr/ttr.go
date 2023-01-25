@@ -28,6 +28,18 @@ var (
 	clearFlag   = flag.Bool("clear", false, "Clear all previous time trackers")
 )
 
+func init() {
+	aliases := map[string]string{
+		"now":  "start",
+		"done": "stop",
+	}
+
+	for from, to := range aliases {
+		flagSet := flag.Lookup(from)
+		flag.Var(flagSet.Value, to, fmt.Sprintf("Alias to %s", flagSet.Name))
+	}
+}
+
 func getDataHome() (string, error) {
 	bs, err := os.UserHomeDir()
 	if err != nil {
