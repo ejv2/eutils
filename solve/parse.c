@@ -184,6 +184,8 @@ int parse(expr_t *exp, const char *p)
 		case 2:	/* +/- sign */
 			if (isspace(*walk))
 				break;
+			if (isalpha(*walk))
+				return 0;
 			if (*walk == '=') {
 				walk--;
 				state = 5;
