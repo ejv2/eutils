@@ -12,18 +12,26 @@
 /* converts an arbitrary math expression to an augmented matrix */
 mat_t exp_mat(expr_t *exp, size_t n)
 {
-	unsigned char cur = 0;
 	size_t i, j;
 	mat_t ret;
+	unsigned int coffmask = 0;
+	unsigned int cofftab[26];
 
 	memset(&ret, 0, sizeof(ret));
+	memset(cofftab, 0, sizeof(cofftab));
 	if (!exp || !n)
 		return ret;
 
 	for (i = 0; i < n; i++) {
-		if (exp[i].ncoff > ret.dims[Unknowns])
-			ret.dims[Unknowns] = exp[i].ncoff;
+		for (j = 0; j < exp[i].ncoff; j++) {
+			if ((coffmask & (1 << (exp[i].coffsym[j] - 'a'))) == 0) {
+				coffmask |= (1 << (exp[i].coffsym[j] - 'a'));
+				cofftab[exp[i].coffsym[j] - 'a'] = ret.dims[Unknowns];
+				ret.dims[Unknowns]++;
+			}
+		}
 	}
+
 	ret.dims[Equations] = n;
 	ret.rows = malloc(sizeof(long double *) * ret.dims[Equations]);
 	ret.eval = malloc(sizeof(long double) * ret.dims[Equations]);
@@ -31,16 +39,10 @@ mat_t exp_mat(expr_t *exp, size_t n)
 	for (i = 0; i < ret.dims[Equations]; i++) {
 		ret.rows[i] = malloc(sizeof(long double) * ret.dims[Unknowns]);
 		ret.eval[i] = exp[i].c;
-		j = cur = 0;
 
 		memset(ret.rows[i], 0, sizeof(long double) * ret.dims[Unknowns]);
-		while (j < ret.dims[Unknowns] && j < exp[i].ncoff) {
-			if ((exp[i].mask & (1 << (unsigned int)cur)) > 0) {
-				ret.rows[i][j] = exp[i].coff[cur];
-				j++;
-			}
-
-			cur++;
+		for (j = 0; j < exp[i].ncoff; j++) {
+			ret.rows[i][cofftab[exp[i].coffsym[j] - 'a']] = exp[i].coff[exp[i].coffsym[j] - 'a'];
 		}
 	}
 
