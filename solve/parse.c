@@ -213,7 +213,7 @@ int parse(expr_t *exp, const char *p)
 				break;
 			}
 			coff = strtold(walk, &end);
-			if (coff == 0)
+			if (end == walk)
 				return 0;
 			if (neg)
 				coff = -coff;
