@@ -13,7 +13,8 @@
 int main(int argc, char **argv)
 {
 	size_t i, j;
-	int verbose = 0, nexp = 0;
+	unsigned int nexp = 0;
+	int verbose = 0;
 	expr_t exp[26];
 	mat_t amat, smat;
 	unsigned int nsolutions;
@@ -54,7 +55,7 @@ int main(int argc, char **argv)
 	if (verbose) {
 		for (i = 0; i < amat.dims[Equations]; i++) {
 			putchar('[');
-			for (size_t j = 0; j < amat.dims[Unknowns]; j++) {
+			for (j = 0; j < amat.dims[Unknowns]; j++) {
 				printf("%Lf ", amat.rows[i][j]);
 			}
 			printf("| %Lf ]\n", amat.eval[i]);
@@ -62,7 +63,7 @@ int main(int argc, char **argv)
 		puts("------------");
 		for (i = 0; i < smat.dims[Equations]; i++) {
 			putchar('[');
-			for (size_t j = 0; j < smat.dims[Unknowns]; j++) {
+			for (j = 0; j < smat.dims[Unknowns]; j++) {
 				printf("%Lf ", smat.rows[i][j]);
 			}
 			printf("| %Lf ]\n", smat.eval[i]);
@@ -72,7 +73,7 @@ int main(int argc, char **argv)
 	if (smat.dims[Unknowns] > nexp) {
 		fprintf(stderr,
 				"%s: system in insufficiently constrained (got %d expressions "
-				"but %d unknowns\n",
+				"but %u unknowns\n",
 				argv[0], nexp, smat.dims[Unknowns]);
 		return 2;
 	}
@@ -83,7 +84,7 @@ int main(int argc, char **argv)
 		fprintf(stderr, "%s: system is inconsistent or unsolvable\n", argv[0]);
 		return 2;
 	} else if (nsolutions < smat.dims[Unknowns]) {
-		fprintf(stderr, "%s: warning: could not solve for all unknowns (%d of %d)\n", argv[0], nsolutions, smat.dims[Unknowns]);
+		fprintf(stderr, "%s: warning: could not solve for all unknowns (%d of %u)\n", argv[0], nsolutions, smat.dims[Unknowns]);
 	}
 
 	for (i = 0; i < nsolutions; i++) {

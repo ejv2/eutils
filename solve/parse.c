@@ -79,10 +79,12 @@ int mat_verify(mat_t *mat)
 /* frees buffers associated with a matrix */
 void mat_destroy(mat_t *mat)
 {
+	size_t i;
+
 	if (!mat)
 		return;
 
-	for (size_t i = 0; i < mat->dims[Equations]; i++) {
+	for (i = 0; i < mat->dims[Equations]; i++) {
 		free(mat->rows[i]);
 	}
 
@@ -92,7 +94,7 @@ void mat_destroy(mat_t *mat)
 }
 
 /* swaps two rows in a matrix */
-void mat_swap(mat_t *mat, int i, int j)
+void mat_swap(mat_t *mat, unsigned int i, unsigned int j)
 {
 	long double tmp, *tmpr;
 
@@ -111,7 +113,7 @@ void mat_swap(mat_t *mat, int i, int j)
 }
 
 /* multiplies mat[row] by product */
-void mat_mul(mat_t *mat, int row, long double product)
+void mat_mul(mat_t *mat, unsigned int row, long double product)
 {
 	size_t i;
 
@@ -127,7 +129,7 @@ void mat_mul(mat_t *mat, int row, long double product)
 }
 
 /* r1 - nr2 -> r1 */
-void mat_sub(mat_t *mat, int r1, int r2, long double n)
+void mat_sub(mat_t *mat, unsigned int r1, unsigned int r2, long double n)
 {
 	size_t i;
 
@@ -145,11 +147,12 @@ void mat_sub(mat_t *mat, int r1, int r2, long double n)
 /* parse a raw math expression from a NULL-terminated buffer */
 int parse(expr_t *exp, const char *p)
 {
-	const char *walk = p;
+	const char *walk;
 	char *end = NULL;
 	int state = 0;
 	int neg = 0;
 	long double coff = 0;
+
 
 	if (!exp || !p)
 		return 0;
@@ -159,7 +162,7 @@ int parse(expr_t *exp, const char *p)
 	memset(exp->coff, 0, sizeof(exp->coff));
 	memset(exp->coffsym, 0, sizeof(exp->coffsym));
 
-	for (const char *walk = p; *walk && *walk != '\n'; walk++) {
+	for (walk = p; *walk && *walk != '\n'; walk++) {
 		switch (state) {
 		case 0:	/* strip leading whitespace */
 			if (!isspace(*walk)) {

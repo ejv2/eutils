@@ -21,7 +21,7 @@ enum {
 
 typedef struct {
 	/* rows x columns */
-	int dims[2];
+	unsigned int dims[2];
 	long double **rows;
 	long double *eval;
 } mat_t;
@@ -35,6 +35,6 @@ mat_t exp_mat(expr_t *exp, size_t n);
 mat_t mat_dup(mat_t *mat);
 int mat_verify(mat_t *mat);
 void mat_destroy(mat_t *mat);
-void mat_swap(mat_t *mat, int i, int j);
-void mat_mul(mat_t *mat, int row, long double product);
-void mat_sub(mat_t *mat, int r1, int r2, long double n);
+void mat_swap(mat_t *mat, unsigned int i, unsigned int j);
+void mat_mul(mat_t *mat, unsigned int row, long double product);
+void mat_sub(mat_t *mat, unsigned int r1, unsigned int r2, long double n);

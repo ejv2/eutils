@@ -15,7 +15,7 @@
  *
  * returns n, where n is the target row
  */
-int g_rowpos(mat_t *mat, int row)
+int g_rowpos(mat_t *mat, unsigned int row)
 {
 	size_t i;
 	int off = -1;
@@ -44,8 +44,9 @@ int g_rowpos(mat_t *mat, int row)
  */
 void g_preprocess(mat_t *mat)
 {
-	size_t i, j;
-	int safe = -1, nfixers = 0;
+	unsigned int i, j;
+	unsigned int nfixers = 0;
+	int safe = -1;
 	int fixers[mat->dims[Equations]];
 
 	if (!mat)
@@ -86,8 +87,8 @@ void g_preprocess(mat_t *mat)
 mat_t gauss_reduce(mat_t *mat)
 {
 	char seen[mat->dims[Equations]];
-	int rowpos[mat->dims[Equations]];
-	size_t i, row;
+	unsigned int rowpos[mat->dims[Equations]];
+	unsigned int i, row;
 	mat_t r;
 
 	memset(seen, 0, sizeof(seen));
