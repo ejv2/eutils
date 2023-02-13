@@ -103,9 +103,8 @@ out:
 
 int main(int argc, char **argv)
 {
-	const int endian = detect_endian();
 	const char *end = detect_endian() ? "big" : "little";
-	signed long long buf = 0;
+	long long buf = 0;
 	long long work;
 	int opt, choice;
 	int sign;
@@ -125,6 +124,7 @@ int main(int argc, char **argv)
 				puts("n - set bit string to integer value");
 				puts("u - make bit string unsigned");
 				puts("h - this message");
+				return 1;
 			default:
 				return 1;
 		}
