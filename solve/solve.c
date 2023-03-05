@@ -40,7 +40,7 @@ int main(int argc, char **argv)
 		}
 
 		if (!parse(&exp[nexp++], buf)) {
-			fprintf(stderr, "%s: syntax error -- line %d on stdin\n", argv[0], nexp);
+			fprintf(stderr, "%s: syntax error -- line %u on stdin\n", argv[0], nexp);
 			return 1;
 		}
 	}
@@ -72,7 +72,7 @@ int main(int argc, char **argv)
 
 	if (smat.dims[Unknowns] > nexp) {
 		fprintf(stderr,
-				"%s: system in insufficiently constrained (got %d expressions "
+				"%s: system in insufficiently constrained (got %u expressions "
 				"but %u unknowns\n",
 				argv[0], nexp, smat.dims[Unknowns]);
 		return 2;
@@ -84,7 +84,7 @@ int main(int argc, char **argv)
 		fprintf(stderr, "%s: system is inconsistent or unsolvable\n", argv[0]);
 		return 2;
 	} else if (nsolutions < smat.dims[Unknowns]) {
-		fprintf(stderr, "%s: warning: could not solve for all unknowns (%d of %u)\n", argv[0], nsolutions, smat.dims[Unknowns]);
+		fprintf(stderr, "%s: warning: could not solve for all unknowns (%u of %u)\n", argv[0], nsolutions, smat.dims[Unknowns]);
 	}
 
 	for (i = 0; i < nsolutions; i++) {
