@@ -1,0 +1,69 @@
+.TH SOLVE 1 eutils-1.0.0
+.SH NAME
+solve - solve a system of linear equations
+.SH SYNOPSIS
+.SY stopwatch
+.OP \-v
+.OP \-h
+.YS
+.SH DESCRIPTION
+.B solve
+reads a linear system of equations from standard input and (where
+possible) finds a solution for each variable in the system using Gauss-Jordan
+elimination.
+
+Equations are formatted as infix mathematical notation, but where all unknowns
+must be collected on the left hand side and the constant alone on the right.
+Unknowns may have any real coefficient, but they must have ASCII variable names.
+Unknowns are separated by a single sign, which may be positive ("+") or negative
+("-"). No other signs are permitted. Variables names must be a single ASCII
+character. A maximum of 255 equations are permitted at a time, although the true
+maximum is much lower due to the requirement for variables to have a unique
+alphabetical name. A system with no equations is considered inconsistent.
+
+Output is produced with one solution per line with the variable name and value
+separated by a tab. If a solution could not be found for all variables, they
+will be absent from the program's output.
+.SH FLAGS
+.TP
+.B \-v
+Print any intermediate matrices generated as part of the elimination process to
+standard output.
+.TP
+.B \-h
+Print an explanation of flags to standard out and exit with a non-zero status
+code.
+.SH ERRORS
+.B solve
+exits with zero status code in the case of any errors, and zero otherwise.
+Errors fall into two categories. First, errors may occur due to parse failures.
+If this occurs, verify that the correct grammar for expressions has been adhered
+to. Second, errors may occur due to the nature of the system.
+.B solve
+is unable to solve systems with an unbounded number of solutions. Similarly, it
+is unable to solve systems with no solutions. In both cases,
+.B solve
+will report that the system was either inconsistent or unsolvable. It is also
+possible that the system is only partially consistent. In this case, solve will
+recover what variables it can and fail to report on others. Finally, Gaussian
+Elimination requires that the number of equations provided is at least as many
+as the unknowns to solve for. If this constraint is not met,
+.B solve
+will refuse to attempt to find a solution.
+
+In the case of any error, diagnostic information shall be printed to standard
+error.
+.SH PRECISION
+.B solve
+can guarantee precision in answers up to the size of a long double on your
+system. On x86, this translates to 64-bit double floating points, which provide
+around six significant figures of accuracy. However, input is processed solely
+numerically and exact expressions are never used, so some loss of precision is
+inevitable. As a result, the user is expected to take no more than the number of
+significant figures as are required.
+.SH SEE ALSO
+.BR dc (1), bc (1), qalc (1)
+.SH CREDITS
+Written by Ethan Marshall - 2022
+.SH BUGS
+Surely not
