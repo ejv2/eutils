@@ -62,7 +62,7 @@ void handle_flags(int argc, char **argv)
 
 void init_tty(int fileno)
 {
-	if (!isatty(fileno) || !isatty(fileno)) {
+	if (!isatty(fileno)) {
 		return;
 	}
 	tcgetattr(fileno, &termios_orig);
