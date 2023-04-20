@@ -138,7 +138,7 @@ Statement *parse(char **program, int *opcount)
 			expects = 2;
 
 			if (params != 1) {
-				ERR("Expected one operand preceeding OR");
+				ERR("Expected one operand preceeding NOR");
 			} else if (operfound) {
 				ERR("Expected only a single operation");
 			}
@@ -153,7 +153,7 @@ Statement *parse(char **program, int *opcount)
 			expects = 2;
 
 			if (params != 1) {
-				ERR("Expected one operand preceeding OR");
+				ERR("Expected one operand preceeding NAND");
 			} else if (operfound) {
 				ERR("Expected only a single operation");
 			}
