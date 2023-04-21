@@ -33,10 +33,10 @@ void print_binary(long long string, unsigned int maxlen)
 /*
  * This is surprisingly hard to get right...
  *
- * The c99 standard says that a signed int must be 32 bits two's complement.
- * However, C also tries to "help" us by abstracting over endinanness by making
- * numbers from C always work as though written in big endian, so bit shifting
- * is out of the question.
+ * The c99 standard says that a signed int must be 32 bits (it does not define
+ * the method of sign representation). However, C also tries to "help" us by
+ * abstracting over endinanness by making numbers from C always work as though
+ * written in big endian, so bit shifting is out of the question.
  *
  * To avoid losing portability, I found the best way is to simply use htonl and
  * work out by elimination what could possibly be our order. The libc on the
@@ -103,9 +103,8 @@ out:
 
 int main(int argc, char **argv)
 {
-	const int endian = detect_endian();
 	const char *end = detect_endian() ? "big" : "little";
-	signed long long buf = 0;
+	long long buf = 0;
 	long long work;
 	int opt, choice;
 	int sign;
@@ -125,6 +124,7 @@ int main(int argc, char **argv)
 				puts("n - set bit string to integer value");
 				puts("u - make bit string unsigned");
 				puts("h - this message");
+				return 1;
 			default:
 				return 1;
 		}

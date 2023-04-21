@@ -1,0 +1,3 @@
+Hello! This is a really long text file with extremely long lines. This was written in (n)vim with `set wrap`, so it is basically doing what the program does already inside the editor. However, I would like to be able to do this same task in a scriptable way.
+
+For best effect, run wrap with the -p flag to preserve existing newline formatting.

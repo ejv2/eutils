@@ -12,18 +12,26 @@
 /* converts an arbitrary math expression to an augmented matrix */
 mat_t exp_mat(expr_t *exp, size_t n)
 {
-	unsigned char cur = 0;
 	size_t i, j;
 	mat_t ret;
+	unsigned int coffmask = 0;
+	unsigned int cofftab[26];
 
 	memset(&ret, 0, sizeof(ret));
+	memset(cofftab, 0, sizeof(cofftab));
 	if (!exp || !n)
 		return ret;
 
 	for (i = 0; i < n; i++) {
-		if (exp[i].ncoff > ret.dims[Unknowns])
-			ret.dims[Unknowns] = exp[i].ncoff;
+		for (j = 0; j < exp[i].ncoff; j++) {
+			if ((coffmask & (1 << (exp[i].coffsym[j] - 'a'))) == 0) {
+				coffmask |= (1 << (exp[i].coffsym[j] - 'a'));
+				cofftab[exp[i].coffsym[j] - 'a'] = ret.dims[Unknowns];
+				ret.dims[Unknowns]++;
+			}
+		}
 	}
+
 	ret.dims[Equations] = n;
 	ret.rows = malloc(sizeof(long double *) * ret.dims[Equations]);
 	ret.eval = malloc(sizeof(long double) * ret.dims[Equations]);
@@ -31,16 +39,10 @@ mat_t exp_mat(expr_t *exp, size_t n)
 	for (i = 0; i < ret.dims[Equations]; i++) {
 		ret.rows[i] = malloc(sizeof(long double) * ret.dims[Unknowns]);
 		ret.eval[i] = exp[i].c;
-		j = cur = 0;
 
 		memset(ret.rows[i], 0, sizeof(long double) * ret.dims[Unknowns]);
-		while (j < ret.dims[Unknowns] && j < exp[i].ncoff) {
-			if ((exp[i].mask & (1 << (unsigned int)cur)) > 0) {
-				ret.rows[i][j] = exp[i].coff[cur];
-				j++;
-			}
-
-			cur++;
+		for (j = 0; j < exp[i].ncoff; j++) {
+			ret.rows[i][cofftab[exp[i].coffsym[j] - 'a']] = exp[i].coff[exp[i].coffsym[j] - 'a'];
 		}
 	}
 
@@ -79,10 +81,12 @@ int mat_verify(mat_t *mat)
 /* frees buffers associated with a matrix */
 void mat_destroy(mat_t *mat)
 {
+	size_t i;
+
 	if (!mat)
 		return;
 
-	for (size_t i = 0; i < mat->dims[Equations]; i++) {
+	for (i = 0; i < mat->dims[Equations]; i++) {
 		free(mat->rows[i]);
 	}
 
@@ -92,7 +96,7 @@ void mat_destroy(mat_t *mat)
 }
 
 /* swaps two rows in a matrix */
-void mat_swap(mat_t *mat, int i, int j)
+void mat_swap(mat_t *mat, unsigned int i, unsigned int j)
 {
 	long double tmp, *tmpr;
 
@@ -111,7 +115,7 @@ void mat_swap(mat_t *mat, int i, int j)
 }
 
 /* multiplies mat[row] by product */
-void mat_mul(mat_t *mat, int row, long double product)
+void mat_mul(mat_t *mat, unsigned int row, long double product)
 {
 	size_t i;
 
@@ -127,7 +131,7 @@ void mat_mul(mat_t *mat, int row, long double product)
 }
 
 /* r1 - nr2 -> r1 */
-void mat_sub(mat_t *mat, int r1, int r2, long double n)
+void mat_sub(mat_t *mat, unsigned int r1, unsigned int r2, long double n)
 {
 	size_t i;
 
@@ -145,11 +149,12 @@ void mat_sub(mat_t *mat, int r1, int r2, long double n)
 /* parse a raw math expression from a NULL-terminated buffer */
 int parse(expr_t *exp, const char *p)
 {
-	const char *walk = p;
+	const char *walk;
 	char *end = NULL;
 	int state = 0;
 	int neg = 0;
 	long double coff = 0;
+
 
 	if (!exp || !p)
 		return 0;
@@ -159,7 +164,7 @@ int parse(expr_t *exp, const char *p)
 	memset(exp->coff, 0, sizeof(exp->coff));
 	memset(exp->coffsym, 0, sizeof(exp->coffsym));
 
-	for (const char *walk = p; *walk && *walk != '\n'; walk++) {
+	for (walk = p; *walk && *walk != '\n'; walk++) {
 		switch (state) {
 		case 0:	/* strip leading whitespace */
 			if (!isspace(*walk)) {
@@ -184,6 +189,8 @@ int parse(expr_t *exp, const char *p)
 		case 2:	/* +/- sign */
 			if (isspace(*walk))
 				break;
+			if (isalpha(*walk))
+				return 0;
 			if (*walk == '=') {
 				walk--;
 				state = 5;
@@ -213,7 +220,7 @@ int parse(expr_t *exp, const char *p)
 				break;
 			}
 			coff = strtold(walk, &end);
-			if (coff == 0)
+			if (end == walk)
 				return 0;
 			if (neg)
 				coff = -coff;

@@ -163,11 +163,10 @@ int parse_forces(struct force_t *fbuf, unsigned int maxlen)
 int main(int argc, char **argv)
 {
 	char *voff = "       ", *hoff =  "           ";
-	int i, j, buflen, off;
+	int i, buflen, off;
 	long double nx, ny, px, py;
 	long double mag, theta;
 	struct force_t fbuf[MAX_FORCES];
-	struct force_t result[4];
 	char obuf[1024], padding[50];
 
 	memset(padding, ' ', sizeof(padding));
@@ -191,7 +190,7 @@ int main(int argc, char **argv)
 	}
 
 	off = snprintf(obuf, 1024, "%.2LfN", nx);
-	if (off >= LENGTH(padding)) {
+	if ((unsigned long)off >= LENGTH(padding)) {
 		fprintf(stderr, "fbod: fp result too large");
 		abort();
 	}
