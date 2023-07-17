@@ -13,6 +13,8 @@ use feature 'say';
 my $esin = 1;
 # Enable cos
 my $ecos = 1;
+# Enable power parentheses
+my $opar = "", my $cpar = "";
 # Number of terms
 my $tcount = 15;
 
@@ -24,6 +26,7 @@ Options:
 	-s|--sin    -- print sin only
 	-c|--cos    -- print cos only
 	-n|--number -- print this number of terms
+	-p|--parpow -- parenthesize powers of x
 	-h|--help   -- this message
 
 Written by Ethan Marshall - 2023
@@ -42,7 +45,7 @@ sub do_sin {
 		$oper = "-";
 	}
 
-	return "$oper (x^$exp)/($exp!) ";
+	return "$oper (x^$opar$exp$cpar)/($exp!) ";
 }
 
 sub do_cos {
@@ -58,7 +61,7 @@ sub do_cos {
 	}
 	my $iter = 2 * $count;
 
-	return "$oper (x^$iter)/($iter!) ";
+	return "$oper (x^$opar$iter$cpar)/($iter!) ";
 }
 
 my $nextcount = 0;
@@ -77,6 +80,8 @@ foreach my $a (@ARGV) {
 		$esin = 0;
 	} elsif ($a eq "-n" || $a eq "--number") {
 		$nextcount = 1;
+	} elsif ($a eq "-p" || $a eq "--parpow") {
+		$opar = "(", $cpar = ")";
 	} elsif ($a eq "-h" || $a eq "--help") {
 		printf "$help";
 		exit 1;
