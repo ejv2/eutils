@@ -10,8 +10,10 @@
 #include <locale.h>
 #include <wchar.h>
 
-const char *flags = "pn:hu";
+const char *flags = "pn:l:hu";
 int preserve = 0;
+int pref = 0;
+char *prefbuf = "";
 unsigned long wraplen = 80;
 
 void usage()
@@ -21,6 +23,7 @@ void usage()
 
 	fputs("-p: preserve newlines on input stream\n", stderr);
 	fputs("-n [length]: wrap at length characters\n", stderr);
+	fputs("-l [prefix]: lead wrapped lines with prefix\n", stderr);
 	fputs("-h: this message\n", stderr);
 	fputs("-u: also this message\n", stderr);
 	exit(1);
@@ -36,6 +39,7 @@ void wrap_file(FILE *f)
 	while ((r = getwc(f)) != WEOF) {
 		if (len++ == wraplen) {
 			putwchar('\n');
+			wprintf(L"%s", prefbuf);
 			len = 0;
 		}
 		if (r == '\n') {
@@ -70,6 +74,10 @@ int flag_parse(int argc, char **argv)
 				fprintf(stderr, "wrap: %lu: invalid wrap length\n", wraplen);
 				return 0;
 			}
+			break;
+		case 'l':
+			pref = 1;
+			prefbuf = strdup(optarg);
 			break;
 		case 'h':
 		case 'u':
@@ -137,5 +145,7 @@ int main(int argc, char **argv)
 			putwchar('\n');
 	}
 
+	if (pref)
+		free(prefbuf);
 	free(files);
 }
