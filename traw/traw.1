@@ -1,0 +1,25 @@
+.TH TRAW 1 eutils-1.0.0
+.SH NAME
+traw - view raw terminal inputs
+.SH SYNOPSIS
+.B traw
+.SH DESCRIPTION
+Prints raw terminal input bytes in hexadecimal format. This includes all
+possible bytes in the traditional ASCII range [0-127], but bytes are
+uninterpreted and will be promoted to 32-bit integers, so go crazy.
+
+Inputs are entirely uninterpreted and there is no exit key sequence, including
+the usual C-c, which will simply print as 0x3. This is deliberate so you can
+see what raw key signals are passed to stdio functions. To exit, see SIGNALS
+below.
+.SH SIGNALS
+traw will respond to SIGTERM by resetting the tty to the settings it found at
+startup and exitting.
+.SH OPTIONS
+None
+.SH SEE ALSO
+.BR termios (3), read (2)
+.SH CREDITS
+Written by Ethan Marshall - 2023
+.SH BUGS
+Surely not
