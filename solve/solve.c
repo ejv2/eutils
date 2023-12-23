@@ -72,8 +72,8 @@ int main(int argc, char **argv)
 
 	if (smat.dims[Unknowns] > nexp) {
 		fprintf(stderr,
-				"%s: system in insufficiently constrained (got %u expressions "
-				"but %u unknowns\n",
+				"%s: system is insufficiently constrained (got %u expressions "
+				"but %u unknowns)\n",
 				argv[0], nexp, smat.dims[Unknowns]);
 		return 2;
 	}
