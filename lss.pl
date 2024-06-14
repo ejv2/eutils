@@ -16,6 +16,10 @@ my $sxx = 0;
 # Sum of x*y for each pair
 my $sxy = 0;
 
+# Guards against impossible regression lines
+my $tn = 0;
+my %seen = ();
+
 while (1) {
 	my $line = <stdin>;
 	last unless defined $line;
@@ -35,10 +39,15 @@ while (1) {
 	$sxy += $segs[0] * $segs[1];
 
 	$n++;
+
+	if (not defined($seen{$line + 0})) {
+		$tn++;
+		$seen{$line + 0} = 1;
+	}
 }
 
-if ($n < 2) {
-	say "Need at least two data points";
+if ($tn < 2) {
+	say "Need at least two data points with unique x coordinates";
 	exit 2;
 }
 
