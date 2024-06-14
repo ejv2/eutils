@@ -37,6 +37,11 @@ while (1) {
 	$n++;
 }
 
+if ($n < 2) {
+	say "Need at least two data points";
+	exit 2;
+}
+
 my $c = (($sxx * $sy) - ($sxy * $sx))/(($n * $sxx) - $sx**2);
 my $m = ($n*$sxy - $sx*$sy)/($n*$sxx - $sx**2);
 
