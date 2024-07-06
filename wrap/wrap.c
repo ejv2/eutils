@@ -36,12 +36,18 @@ void wrap_file(FILE *f)
 	wchar_t r;
 	/* to prevent accidental double spacing */
 	int lastnl = 0;
+	/* to prevent leading spaces */
+	int wrapped = 0;
 
 	while ((r = getwc(f)) != WEOF) {
+		wrapped = 0;
+
 		if (len++ == wraplen) {
 			putwchar('\n');
 			wprintf(L"%s", prefbuf);
 			len = pref * ipref;
+			len = 0;
+			wrapped = 1;
 		}
 		if (r == '\n') {
 			if (preserve)
@@ -56,7 +62,7 @@ void wrap_file(FILE *f)
 			lastnl = 0;
 		}
 
-		if (r != '\n' || preserve)
+		if ((r != '\n' || preserve) && !(wrapped && r == ' '))
 			putwchar(r);
 	}
 }
