@@ -37,7 +37,7 @@ void usage()
 void wrap_file(FILE *f)
 {
 	unsigned long len = 0;
-	wchar_t r;
+	wchar_t r, prev = L'\0';
 	/* to prevent accidental double spacing */
 	int lastnl = 0;
 	/* to prevent leading spaces */
@@ -47,7 +47,7 @@ void wrap_file(FILE *f)
 		wrapped = 0;
 
 		if (len++ >= wraplen && !(word && !iswblank(r))) {
-			if (iswalnum(r) && dash) {
+			if (iswalnum(prev) && iswalnum(r) && dash) {
 				putwchar(L'-');
 			}
 
@@ -72,6 +72,8 @@ void wrap_file(FILE *f)
 
 		if ((r != '\n' || preserve) && !(wrapped && r == ' '))
 			putwchar(r);
+
+		prev = r;
 	}
 }
 
