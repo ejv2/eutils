@@ -1,3 +1,5 @@
 Hello! This is a really long text file with extremely long lines. This was written in (n)vim with `set wrap`, so it is basically doing what the program does already inside the editor. However, I would like to be able to do this same task in a scriptable way.
 
-For best effect, run wrap with the -p flag to preserve existing newline formatting.
+For better effect, run wrap with the -p flag to preserve existing newline formatting.
+
+For best effect, use both the -p flag and either the -d or the -w flag to format words in nice ways. The former will insert a hyphen ('-') to delimit words. The latter will simply refuse to wrap on any boundary which is not whitespace, so words will never be wrapped across lines.

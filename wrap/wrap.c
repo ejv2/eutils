@@ -11,10 +11,10 @@
 #include <wchar.h>
 #include <wctype.h>
 
-const char *flags = "pn:l:Ldhu";
+const char *flags = "pn:l:Ldwhu";
 int preserve = 0;
 int pref = 0, ipref = 0;
-int dash = 0;
+int dash = 0, word = 0;
 char *prefbuf = "";
 unsigned long wraplen = 80;
 
@@ -28,6 +28,7 @@ void usage()
 	fputs("-l [prefix]: lead wrapped lines with prefix\n", stderr);
 	fputs("-L: include prefix from -l in new line length\n", stderr);
 	fputs("-d: include a '-' character when wrapping mid-word\n", stderr);
+	fputs("-w: wrap only on whitespace characters (preserve words)\n", stderr);
 	fputs("-h: this message\n", stderr);
 	fputs("-u: also this message\n", stderr);
 	exit(1);
@@ -42,10 +43,10 @@ void wrap_file(FILE *f)
 	/* to prevent leading spaces */
 	int wrapped = 0;
 
-	while ((r = getwc(f)) != WEOF) {
+	while ((r = getwc(f)) != (signed)WEOF) {
 		wrapped = 0;
 
-		if (len++ == wraplen) {
+		if (len++ >= wraplen && !(word && !iswblank(r))) {
 			if (iswalnum(r) && dash) {
 				putwchar(L'-');
 			}
@@ -98,6 +99,9 @@ int flag_parse(int argc, char **argv)
 			break;
 		case 'd':
 			dash = 1;
+			break;
+		case 'w':
+			word = 1;
 			break;
 		case 'h':
 		case 'u':
